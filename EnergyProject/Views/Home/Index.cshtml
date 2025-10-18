@@ -1,8 +1,93 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<link rel="stylesheet" href="~/css/auth.css" /> 
+
+<section class="page">
+  <div style="display:flex; align-items:center; justify-content:space-between;">
+    <h1 class="h1">Welcome</h1>
+  </div>
+  <div class="muted">Sign in to your account or create a new one.</div>
+
+  <!-- Radios, labels, and panels are siblings so CSS selectors can toggle panels -->
+  <div class="tabset">
+    <!-- radios (hidden but accessible) -->
+    <input id="tab-signin"  name="tabset" type="radio" checked />
+    <input id="tab-register" name="tabset" type="radio" />
+
+    <!-- clickable labels -->
+    <div class="labels">
+      <label class="tab-label" for="tab-signin">Sign in</label>
+      <label class="tab-label" for="tab-register">Register</label>
+    </div>
+
+    <!-- panels (CSS toggles visibility based on :checked) -->
+    <div class="panels">
+      <!-- Sign in panel -->
+      <div id="panel-signin" class="panel">
+        <form class="form" method="post" action="#">
+          <label>
+            <span>Email</span>
+            <input class="input" type="email" placeholder="posta1@gmail.com" required />
+          </label>
+
+          <label>
+            <span>Password</span>
+            <input class="input" type="password" placeholder="••••••••" required />
+          </label>
+
+          <div class="actions">
+            <button class="btn" type="submit">Sign in (demo)</button>
+            <a class="btn-ghost" href="/User/Home">Continue to Home</a>
+          </div>
+
+          <small class="helper">
+            <a href="#">Forgot your password?</a>
+          </small>
+        </form>
+      </div>
+
+      <!-- Register panel -->
+      <div id="panel-register" class="panel">
+        <form class="form" method="post" action="#">
+          <div class="form-row">
+            <label>
+              <span>Login</span>
+              <input class="input" placeholder="user1" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input class="input" type="email" placeholder="posta1@gmail.com" required />
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Password</span>
+              <input class="input" type="password" placeholder="••••••••" required />
+            </label>
+            <label>
+              <span>Confirm password</span>
+              <input class="input" type="password" placeholder="••••••••" required />
+            </label>
+          </div>
+
+          <label>
+            <span>Phone</span>
+            <input class="input" type="tel" placeholder="+000 67 000 00 01" />
+          </label>
+
+          <div class="actions" style="margin-top:8px;">
+            <button class="btn" type="submit">Create account (demo)</button>
+            <a class="btn-ghost" href="/User/Home">Skip & go Home</a>
+          </div>
+
+          <small class="helper">
+            Already have an account? Click the <strong>Sign in</strong> tab above.
+          </small>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

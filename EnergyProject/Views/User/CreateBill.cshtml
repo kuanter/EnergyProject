@@ -1,0 +1,52 @@
+@{
+    ViewData["Title"] = "UserCreateBill";
+}
+<link rel="stylesheet" href="~/css/user.css" /> 
+
+<section class="page">
+    <div class="breadcrumbs">
+        <a href="/User/Accounts">← Back to Accounts</a>
+    </div>
+
+    <h1 class="h1">Create bill</h1>
+
+    <div class="card mt-12">
+        <div class="h2">Bill data</div>
+        <div class="form-row">
+            <label>
+                <span>Consumption (kWh)</span>
+                <input class="input" placeholder="e.g., 250" />
+            </label>
+            <label>
+                <span>Amount</span>
+                <input class="input" placeholder="e.g., 1050.00" />
+            </label>
+        </div>
+
+        <div class="form-row">
+            <label>
+                <span>Account</span>
+                <select class="select">
+                    <option>#1001 — Kyiv, Str ShotoTam</option>
+                </select>
+            </label>
+            <label>
+                <span>Payment card</span>
+                <select class="select">
+                    <option>Main — •••• 1234</option>
+                    <option>Backup — •••• 5678</option>
+                </select>
+            </label>
+        </div>
+
+        <label class="mt-12">
+            <span>Note (optional)</span>
+            <textarea class="textarea" rows="4" placeholder="Additional info..."></textarea>
+        </label>
+
+        <div class="mt-12" style="display:flex; gap:8px;">
+            <button class="btn" type="button">Create</button>
+            <a class="btn-ghost" href="/User/Accounts">Cancel</a>
+        </div>
+    </div>
+</section>

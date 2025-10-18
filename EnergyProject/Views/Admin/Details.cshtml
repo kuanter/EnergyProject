@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "AdminUserDetails";
+}
+
+<link rel="stylesheet" href="~/css/admin-users.css" />
+
+<section class="page">
+  <div class="breadcrumbs">
+    <a href="/Admin/Users">← Back to Users</a>
+  </div>
+
+  <h1 class="h1">user1 <span class="muted">· ID: 1</span></h1>
+
+  <div class="grid grid-2 mt-12">
+    <div class="card">
+      <div class="muted mb-8">Profile</div>
+      <div class="grid">
+        <div>
+          <strong>Email</strong><br />
+          <span class="chip chip-dark">posta1@gmail.com</span>   <!-- white text -->
+        </div>
+        <div>
+          <strong>Phone</strong><br />
+          <span class="chip chip-dark">+000 67 000 00 01</span>   <!-- white text -->
+        </div>
+        <div>
+          <strong>Role</strong><br />
+          User
+        </div>
+        <div>
+          <strong>Status</strong><br />
+          Active
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="muted mb-8">Meta</div>
+      <div class="grid">
+        <div>
+          <strong>Created</strong><br />
+          2024-03-12
+        </div>
+        <div>
+          <strong>Last login</strong><br />
+          2025-10-05 14:22
+        </div>
+        <div>
+          <strong>Accounts</strong><br />
+          1
+        </div>
+        <div>
+          <strong>Cards</strong><br />
+          2
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <span class="tab">Cards</span>
+    <span class="tab">Accounts</span>
+    <span class="tab">Meters</span>
+  </div>
+
+  <div class="card">
+    <div class="muted mb-8">Payment cards</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Label</th>
+          <th>Number</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Main</td>
+          <td>•••• 1234</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Backup</td>
+          <td>•••• 5678</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card mt-12">
+    <div class="muted mb-8">Accounts</div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Address</th>
+          <th>Tariff</th>
+          <th>Meter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1001</td>
+          <td>Kyiv, Str 1</td>
+          <td>4.20 kWh</td>
+          <td>
+            <a class="btn" href="/Admin/Meters/1">SN-00001</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

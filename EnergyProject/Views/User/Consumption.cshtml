@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "UserConsumption";
+}
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <h1 class="h1">Consumption management</h1>
+
+    <div class="grid grid-3 mt-12">
+        <div class="item card">
+            <strong>Avg (30d)</strong><br/>— kWh/day
+        </div>
+        <div class="item card">
+            <strong>Monthly peak</strong><br/>— kWh
+        </div>
+        <div class="item card">
+            <strong>Forecast</strong><br/>— kWh
+        </div>
+    </div>
+
+    <div class="card mt-12">
+        <div class="h2">Targets & alerts</div>
+
+        <div class="form-row">
+            <label><span>Monthly target (kWh)</span><input class="input" placeholder="e.g., 300" /></label>
+            <label><span>Monthly budget ()</span><input class="input" placeholder="e.g., 1200" /></label>
+        </div>
+
+        <div class="form-row">
+            <label><span>Daily limit (kWh)</span><input class="input" type="range" min="0" max="50" value="20" /></label>
+            <label><span>Notify if daily limit exceeded</span><input type="checkbox" checked /> Email & push</label>
+        </div>
+
+        <div class="mt-12"><button class="btn" type="button">Save</button></div>
+    </div>
+
+    <div class="chart-placeholder mt-12">Chart placeholder</div>
+</section>

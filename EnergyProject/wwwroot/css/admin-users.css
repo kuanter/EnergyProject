@@ -1,0 +1,155 @@
+/* Admin Users styles — light theme */
+
+/* ----- Layout ----- */
+.page { /* Page container card */
+    padding: 24px;
+    background: #ffffff;                  /* light card */
+    border: 1px solid #e5e7eb;            /* light border */
+    border-radius: 16px;
+}
+
+.h1 { /* Primary page heading */
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    color: #111827;                       /* near-black text */
+}
+
+.muted { /* Subtle/secondary text */
+    color: #6b7280;
+}
+
+/* ----- Toolbar & Search ----- */
+.toolbar { /* Header row: title + search */
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.search { /* Search form wrapper */
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.search input { /* Search input field */
+    width: 280px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #111827;
+}
+
+/* ----- Buttons, Pills, Chips ----- */
+.btn { /* Primary action button */
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid #1d4ed8;
+    background: #2563eb;                  /* blue */
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.btn:hover { /* Button hover state */
+    background: #1e40af;
+}
+
+.pill { /* Small rounded label (neutral) */
+    display: inline-block;
+    border: 1px solid #e5e7eb;
+    padding: 2px 8px;
+    border-radius: 999px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* Chips for highlighting values with white text */
+.chip { /* Generic chip */
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    line-height: 1;
+}
+.chip-dark { /* Dark background so white text is readable */
+    background: #111827;
+    color: #ffffff;                        /* <= white text */
+}
+
+/* ----- Table ----- */
+.table { /* Data table base */
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    color: #111827;
+}
+
+.table th,
+.table td { /* Cell spacing + separators */
+    padding: 10px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.table thead th { /* Table header look */
+    background: #f9fafb;
+    color: #4b5563;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: .06em;
+}
+
+/* ----- Cards & Grid ----- */
+.grid { /* Generic grid container */
+    display: grid;
+    gap: 12px;
+}
+
+.grid-2 { /* Two equal columns */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card { /* Simple panel/card */
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+/* ----- Breadcrumbs ----- */
+.breadcrumbs { /* Back links row */
+    margin-bottom: 12px;
+}
+
+.breadcrumbs a { /* Breadcrumb link */
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover { /* Hover underline */
+    text-decoration: underline;
+}
+
+/* ----- Tabs (static UI) ----- */
+.tabs { /* Tabs row container */
+    display: flex;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.tab { /* Single tab chip */
+    padding: 6px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    color: #6b7280;
+    background: #ffffff;
+}
+
+/* ----- Spacing helpers ----- */
+.mt-12 { margin-top: 12px; }  /* small top margin */
+.mb-8  { margin-bottom: 8px; }/* small bottom margin */

@@ -1,0 +1,48 @@
+@{
+    ViewData["Title"] = "AdminAddresses";
+}
+
+<link rel="stylesheet" href="~/css/admin-users.css" /> 
+
+<section class="page">
+    <h1 class="h1">Addresses</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>City</th>
+            <th>Street</th>
+            <th>No.</th>
+            <th>Apt.</th>
+            <th>User</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td>Kyiv</td>
+            <td>Sample</td>
+            <td>1</td>
+            <td>2</td>
+            <td><a class="btn" href="/Admin/UserDetails/1">user1</a></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Lviv</td>
+            <td>Green</td>
+            <td>10</td>
+            <td>15</td>
+            <td><a class="btn" href="/Admin/UserDetails/2">user2</a></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Odesa</td>
+            <td>Blue</td>
+            <td>5</td>
+            <td>7</td>
+            <td><a class="btn" href="/Admin/UserDetails/3">user3</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>

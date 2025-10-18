@@ -1,0 +1,184 @@
+/* Auth (Sign in / Register) — light theme, UI-only */
+
+/* =========================
+   Page & container
+   ========================= */
+.page {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;   /* gray-200 */
+    border-radius: 16px;
+}
+
+.h1 {
+    margin: 0 0 8px 0;
+    font-size: 28px;
+    color: #111827;              /* near-black */
+}
+
+.muted {
+    color: #6b7280;              /* gray-500 */
+}
+
+.pill {
+    display: inline-block;
+    border: 1px solid #e5e7eb;
+    padding: 2px 8px;
+    border-radius: 999px;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+/* =========================
+   Tabs (pure CSS)
+   ========================= */
+.tabset {
+    margin-top: 12px;
+}
+
+/* hide radios but keep accessible */
+.tabset input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.labels {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tab-label {
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-bottom: none;
+    border-radius: 12px 12px 0 0;
+    background: #f9fafb;
+    color: #111827;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tab-label:hover {
+    background: #f3f4f6;         /* gray-100 */
+}
+
+/* active tab styling (radios and labels/panels are siblings) */
+#tab-signin:checked ~ .labels label[for="tab-signin"],
+#tab-register:checked ~ .labels label[for="tab-register"] {
+    background: #ffffff;
+    border-color: #e5e7eb;
+    color: #111827;
+    font-weight: 600;
+}
+
+.panels {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0 12px 12px 12px;
+    padding: 16px;
+}
+
+/* show/hide panels via :checked */
+.panel {
+    display: none;
+}
+
+#tab-signin:checked ~ .panels #panel-signin {
+    display: block;
+}
+
+#tab-register:checked ~ .panels #panel-register {
+    display: block;
+}
+
+/* =========================
+   Forms
+   ========================= */
+.form {
+    display: grid;
+    gap: 12px;
+}
+
+.form-row {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+label > span {
+    display: block;
+    margin-bottom: 6px;
+    color: #4b5563;              /* gray-600 */
+    font-size: 13px;
+}
+
+.input,
+.select,
+.textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;   /* gray-300 */
+    background: #ffffff;
+    color: #111827;
+}
+
+.textarea {
+    resize: vertical;
+}
+
+/* =========================
+   Buttons & links
+   ========================= */
+.actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #1d4ed8;   /* blue-700 */
+    background: #2563eb;         /* blue-600 */
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: #1e40af;         /* blue-800 */
+}
+
+.btn-ghost {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #111827;
+    text-decoration: none;
+}
+
+.btn-ghost:hover {
+    background: #f3f4f6;
+}
+
+.helper {
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.helper a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.helper a:hover {
+    text-decoration: underline;
+}

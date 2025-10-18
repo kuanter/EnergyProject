@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "UserHome";
+}
+<link rel="stylesheet" href="~/css/user.css" /> 
+
+<section class="page">
+    <h1 class="h1">Home</h1>
+    <div class="kpi mt-12">
+        <div class="item"><strong>Current consumption</strong><br/>— kWh</div>
+        <div class="item"><strong>Last payment</strong><br/>—</div>
+        <div class="item"><strong>Grid status</strong><br/>Normal</div>
+    </div>
+
+    <div class="grid grid-3 mt-12">
+        <a class="card" href="/User/Meters"><strong>Meters</strong><br/><span class="muted">View your meters</span></a>
+        <a class="card" href="/User/Readings"><strong>Readings</strong><br/><span class="muted">Recent readings</span></a>
+        <a class="card" href="/User/Consumption"><strong>Consumption</strong><br/><span class="muted">Set limits & goals</span></a>
+    </div>
+</section>

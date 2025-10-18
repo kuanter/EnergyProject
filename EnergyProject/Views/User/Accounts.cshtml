@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "UserAccounts";
+}
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="toolbar">
+        <h1 class="h1">Accounts</h1>
+        <a class="btn" href="/User/CreateBill">Create bill</a>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr><th>ID</th><th>Address</th><th>Tariff</th><th>Meter</th><th></th></tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1001</td>
+            <td>Kyiv, Sample 1/2</td>
+            <td>Base — 4.20 €/kWh</td>
+            <td>SN-00001</td>
+            <td><a class="btn-ghost" href="/User/Meters">Open meter</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
