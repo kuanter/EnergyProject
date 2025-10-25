@@ -9,7 +9,10 @@
         public string CardName { get; set; }
         public bool IsDefault { get; set; }
         public int BillingAddressId { get; set; }
-
+        public int BillId { get; set; }
+        public Bill Bill { get; set; }
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
     }

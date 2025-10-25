@@ -1,3 +1,6 @@
+using EnergyProject.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace EnergyProject
 {
     public class Program
@@ -8,7 +11,13 @@ namespace EnergyProject
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            
+            // Connect to DB
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionString));
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

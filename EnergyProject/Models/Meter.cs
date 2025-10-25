@@ -7,9 +7,9 @@
         public DateTime InstallDate { get; set; }
         public bool IsActive { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public int PaymentAccountId { get; set; }
+        public PaymentAccount PaymentAccount { get; set; }
 
-        public ICollection<MeterReading> Readings { get; set; }
+        public ICollection<MeterReading> MeterReadings { get; set; }
     }
 }

@@ -11,6 +11,6 @@
 
         public ICollection<CardData> Cards { get; set; }
         public ICollection<PaymentAccount> PaymentAccounts { get; set; }
-        public PowerStatus PowerStatus { get; set; }
+      
     }
 }

@@ -13,7 +13,8 @@
         public Address Address { get; set; }
         public Tariff Tariff { get; set; }
         public Meter Meter { get; set; }
-
+        public PowerStatus PowerStatus { get; set; }
         public ICollection<Bill> Bills { get; set; }
+        
     }
 }
