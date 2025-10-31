@@ -2,7 +2,7 @@ using System.Diagnostics;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EnergyProject.Controllers
+namespace EnergyProject.Areas.Admin.Controllers
 {
     public class AdminController : Controller
     {

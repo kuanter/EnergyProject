@@ -2,9 +2,9 @@ using System.Diagnostics;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EnergyProject.Controllers;
-
-public class  UserController : Controller
+namespace EnergyProject.Areas.User.Controllers;
+[Area("User")]
+public class  HomeController : Controller
 {
     public IActionResult Accounts() => View();
     public IActionResult Meters()     => View();
