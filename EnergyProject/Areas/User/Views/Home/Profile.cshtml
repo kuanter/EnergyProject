@@ -1,6 +1,10 @@
+@using EnergyProject.Models
 @{
+
     ViewData["Title"] = "UserProfile";
+     
 }
+
 <link rel="stylesheet" href="~/css/user.css" /> 
 
 <section class="page">
@@ -10,17 +14,17 @@
         <div class="card">
             <div class="h2">Personal</div>
             <div class="grid">
-                <div><strong>Login</strong><br/>user1</div>
+                <h3>@Model.Id</h3>
+                <h3>@Model.Email</h3>
+                <h3>@Model.PasswordHash</h3>
+                <h3>@Model.FullName</h3>
+                <h3>@Model.Phone</h3>
+                <h3>@Model.Role</h3>
+                <!--<div><strong>Login</strong><br/>user1</div>
                 <div><strong>Email</strong><br/><span class="chip chip-dark">posta1@gmail.com</span></div>
-                <div><strong>Phone</strong><br/><span class="chip chip-dark">+000 67 000 00 01</span></div>
+                <div><strong>Phone</strong><br/><span class="chip chip-dark">+000 67 000 00 01</span></div>-->
             </div>
             <div class="mt-12"><a class="btn" href="#">Edit</a></div>
-        </div>
-
-        <div class="card">
-            <div class="h2">Power status</div>
-            <div>Normal · Updated: 2025-10-17 10:00</div>
-            <div class="mt-12"><a class="btn-ghost" href="/User/Consumption">Open consumption management</a></div>
         </div>
     </div>
 </section>
