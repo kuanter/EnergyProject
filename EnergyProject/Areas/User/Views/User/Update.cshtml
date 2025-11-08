@@ -1,0 +1,29 @@
+﻿@model EnergyProject.Models.User 
+<h2>Profile update</h2>
+<form asp-area="User" asp-controller="User" asp-action="UpdatePost">
+    <p hidden>
+        <label asp-for="Id">Id</label>
+        <input type="text" asp-for="Id">
+    </p>
+    <p>
+        <label asp-for="Email">Email</label>
+        <input type="text" asp-for="Email">
+    </p>
+    <p>
+        <label asp-for="FullName">FullName</label>
+        <input type="text" asp-for="FullName">
+    </p>
+    <p>
+        <label asp-for="Phone">Phone</label>
+        <input type="text" asp-for="Phone">
+    </p>
+    <p hidden>
+        <label asp-for="PasswordHash">PasswordHash</label>
+        <input type="text" asp-for="PasswordHash">
+    </p>
+    <p hidden>
+        <label asp-for="Role">Role</label>
+        <input type="text" asp-for="Role">
+    </p>
+    <p> <input type="submit" value="Save" class="btn-add"> </p>
+</form>
