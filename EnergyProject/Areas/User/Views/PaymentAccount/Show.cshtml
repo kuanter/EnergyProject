@@ -1,0 +1,32 @@
+﻿@using EnergyProject.Models
+     
+<table class="table table-bordered w-auto">
+<caption class="caption-top fw-semibold">Payment account details</caption>
+<tbody>
+    <tr>
+        <th>Id</th>
+        <th>User Id</th>
+        <th>Address Id</th>
+        <th>Tariff Id</t>
+        <th>Meter Id</th>
+        <th>Power status Id</th>
+    </tr>
+    @foreach (var pa in Model)
+    {
+        <tr>
+            <td>@pa.Id</td>
+       
+            <td>@pa.UserId</td>
+        
+            <td>@pa.AddressId</td>
+      
+            <td>@pa.TariffId</td>
+       
+            <td>@pa.MeterId</td>
+       
+            <td>@pa.PowerStatusId</td>
+        </tr>
+    }
+
+</tbody>
+</table>
