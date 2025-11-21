@@ -1,22 +1,94 @@
 @{
-    ViewData["Title"] = "UserHome";
+    ViewData["Title"] = "Home";
 }
-<link rel="stylesheet" href="~/css/user.css" /> 
 
-<section class="page">
-    <h1 class="h1">Home</h1>
-    <p><a class="card" asp-area="User" asp-controller="Home" asp-action="Profile">Profile</a></p>
-    <a class="card" asp-area="User" asp-controller="PaymentAccount" asp-action="Show">Showi</a>
-    <!--
-    <div class="kpi mt-12">
-        <div class="item"><strong>Current consumption</strong><br/>— kWh</div>
-        <div class="item"><strong>Last payment</strong><br/>—</div>
-        <div class="item"><strong>Grid status</strong><br/>Normal</div>
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page home-page">
+    <div class="home-layout">
+        <div class="home-hero">
+            <p class="eyebrow">EnergyProject · User portal</p>
+            <h1 class="h1">Control your energy in one place</h1>
+            <p class="lead">
+                Track consumption, manage payment accounts and keep your profile data up to date.
+            </p>
+
+            <div class="home-actions">
+                <a class="user-btn user-btn-primary"
+                   asp-area="User"
+                   asp-controller="PaymentAccount"
+                   asp-action="Create">
+                    Create payment account
+                </a>
+
+                <a class="user-btn user-btn-ghost"
+                   asp-area="User"
+                   asp-controller="PaymentAccount"
+                   asp-action="Show">
+                    View my accounts
+                </a>
+
+                <a class="user-btn user-btn-ghost"
+                   asp-area="User"
+                   asp-controller="Home"
+                   asp-action="Profile">
+                    My profile
+                </a>
+            </div>
+        </div>
+
+        <div class="home-kpi">
+            <div class="kpi-card">
+                <span class="kpi-label">Next payment</span>
+                <span class="kpi-value">—</span>
+                <span class="kpi-caption">Set up a payment account to see due dates.</span>
+            </div>
+
+            <div class="kpi-card">
+                <span class="kpi-label">Linked addresses</span>
+                <span class="kpi-value">—</span>
+                <span class="kpi-caption">Soon you will see all your supply points here.</span>
+            </div>
+
+          
+        </div>
     </div>
-    <div class="grid grid-3 mt-12">
-        <a class="card" href="/User/Meters"><strong>Meters</strong><br/><span class="muted">View your meters</span></a>
-        <a class="card" href="/User/Readings"><strong>Readings</strong><br/><span class="muted">Recent readings</span></a>
-        <a class="card" href="/User/Consumption"><strong>Consumption</strong><br/><span class="muted">Set limits & goals</span></a>
+
+    <div class="home-grid mt-32">
+        <a class="card"
+           asp-area="User"
+           asp-controller="PaymentAccount"
+           asp-action="Show">
+            <div class="card-header">
+                <span class="card-pill">Accounts</span>
+            </div>
+            <h2 class="card-title">Payment accounts</h2>
+            <p class="card-text">
+                Overview of all your payment accounts, tariffs and meters.
+            </p>
+        </a>
+
+        <a class="card"
+           asp-area="User"
+           asp-controller="Home"
+           asp-action="Profile">
+            <div class="card-header">
+                <span class="card-pill">Profile</span>
+            </div>
+            <h2 class="card-title">Personal data</h2>
+            <p class="card-text">
+                Check and update your name, contact details and role.
+            </p>
+        </a>
+
+        <div class="card card-muted">
+            <div class="card-header">
+                <span class="card-pill">Coming soon</span>
+            </div>
+            <h2 class="card-title">Consumption &amp; limits</h2>
+            <p class="card-text">
+                Planned module with charts, budgets and alerts about unusual consumption.
+            </p>
+        </div>
     </div>
-    -->
 </section>

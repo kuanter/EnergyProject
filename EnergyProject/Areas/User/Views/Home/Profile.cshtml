@@ -1,30 +1,75 @@
-@using EnergyProject.Models
-@{
+@model EnergyProject.Models.User
+@* якщо ≥м'€ або неймспейс модел≥ ≥нший Ц зам≥ни цей р€док *@
 
-    ViewData["Title"] = "UserProfile";
-     
+@{
+    ViewData["Title"] = "Profile";
 }
 
-<link rel="stylesheet" href="~/css/user.css" /> 
+<link rel="stylesheet" href="~/css/user.css" />
 
-<section class="page">
-    <h1 class="h1">Profile</h1>
+<section class="page profile-page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Profile</h1>
+            <p class="lead">
+                Here you can see your personal and contact information.
+            </p>
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-primary"
+               asp-area="User"
+               asp-controller="User"
+               asp-action="Update"
+               asp-route-id="@Model.Id">
+                Edit profile
+            </a>
+        </div>
+    </div>
 
-    <div class="grid grid-2 mt-12">
+    <div class="grid grid-2 mt-24">
         <div class="card">
-            <div class="h2">Personal</div>
-            <div class="grid">
-                <h3>@Model.Id</h3>
-                <h3>@Model.Email</h3>
-                <h3>@Model.PasswordHash</h3>
-                <h3>@Model.FullName</h3>
-                <h3>@Model.Phone</h3>
-                <h3>@Model.Role</h3>
-                <!--<div><strong>Login</strong><br/>user1</div>
-                <div><strong>Email</strong><br/><span class="chip chip-dark">posta1@gmail.com</span></div>
-                <div><strong>Phone</strong><br/><span class="chip chip-dark">+000 67 000 00 01</span></div>-->
+            <div class="card-header">
+                <span class="card-pill">Personal</span>
             </div>
-             <a class="card" asp-area="User" asp-controller="User" asp-action="Update" asp-route-id="@Model.Id">Update</a>
+            <h2 class="card-title">Account details</h2>
+
+            <dl class="details">
+                <div class="details-row">
+                    <dt>User ID</dt>
+                    <dd>@Model.Id</dd>
+                </div>
+                <div class="details-row">
+                    <dt>Email</dt>
+                    <dd>@Model.Email</dd>
+                </div>
+                <div class="details-row">
+                    <dt>Full name</dt>
+                    <dd>@Model.FullName</dd>
+                </div>
+                <div class="details-row">
+                    <dt>Phone</dt>
+                    <dd>@Model.Phone</dd>
+                </div>
+                <div class="details-row">
+                    <dt>Role</dt>
+                    <dd>@Model.Role</dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="card card-muted">
+            <div class="card-header">
+                <span class="card-pill">Information</span>
+            </div>
+            <h2 class="card-title">Data &amp; security</h2>
+            <p class="card-text">
+                For security reasons we do not display your password here.
+                If you need to change it, use the password change function in the application.
+            </p>
+            <p class="card-text mt-12">
+                Make sure your email and phone number are always up to date so we can contact you
+                about your consumption and payments.
+            </p>
         </div>
     </div>
 </section>

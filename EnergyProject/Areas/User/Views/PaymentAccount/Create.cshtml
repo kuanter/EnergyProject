@@ -1,0 +1,60 @@
+﻿@model EnergyProject.Models.PaymentAccount
+@* Якщо модель інша – заміни тип вище *@
+
+@{
+    ViewData["Title"] = "Create payment account";
+}
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Create payment account</h1>
+            <p class="lead">
+                Fill in the basic information. You can change details later in the list of accounts.
+            </p>
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-ghost"
+               asp-area="User"
+               asp-controller="PaymentAccount"
+               asp-action="Show">
+                Back to list
+            </a>
+        </div>
+    </div>
+
+    <div class="card mt-24">
+        <form asp-area="User"
+              asp-controller="PaymentAccount"
+              asp-action="Create"
+              method="post"
+              class="form-grid">
+            <!--<div class="form-row">
+                <label asp-for="UserId" class="form-label"></label>
+                <input asp-for="UserId" class="form-input" />
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>-->
+            
+
+            <div class="form-actions">
+                <button type="submit" class="user-btn user-btn-primary">
+                    Save
+                </button>
+                <a class="user-btn user-btn-ghost"
+                   asp-area="User"
+                   asp-controller="PaymentAccount"
+                   asp-action="Show">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</section>

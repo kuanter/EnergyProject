@@ -1,29 +1,74 @@
-﻿@model EnergyProject.Models.User 
-<h2>Profile update</h2>
-<form asp-area="User" asp-controller="User" asp-action="UpdatePost">
-    <p hidden>
-        <label asp-for="Id">Id</label>
-        <input type="text" asp-for="Id">
-    </p>
-    <p>
-        <label asp-for="Email">Email</label>
-        <input type="text" asp-for="Email">
-    </p>
-    <p>
-        <label asp-for="FullName">FullName</label>
-        <input type="text" asp-for="FullName">
-    </p>
-    <p>
-        <label asp-for="Phone">Phone</label>
-        <input type="text" asp-for="Phone">
-    </p>
-    <p hidden>
-        <label asp-for="PasswordHash">PasswordHash</label>
-        <input type="text" asp-for="PasswordHash">
-    </p>
-    <p hidden>
-        <label asp-for="Role">Role</label>
-        <input type="text" asp-for="Role">
-    </p>
-    <p> <input type="submit" value="Save" class="btn-add"> </p>
-</form>
+﻿@model EnergyProject.Models.User
+
+@{
+    ViewData["Title"] = "Edit profile";
+}
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Edit profile</h1>
+            <p class="lead">
+                Change your email, name or phone number. Other fields are managed by the system.
+            </p>
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-ghost"
+               asp-area="User"
+               asp-controller="Home"
+               asp-action="Profile">
+                Back to profile
+            </a>
+        </div>
+    </div>
+
+    <div class="card mt-24">
+        <form asp-area="User"
+              asp-controller="User"
+              asp-action="UpdatePost"
+              method="post"
+              class="form-grid">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="PasswordHash" />
+            <input type="hidden" asp-for="Role" />
+
+            <div class="form-row">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-input" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-input" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div class="form-row">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-input" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="user-btn user-btn-primary">
+                    Save changes
+                </button>
+                <a class="user-btn user-btn-ghost"
+                   asp-area="User"
+                   asp-controller="Home"
+                   asp-action="Profile">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</section>

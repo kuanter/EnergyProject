@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EnergyProject.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,7 +37,8 @@ namespace EnergyProject.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false),
                     TariffId = table.Column<int>(type: "int", nullable: false),
-                    MeterId = table.Column<int>(type: "int", nullable: false)
+                    MeterId = table.Column<int>(type: "int", nullable: false),
+                    PowerStatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,8 +132,7 @@ namespace EnergyProject.Migrations
                 name: "PowerStatuses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -142,8 +142,8 @@ namespace EnergyProject.Migrations
                 {
                     table.PrimaryKey("PK_PowerStatuses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PowerStatuses_PaymentAccounts_PaymentAccountId",
-                        column: x => x.PaymentAccountId,
+                        name: "FK_PowerStatuses_PaymentAccounts_Id",
+                        column: x => x.Id,
                         principalTable: "PaymentAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -153,15 +153,15 @@ namespace EnergyProject.Migrations
                 name: "Tariffs",
                 columns: table => new
                 {
-                    TariffId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     PricePerKWh = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tariffs", x => x.TariffId);
+                    table.PrimaryKey("PK_Tariffs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tariffs_PaymentAccounts_TariffId",
-                        column: x => x.TariffId,
+                        name: "FK_Tariffs_PaymentAccounts_Id",
+                        column: x => x.Id,
                         principalTable: "PaymentAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -178,7 +178,6 @@ namespace EnergyProject.Migrations
                     ExpYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
-                    BillingAddressId = table.Column<int>(type: "int", nullable: false),
                     BillId = table.Column<int>(type: "int", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
@@ -275,12 +274,6 @@ namespace EnergyProject.Migrations
                 name: "IX_PaymentAccounts_UserId",
                 table: "PaymentAccounts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PowerStatuses_PaymentAccountId",
-                table: "PowerStatuses",
-                column: "PaymentAccountId",
-                unique: true);
         }
 
         /// <inheritdoc />

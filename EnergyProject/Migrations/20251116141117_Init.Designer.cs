@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnergyProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251025114433_init")]
-    partial class init
+    [Migration("20251116141117_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -114,9 +114,6 @@ namespace EnergyProject.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("BillId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BillingAddressId")
                         .HasColumnType("int");
 
                     b.Property<string>("CardName")
@@ -220,6 +217,9 @@ namespace EnergyProject.Migrations
                     b.Property<int>("MeterId")
                         .HasColumnType("int");
 
+                    b.Property<int>("PowerStatusId")
+                        .HasColumnType("int");
+
                     b.Property<int>("TariffId")
                         .HasColumnType("int");
 
@@ -236,10 +236,7 @@ namespace EnergyProject.Migrations
             modelBuilder.Entity("EnergyProject.Models.PowerStatus", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PaymentAccountId")
                         .HasColumnType("int");
@@ -257,21 +254,18 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentAccountId")
-                        .IsUnique();
-
                     b.ToTable("PowerStatuses");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Tariff", b =>
                 {
-                    b.Property<int>("TariffId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<float>("PricePerKWh")
                         .HasColumnType("real");
 
-                    b.HasKey("TariffId");
+                    b.HasKey("Id");
 
                     b.ToTable("Tariffs");
                 });
@@ -403,7 +397,7 @@ namespace EnergyProject.Migrations
                 {
                     b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
                         .WithOne("PowerStatus")
-                        .HasForeignKey("EnergyProject.Models.PowerStatus", "PaymentAccountId")
+                        .HasForeignKey("EnergyProject.Models.PowerStatus", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -414,7 +408,7 @@ namespace EnergyProject.Migrations
                 {
                     b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
                         .WithOne("Tariff")
-                        .HasForeignKey("EnergyProject.Models.Tariff", "TariffId")
+                        .HasForeignKey("EnergyProject.Models.Tariff", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
