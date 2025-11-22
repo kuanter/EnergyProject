@@ -1,6 +1,9 @@
 ﻿using EnergyProject.Data;
+using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace EnergyProject.Areas.User.Controllers
 {
@@ -19,25 +22,33 @@ namespace EnergyProject.Areas.User.Controllers
             return View(pa);
             
         }
-        public IActionResult Create() {
-            PaymentAccountCreateViewModel paymentAccountCreateViewModel = new PaymentAccountCreateViewModel();
-            var cities = db.Addresses.Select(a => a.City).ToList();
-            var streets = db.Addresses.Select(a => a.Street).ToList();
-            var houses = db.Addresses.Select(a => a.House).ToList();
-            var apartments = db.Addresses.Select(a => a.Apartment).ToList();
-
-            List<string> resultAddresses = new List<string>();
-            for (int i = 0; i < cities.Count; i++)
-            {
-                string fullAddress = $"{cities[i]}, {streets[i]}, {houses[i]}, {apartments[i]}";
-                resultAddresses.Add(fullAddress);
-            }
-
-            paymentAccountCreateViewModel.AddressOptions = resultAddresses;
-            return View();
-        }
-        //public async Task<IActionResult> CreatePost(Models.PaymentAccount pa) { 
         
-        //}
+        public IActionResult Create() {
+            var vm = new PaymentAccountCreateViewModel();
+
+            vm.AddressOptions = db.Addresses.Select(a => new SelectListItem{
+                Value = a.Id.ToString(),Text = $"{a.City}, {a.Street}, {a.House}, {a.Apartment}"
+            }).ToList();
+
+            vm.TariffOptions = db.Tariffs.Select(t => new SelectListItem {
+                Value = t.Id.ToString(), Text = $"Tariff ID: {t.Id}, Price per KWh: {t.PricePerKWh}"
+            }).ToList();
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePost(PaymentAccountCreateViewModel paymentAccountCreateViewModel)
+        {
+            // db.Users.Update(CurrUser);
+            PaymentAccount paymentAccount = new PaymentAccount();
+            paymentAccount.UserId = 1;
+            paymentAccount.AddressId = paymentAccountCreateViewModel.AddressId;
+            paymentAccount.TariffId = paymentAccountCreateViewModel.TariffId;
+            paymentAccount.MeterId = -1;
+            paymentAccount.PowerStatusId = -1;
+            db.PaymentAccounts.Add(paymentAccount);
+            await db.SaveChangesAsync();
+            return RedirectToAction("PaymentAccount", "Show");
+        }
     }
 }
