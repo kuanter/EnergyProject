@@ -12,7 +12,7 @@ namespace EnergyProject.Areas.User.Controllers
         {
             db = db_;
         }
-        public IActionResult Update(int Id) 
+        public IActionResult Update(string Id) 
         {
             Models.User CurrUser = db.Users.First(u => u.Id == Id);
 

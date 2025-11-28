@@ -3,9 +3,10 @@
     public class Tariff
     {
        
-        public int Id { get; set; }
+        public string Id { get; set; }
+
         public float PricePerKWh { get; set; }
 
-        public PaymentAccount PaymentAccount { get; set; }
+        public ICollection<PaymentAccount> PaymentAccounts { get; set; }
     }
 }

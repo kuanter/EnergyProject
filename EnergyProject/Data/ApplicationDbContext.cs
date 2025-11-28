@@ -51,14 +51,16 @@ namespace EnergyProject.Data
             // PaymentAccount = Tariff
             modelBuilder.Entity<PaymentAccount>()
                 .HasOne(p => p.Tariff)
-                .WithOne(t => t.PaymentAccount)
-                .HasForeignKey<Tariff>(p => p.Id);
+                .WithMany(t => t.PaymentAccounts)
+                .HasForeignKey(p => p.TariffId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // PaymentAccount = PowerStatus
             modelBuilder.Entity<PaymentAccount>()
                  .HasOne(p => p.PowerStatus)
-                 .WithOne(pps => pps.PaymentAccount)
-               .HasForeignKey<PowerStatus>(p => p.Id);
+                 .WithMany(pps => pps.PaymentAccounts)
+                 .HasForeignKey(p => p.PowerStatusId)
+                 .OnDelete(DeleteBehavior.Restrict);
 
             // Bill = CardData
             modelBuilder.Entity<Bill>()

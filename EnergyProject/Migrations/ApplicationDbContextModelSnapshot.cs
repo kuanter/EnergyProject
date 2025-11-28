@@ -24,18 +24,16 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.Address", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Apartment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CardDataId")
-                        .HasColumnType("int");
+                    b.Property<string>("CardDataId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -45,15 +43,17 @@ namespace EnergyProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PaymentAccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentAccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -67,17 +67,15 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.Bill", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("Amount")
                         .HasColumnType("real");
 
-                    b.Property<int>("CardDataId")
-                        .HasColumnType("int");
+                    b.Property<string>("CardDataId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("ConsumptionKWh")
                         .HasColumnType("real");
@@ -85,8 +83,9 @@ namespace EnergyProject.Migrations
                     b.Property<DateTime>("GeneratedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PaymentAccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentAccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -101,17 +100,16 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.CardData", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("AddressId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BillId")
-                        .HasColumnType("int");
+                    b.Property<string>("BillId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CardName")
                         .IsRequired()
@@ -131,8 +129,9 @@ namespace EnergyProject.Migrations
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -149,11 +148,8 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.Meter", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("InstallDate")
                         .HasColumnType("datetime2");
@@ -161,8 +157,9 @@ namespace EnergyProject.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PaymentAccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentAccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SerialNumber")
                         .IsRequired()
@@ -178,17 +175,15 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.MeterReading", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MeterId")
-                        .HasColumnType("int");
+                    b.Property<string>("MeterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("ValueKWh")
                         .HasColumnType("real");
@@ -202,28 +197,32 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.PaymentAccount", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("AddressId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AddressId")
-                        .HasColumnType("int");
+                    b.Property<string>("MeterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("MeterId")
-                        .HasColumnType("int");
+                    b.Property<string>("PowerStatusId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PowerStatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("TariffId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("TariffId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TariffId");
 
                     b.HasIndex("UserId");
 
@@ -232,11 +231,12 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.PowerStatus", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("PaymentAccountId")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentAccountId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Reason")
                         .IsRequired()
@@ -256,8 +256,8 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.Tariff", b =>
                 {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("PricePerKWh")
                         .HasColumnType("real");
@@ -269,11 +269,8 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -381,11 +378,19 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.PaymentAccount", b =>
                 {
+                    b.HasOne("EnergyProject.Models.Tariff", "Tariff")
+                        .WithMany("PaymentAccounts")
+                        .HasForeignKey("TariffId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("EnergyProject.Models.User", "User")
                         .WithMany("PaymentAccounts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Tariff");
 
                     b.Navigation("User");
                 });
@@ -395,17 +400,6 @@ namespace EnergyProject.Migrations
                     b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
                         .WithOne("PowerStatus")
                         .HasForeignKey("EnergyProject.Models.PowerStatus", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentAccount");
-                });
-
-            modelBuilder.Entity("EnergyProject.Models.Tariff", b =>
-                {
-                    b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
-                        .WithOne("Tariff")
-                        .HasForeignKey("EnergyProject.Models.Tariff", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -441,9 +435,11 @@ namespace EnergyProject.Migrations
 
                     b.Navigation("PowerStatus")
                         .IsRequired();
+                });
 
-                    b.Navigation("Tariff")
-                        .IsRequired();
+            modelBuilder.Entity("EnergyProject.Models.Tariff", b =>
+                {
+                    b.Navigation("PaymentAccounts");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.User", b =>

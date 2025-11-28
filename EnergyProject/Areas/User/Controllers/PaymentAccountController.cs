@@ -3,6 +3,7 @@ using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace EnergyProject.Areas.User.Controllers
@@ -18,7 +19,12 @@ namespace EnergyProject.Areas.User.Controllers
         public IActionResult Show()
         {
             // to do
-            var pa = db.PaymentAccounts.ToList();
+            var pa = db.PaymentAccounts
+                .Include(P => P.Tariff)
+                .Include(P => P.Address)
+                .Include(P => P.Meter)
+                .Include(P => P.PowerStatus)    
+                .ToList();
             return View(pa);
             
         }
@@ -41,14 +47,16 @@ namespace EnergyProject.Areas.User.Controllers
         {
             // db.Users.Update(CurrUser);
             PaymentAccount paymentAccount = new PaymentAccount();
-            paymentAccount.UserId = 1;
+            paymentAccount.UserId = "1";
+            paymentAccount.Id = Guid.NewGuid().ToString();
             paymentAccount.AddressId = paymentAccountCreateViewModel.AddressId;
             paymentAccount.TariffId = paymentAccountCreateViewModel.TariffId;
-            paymentAccount.MeterId = -1;
-            paymentAccount.PowerStatusId = -1;
+            paymentAccount.MeterId = "1";
+            paymentAccount.PowerStatusId = "1";
             db.PaymentAccounts.Add(paymentAccount);
             await db.SaveChangesAsync();
-            return RedirectToAction("PaymentAccount", "Show");
+            return RedirectToAction("Show", "PaymentAccount");
         }
+
     }
 }

@@ -2,13 +2,13 @@
 {
     public class PaymentAccount
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public int AddressId { get; set; }
-        public int TariffId { get; set; }
-        public int MeterId { get; set; }
+        public string Id { get; set; }
+        public string UserId { get; set; }
+        public string AddressId { get; set; }
+        public string TariffId { get; set; }
+        public string MeterId { get; set; }
 
-        public int PowerStatusId { get; set; }
+        public string PowerStatusId { get; set; }
 
         public User User { get; set; }
         public Address Address { get; set; }

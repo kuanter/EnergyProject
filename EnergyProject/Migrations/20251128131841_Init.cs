@@ -12,11 +12,22 @@ namespace EnergyProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Tariffs",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PricePerKWh = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tariffs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -32,17 +43,22 @@ namespace EnergyProject.Migrations
                 name: "PaymentAccounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    TariffId = table.Column<int>(type: "int", nullable: false),
-                    MeterId = table.Column<int>(type: "int", nullable: false),
-                    PowerStatusId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AddressId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TariffId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MeterId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PowerStatusId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentAccounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentAccounts_Tariffs_TariffId",
+                        column: x => x.TariffId,
+                        principalTable: "Tariffs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PaymentAccounts_Users_UserId",
                         column: x => x.UserId,
@@ -55,15 +71,14 @@ namespace EnergyProject.Migrations
                 name: "Addresses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     House = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apartment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CardDataId = table.Column<int>(type: "int", nullable: false),
-                    PaymentAccountId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    CardDataId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,14 +101,13 @@ namespace EnergyProject.Migrations
                 name: "Bills",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ConsumptionKWh = table.Column<float>(type: "real", nullable: false),
                     Amount = table.Column<float>(type: "real", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GeneratedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentAccountId = table.Column<int>(type: "int", nullable: false),
-                    CardDataId = table.Column<int>(type: "int", nullable: false)
+                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CardDataId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,12 +124,11 @@ namespace EnergyProject.Migrations
                 name: "Meters",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SerialNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     InstallDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    PaymentAccountId = table.Column<int>(type: "int", nullable: false)
+                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -132,11 +145,11 @@ namespace EnergyProject.Migrations
                 name: "PowerStatuses",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentAccountId = table.Column<int>(type: "int", nullable: false)
+                    PaymentAccountId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -150,37 +163,18 @@ namespace EnergyProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tariffs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    PricePerKWh = table.Column<float>(type: "real", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tariffs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tariffs_PaymentAccounts_Id",
-                        column: x => x.Id,
-                        principalTable: "PaymentAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CardDatas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CardNumber = table.Column<long>(type: "bigint", nullable: false),
                     ExpMonth = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
-                    BillId = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    BillId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AddressId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -209,11 +203,10 @@ namespace EnergyProject.Migrations
                 name: "MeterReadings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ValueKWh = table.Column<float>(type: "real", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MeterId = table.Column<int>(type: "int", nullable: false)
+                    MeterId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -271,6 +264,11 @@ namespace EnergyProject.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PaymentAccounts_TariffId",
+                table: "PaymentAccounts",
+                column: "TariffId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PaymentAccounts_UserId",
                 table: "PaymentAccounts",
                 column: "UserId");
@@ -289,9 +287,6 @@ namespace EnergyProject.Migrations
                 name: "PowerStatuses");
 
             migrationBuilder.DropTable(
-                name: "Tariffs");
-
-            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
@@ -302,6 +297,9 @@ namespace EnergyProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaymentAccounts");
+
+            migrationBuilder.DropTable(
+                name: "Tariffs");
 
             migrationBuilder.DropTable(
                 name: "Users");
