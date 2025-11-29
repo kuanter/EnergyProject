@@ -6,8 +6,6 @@
         public string Status { get; set; }
         public string Reason { get; set; }
         public DateTime UpdatedAt { get; set; }
-
-        public string PaymentAccountId { get; set; }
         public ICollection<PaymentAccount> PaymentAccounts { get; set; }
     }
 }

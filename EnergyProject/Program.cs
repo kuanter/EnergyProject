@@ -35,9 +35,15 @@ namespace EnergyProject
 
             app.UseAuthorization();
 
+            
             app.MapControllerRoute(
-                name: "default",
-                pattern: "{area=User}/{controller=Home}/{action=Home}/{id?}");
+               name: "default",
+               pattern: "{area=User}/{controller=Home}/{action=Home}/{id?}");
+
+            app.MapControllerRoute(
+                name: "Admin",
+                pattern: "{area=Admin}/{controller=Home}/{action=Dashboard}/{id?}");
+
 
             app.Run();
         }

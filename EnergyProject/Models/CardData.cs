@@ -8,7 +8,6 @@
         public string ExpYear { get; set; }
         public string CardName { get; set; }
         public bool IsDefault { get; set; }
-        // ?? public int BillingAddressId { get; set; }
         public string BillId { get; set; }
         public Bill Bill { get; set; }
         public string AddressId { get; set; }

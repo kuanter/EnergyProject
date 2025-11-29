@@ -12,10 +12,25 @@ namespace EnergyProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "PowerStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PowerStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tariffs",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PricePerKWh = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
@@ -48,11 +63,17 @@ namespace EnergyProject.Migrations
                     AddressId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TariffId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     MeterId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PowerStatusId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PowerStatusId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentAccounts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentAccounts_PowerStatuses_PowerStatusId",
+                        column: x => x.PowerStatusId,
+                        principalTable: "PowerStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PaymentAccounts_Tariffs_TariffId",
                         column: x => x.TariffId,
@@ -77,8 +98,7 @@ namespace EnergyProject.Migrations
                     House = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apartment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CardDataId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,12 +107,6 @@ namespace EnergyProject.Migrations
                         name: "FK_Addresses_PaymentAccounts_PaymentAccountId",
                         column: x => x.PaymentAccountId,
                         principalTable: "PaymentAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -136,27 +150,6 @@ namespace EnergyProject.Migrations
                     table.ForeignKey(
                         name: "FK_Meters_PaymentAccounts_PaymentAccountId",
                         column: x => x.PaymentAccountId,
-                        principalTable: "PaymentAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PowerStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Reason = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentAccountId = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PowerStatuses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PowerStatuses_PaymentAccounts_Id",
-                        column: x => x.Id,
                         principalTable: "PaymentAccounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -226,11 +219,6 @@ namespace EnergyProject.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_UserId",
-                table: "Addresses",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Bills_PaymentAccountId",
                 table: "Bills",
                 column: "PaymentAccountId");
@@ -264,6 +252,11 @@ namespace EnergyProject.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PaymentAccounts_PowerStatusId",
+                table: "PaymentAccounts",
+                column: "PowerStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PaymentAccounts_TariffId",
                 table: "PaymentAccounts",
                 column: "TariffId");
@@ -284,9 +277,6 @@ namespace EnergyProject.Migrations
                 name: "MeterReadings");
 
             migrationBuilder.DropTable(
-                name: "PowerStatuses");
-
-            migrationBuilder.DropTable(
                 name: "Addresses");
 
             migrationBuilder.DropTable(
@@ -297,6 +287,9 @@ namespace EnergyProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "PaymentAccounts");
+
+            migrationBuilder.DropTable(
+                name: "PowerStatuses");
 
             migrationBuilder.DropTable(
                 name: "Tariffs");

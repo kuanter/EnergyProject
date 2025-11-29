@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "AdminUsers";
+}
+
+<link rel="stylesheet" href="~/css/admin-users.css" />
+
+<section class="page">
+    <div class="toolbar">
+        <h1 class="h1">Users</h1>
+
+        <div class="search">
+            <form method="get" action="">
+                <input name="q" placeholder="Search by name, email or phone" />
+                <button class="btn" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach (var User in Model)
+            {
+                <tr>
+                    <td>@User.Id</td>
+                    <td>@User.FullName</td>
+                    <td><span class="chip chip-dark">@User.Email</span></td>
+                    <td><span class="chip chip-dark">@User.Phone</span></td>
+                    <td>@User.Role</td>
+                    <td><a class="btn" href="">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

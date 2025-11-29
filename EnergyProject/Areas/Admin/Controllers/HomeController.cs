@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
-    public class AdminController : Controller
+    [Area("Admin")]
+    public class HomeController : Controller
     {
-        public IActionResult Users()     => View();
+        
+        public IActionResult Dashboard()     => View();
         public IActionResult Details() => View();
         public IActionResult Meters()     => View();
         public IActionResult Addresses() => View();
         public IActionResult Tariffs() => View();
-        public IActionResult Index() => RedirectToAction(nameof(Users));
+        // public IActionResult Index() => RedirectToAction(nameof(Users));
     }
 }
