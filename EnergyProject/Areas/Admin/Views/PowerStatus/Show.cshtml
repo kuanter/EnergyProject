@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "AdminPowerStatuses";
+}
+
+<link rel="stylesheet" href="~/css/admin-users.css" />
+
+<section class="page">
+    <div class="toolbar">
+        <h1 class="h1">Power Statuses</h1>
+
+    </div>
+    <a asp-area="Admin" asp-controller="PowerStatus" asp-action="Create">Add Power Status</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Status</th>
+                <th>Reason</th>
+                <th>UpdatedAt</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var PowerStatus in Model)
+            {
+                <tr>
+                    <td>@PowerStatus.Id</td>
+                    <td>@PowerStatus.Status</td>
+                    <td><span class="chip chip-dark">@PowerStatus.Reason</span></td>
+                    <td>@PowerStatus.UpdatedAt</td>
+                    <td><a class="btn" href="">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</section>

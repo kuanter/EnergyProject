@@ -1,0 +1,34 @@
+﻿using EnergyProject.Data;
+using EnergyProject.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace EnergyProject.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    public class PowerStatusController : Controller
+    {
+        public ApplicationDbContext db;
+        public PowerStatusController(ApplicationDbContext context)
+        {
+            db = context;
+        }
+        public IActionResult Show()
+        {
+            var PowerStatuses = db.PowerStatuses.ToList();
+            return View(PowerStatuses);
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreatePost(PowerStatus ps) 
+        { 
+            ps.Id = Guid.NewGuid().ToString();
+            ps.UpdatedAt = DateTime.Now;
+            db.PowerStatuses.Add(ps);
+            db.SaveChanges();
+            return RedirectToAction("Show");
+        }
+    }
+}
