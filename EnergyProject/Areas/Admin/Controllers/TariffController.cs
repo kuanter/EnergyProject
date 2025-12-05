@@ -45,7 +45,22 @@ namespace EnergyProject.Areas.Admin.Controllers
             return RedirectToAction("Show");
         }
 
-        
+        public IActionResult Update(string Id)
+        {
+            var tariff = db.Tariffs.Find(Id);
+            if (tariff != null)
+            {
+                return View(tariff);
+            }
+            return NotFound();
+        }
+
+        public IActionResult UpdatePost(Tariff t)
+        {
+            db.Tariffs.Update(t);
+            db.SaveChanges();
+            return RedirectToAction("Show");
+        }
     }
 }   
 
