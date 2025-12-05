@@ -1,8 +1,8 @@
+@using System.Linq
+@model IEnumerable<EnergyProject.Models.User>
 @{
     ViewData["Title"] = "AdminUsers";
 }
-@using System.Linq
-@model IEnumerable<EnergyProject.Models.User>
 <link rel="stylesheet" href="~/css/admin-users.css" />
 
 <section class="page">
@@ -29,15 +29,25 @@
             }
             else
             {
-                @foreach (var User in Model)
+                @foreach (var user in Model)
                 {
                     <tr>
-                        <td>@User.Id</td>
-                        <td>@User.FullName</td>
-                        <td><span class="chip chip-dark">@User.Email</span></td>
-                        <td><span class="chip chip-dark">@User.Phone</span></td>
-                        <td>@User.Role</td>
-                        <td><a class="btn" href="">Delete</a></td>
+                        <td>@user.Id</td>
+                        <td>@user.FullName</td>
+                        <td><span class="chip chip-dark">@user.Email</span></td>
+                        <td><span class="chip chip-dark">@user.Phone</span></td>
+                        <td>@user.Role</td>
+                        <td>
+                            <form asp-area="Admin"
+                                  asp-controller="Client"
+                                  asp-action="Show"
+                                  method="post"
+                                  onsubmit="return confirm('Delete this user?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@user.Id" />
+                                <button type="submit" class="btn">Delete</button>
+                            </form>
+                        </td>
                     </tr>
                 }
             }

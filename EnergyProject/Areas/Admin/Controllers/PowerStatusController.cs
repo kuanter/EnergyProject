@@ -30,5 +30,13 @@ namespace EnergyProject.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("Show");
         }
+        public IActionResult Delete(string id) 
+        { 
+            var ps = db.PowerStatuses.Find(id);
+            db.PowerStatuses.Remove(ps);
+            db.SaveChanges();
+            return RedirectToAction("Show");
+        }
+
     }
 }

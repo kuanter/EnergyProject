@@ -28,7 +28,7 @@
                     <td>@PowerStatus.Status</td>
                     <td><span class="chip chip-dark">@PowerStatus.Reason</span></td>
                     <td>@PowerStatus.UpdatedAt</td>
-                    <td><a class="btn" href="">Delete</a></td>
+                    <td><a class="btn" asp-area="Admin" asp-controller="PowerStatus" asp-action="Delete" asp-route-Id="@PowerStatus.Id">Delete</a></td>
                 </tr>
             }
         </tbody>

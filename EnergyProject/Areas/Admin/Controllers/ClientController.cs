@@ -32,6 +32,7 @@ namespace EnergyProject.Areas.Admin.Controllers
             var list = users.ToList();
             return View(list);
         }
+     
     }
 
 }
