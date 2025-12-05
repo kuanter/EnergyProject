@@ -18,5 +18,19 @@ namespace EnergyProject.Areas.Admin.Controllers
             var Tarriffs = db.Tariffs.ToList();
             return View(Tarriffs);
         }
+
+        public IActionResult Delete(string id)
+        {
+            var tariff = db.Tariffs.Find(id);
+            if (tariff != null)
+            {
+                db.Tariffs.Remove(tariff);
+                db.SaveChanges();
+                return RedirectToAction("Show");
+            }
+            return RedirectToAction("Show");
+        }
     }
-}
+}   
+
+
