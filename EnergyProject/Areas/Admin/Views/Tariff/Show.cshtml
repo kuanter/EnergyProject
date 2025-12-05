@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "AdminTariffs";
+}
+
+<link rel="stylesheet" href="~/css/admin-users.css" />
+
+<section class="page">
+    <div class="toolbar">
+        <h1 class="h1">Tariffs</h1>
+
+    </div>
+    <a class="btn" asp-area="Admin" asp-controller="Tariff" asp-action="Create">Add Tariff</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Price Per KWh</th>
+                <!--<th>Payment Account</th>-->
+                <th>Delete Tariff</th>
+                <th>Update Tariff</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Tariff in Model)
+            {
+                <tr>
+                    <td>@Tariff.Id</td>
+                    <td>@Tariff.Name</td>
+                    <td><span class="chip chip-dark">@Tariff.PricePerKWh</span></td>
+                    <!--<td><a class="btn" asp-area="Admin" asp-controller="Tariff" asp-action="Delete" asp-route-Id="@Tariff.Id">Show Payment Account</a></td>-->
+                    <td><a class="btn" asp-area="Admin" asp-controller="Tariff" asp-action="Delete" asp-route-Id="@Tariff.Id">Delete</a></td>
+                    <td><a class="btn" asp-area="Admin" asp-controller="Tariff" asp-action="Update" asp-route-Id="@Tariff.Id">Update</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</section>
