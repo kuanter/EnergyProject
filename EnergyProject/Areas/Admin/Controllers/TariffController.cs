@@ -36,6 +36,7 @@ namespace EnergyProject.Areas.Admin.Controllers
         {
             return View();
         }
+
         public IActionResult CreatePost(Tariff t) 
         {
             t.Id = Guid.NewGuid().ToString();
@@ -43,6 +44,8 @@ namespace EnergyProject.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("Show");
         }
+
+        
     }
 }   
 

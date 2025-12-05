@@ -48,7 +48,8 @@ namespace EnergyProject.Areas.Admin.Controllers
         }
         [HttpPost]
         public IActionResult UpdatePost(PowerStatus ps) 
-        { 
+        {
+            ps.UpdatedAt = DateTime.Now;
             db.PowerStatuses.Update(ps);
             db.SaveChanges();
             return RedirectToAction("Show");
