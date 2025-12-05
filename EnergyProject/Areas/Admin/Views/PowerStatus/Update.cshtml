@@ -1,0 +1,61 @@
+﻿@model EnergyProject.Models.PowerStatus;
+
+
+@{
+    ViewData["Title"] = "Update Power Status";
+}
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Create Power Status</h1>
+
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-ghost"
+               asp-area="Admin"
+               asp-controller="PowerStatus"
+               asp-action="Show">
+                Back to list
+            </a>
+        </div>
+    </div>
+    <form asp-area="Admin"
+          asp-controller="PowerStatus"
+          asp-action="UpdatePost"
+          method="post"
+          enctype="multipart/form-data"
+          class="form-grid">
+        <div class="card mt-24">
+
+            <div class="form-row">
+                <p>
+                    <label asp-for="Status" class="form-label"></label>
+                    <input asp-for="Status" class="form-input" />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </p>
+                <p>
+                    <label asp-for="Reason" class="form-label"></label>
+                    <input asp-for="Reason" class="form-input" />
+                    <span asp-validation-for="Reason" class="text-danger"></span>
+                </p>
+            </div>
+
+
+            <div class="form-actions">
+                <button type="submit" class="user-btn user-btn-primary">
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </form>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</section>
+

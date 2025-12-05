@@ -22,21 +22,36 @@ namespace EnergyProject.Areas.Admin.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CreatePost(PowerStatus ps) 
-        { 
+        public IActionResult CreatePost(PowerStatus ps)
+        {
             ps.Id = Guid.NewGuid().ToString();
             ps.UpdatedAt = DateTime.Now;
             db.PowerStatuses.Add(ps);
             db.SaveChanges();
             return RedirectToAction("Show");
         }
-        public IActionResult Delete(string id) 
-        { 
+        public IActionResult Delete(string id)
+        {
             var ps = db.PowerStatuses.Find(id);
             db.PowerStatuses.Remove(ps);
             db.SaveChanges();
             return RedirectToAction("Show");
         }
-
+        public IActionResult Update(string Id) 
+        {
+            var ps = db.PowerStatuses.Find(Id);
+            if (ps != null)
+            {
+                return View(ps);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public IActionResult UpdatePost(PowerStatus ps) 
+        { 
+            db.PowerStatuses.Update(ps);
+            db.SaveChanges();
+            return RedirectToAction("Show");
+        }
     }
 }
