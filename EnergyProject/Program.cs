@@ -38,7 +38,7 @@ namespace EnergyProject
             
             app.MapControllerRoute(
                name: "default",
-               pattern: "{area=User}/{controller=Home}/{action=Home}/{id?}");
+               pattern: "{area=Client}/{controller=Home}/{action=Home}/{id?}");
 
             app.MapControllerRoute(
                 name: "Admin",

@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace EnergyProject.Areas.User.Controllers
+namespace EnergyProject.Areas.Client.Controllers
 {
-    [Area("User")]
+    [Area("Client")]
     public class PaymentAccountController : Controller
     {
         ApplicationDbContext db;

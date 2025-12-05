@@ -7,7 +7,7 @@
 <section class="page home-page">
     <div class="home-layout">
         <div class="home-hero">
-            <p class="eyebrow">EnergyProject · User portal</p>
+            <p class="eyebrow">EnergyProject · Client portal</p>
             <h1 class="h1">Control your energy in one place</h1>
             <p class="lead">
                 Track consumption, manage payment accounts and keep your profile data up to date.
@@ -15,21 +15,21 @@
 
             <div class="home-actions">
                 <a class="user-btn user-btn-primary"
-                   asp-area="User"
+                   asp-area="Client"
                    asp-controller="PaymentAccount"
                    asp-action="Create">
                     Create payment account
                 </a>
 
                 <a class="user-btn user-btn-ghost"
-                   asp-area="User"
+                   asp-area="Client"
                    asp-controller="PaymentAccount"
                    asp-action="Show">
                     View my accounts
                 </a>
 
                 <a class="user-btn user-btn-ghost"
-                   asp-area="User"
+                   asp-area="Client"
                    asp-controller="Home"
                    asp-action="Profile">
                     My profile
@@ -56,7 +56,7 @@
 
     <div class="home-grid mt-32">
         <a class="card"
-           asp-area="User"
+           asp-area="Client"
            asp-controller="PaymentAccount"
            asp-action="Show">
             <div class="card-header">
@@ -69,7 +69,7 @@
         </a>
 
         <a class="card"
-           asp-area="User"
+           asp-area="Client"
            asp-controller="Home"
            asp-action="Profile">
             <div class="card-header">

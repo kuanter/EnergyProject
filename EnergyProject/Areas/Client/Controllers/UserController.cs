@@ -2,9 +2,9 @@
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EnergyProject.Areas.User.Controllers
+namespace EnergyProject.Areas.Client.Controllers
 {
-    [Area("User")]
+    [Area("Client")]
     public class UserController : Controller
     {
         ApplicationDbContext db;

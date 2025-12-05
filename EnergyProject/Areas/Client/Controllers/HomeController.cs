@@ -4,9 +4,9 @@ using EnergyProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 
-namespace EnergyProject.Areas.User.Controllers 
+namespace EnergyProject.Areas.Client.Controllers 
 {
-    [Area("User")]
+    [Area("Client")]
     public class HomeController : Controller
     {
         //public IActionResult Accounts() => View();

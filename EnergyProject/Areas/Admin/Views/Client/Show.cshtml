@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "AdminUsers";
+}
+@using System.Linq
+@model IEnumerable<EnergyProject.Models.User>
+<link rel="stylesheet" href="~/css/admin-users.css" />
+
+<section class="page">
+    <div class="toolbar">
+        <h1 class="h1">Users</h1>
+
+        <div class="search">
+            <form method="get" asp-area="Admin" asp-controller="Client" asp-action="Show">
+                <input name="q"
+                       placeholder="Search by name, email or phone"
+                       value="@Context.Request.Query["q"]" />
+                <button class="btn" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <table class="table">
+        <tbody>
+            @if (!Model.Any())
+            {
+                <tr>
+                    <td colspan="6">No users found.</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var User in Model)
+                {
+                    <tr>
+                        <td>@User.Id</td>
+                        <td>@User.FullName</td>
+                        <td><span class="chip chip-dark">@User.Email</span></td>
+                        <td><span class="chip chip-dark">@User.Phone</span></td>
+                        <td>@User.Role</td>
+                        <td><a class="btn" href="">Delete</a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+</section>
