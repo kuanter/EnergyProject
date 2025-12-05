@@ -1,5 +1,61 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model EnergyProject.Models.Tariff;
+
+
 @{
+    ViewData["Title"] = "Create Tariff";
 }
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Create Tariff</h1>
+
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-ghost"
+               asp-area="Admin"
+               asp-controller="Tariff"
+               asp-action="Show">
+                Back to list
+            </a>
+        </div>
+    </div>
+    <form asp-area="Admin"
+          asp-controller="Tariff"
+          asp-action="CreatePost"
+          method="post"
+          enctype="multipart/form-data"
+          class="form-grid">
+        <div class="card mt-24">
+
+            <div class="form-row">
+                <p>
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-input" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </p>
+                <p>
+                    <label asp-for="PricePerKWh" class="form-label"></label>
+                    <input asp-for="PricePerKWh" class="form-input" />
+                    <span asp-validation-for="PricePerKWh" class="text-danger"></span>
+                </p>
+            </div>
+
+
+            <div class="form-actions">
+                <button type="submit" class="user-btn user-btn-primary">
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </form>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</section>
+
