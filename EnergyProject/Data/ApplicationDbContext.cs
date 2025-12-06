@@ -69,10 +69,12 @@ namespace EnergyProject.Data
                 .HasForeignKey<CardData>(b => b.BillId);
 
             // Address = CardData 
-            modelBuilder.Entity<Address>()
-                .HasOne(a => a.CardData)
-                .WithOne(c => c.Address)
-                .HasForeignKey<CardData>(a => a.AddressId);
+            modelBuilder.Entity<CardData>()
+                .HasOne(a => a.Address)
+                .WithMany(c => c.CardDatas)
+                .HasForeignKey(a => a.AddressId)
+                .OnDelete(DeleteBehavior.Restrict);
+           
 
             //User = CardData 
             modelBuilder.Entity<CardData>()
