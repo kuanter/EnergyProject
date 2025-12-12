@@ -1,0 +1,61 @@
+﻿@using System.Linq
+@model IEnumerable<EnergyProject.Models.CardData>
+
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Card Data</h1>
+            <p class="lead">
+                List of all card linked to your profile.
+            </p>
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-primary"
+               asp-area="Client"
+               asp-controller="СardData"
+               asp-action="Create">
+                Create Card
+            </a>
+        </div>
+    </div>
+
+    <div class="card mt-24">
+        <div class="table-wrapper">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>User Id</th>
+                        <th>Card Number</th>
+                        <th>Card Name</th>
+                        <th>Default</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null)
+                    {
+                        <tr class="empty-row">
+                            <td colspan="6">There are no payment accounts yet.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var c in Model)
+                        {
+                            <tr>
+                                <td data-label="Id">@c.Id</td>
+                                <td data-label="User Id">@c.UserId</td>
+                                <td data-label="Address Id">@c.CardNumber</td>
+                                <td data-label="Meter Id">@c.CardName</td>
+                                <td data-label="Meter Id">@c.IsDefault</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
