@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class MeterController : Controller
     {
         public ApplicationDbContext db;
@@ -20,25 +21,32 @@ namespace EnergyProject.Areas.Admin.Controllers
         }
         public IActionResult Create()
         {
-            //var vm = new MeterCreateViewModel();
-            //var paymentAccounts = db.PaymentAccounts.Where(p => p.MeterId == null).ToList();
-            /** new SelectListItem
-             {
-                 Value = pa.Id,
-                 Text = pa.Id
-             }*/
-            return View();
+            var vm = new MeterCreateViewModel();
+            vm.PaymentAccountOptions = db.PaymentAccounts
+                .Where(p => p.MeterId == null)
+                .Select(p =>
+                new SelectListItem
+                {
+                    Value = p.Id,
+                    Text = p.Id
+                }).ToList();
+
+           return View(vm);
         }
         [HttpPost]
-        /*public IActionResult CreatePost(Meter meter)
+        public IActionResult CreatePost(MeterCreateViewModel mcvm)
         {
-            /*meter.Id = Guid.NewGuid().ToString();
-            ps.UpdatedAt = DateTime.Now;
-            db.PowerStatuses.Add(ps);
+            Meter m = new Meter();
+            m.Id = Guid.NewGuid().ToString();
+            m.SerialNumber = mcvm.SerialNumber;
+            m.PaymentAccountId = mcvm.PaymentAccountId;
+            m.InstallDate = DateTime.Now;
+            m.IsActive = false;
+            db.Meters.Add(m);
             db.SaveChanges();
             return RedirectToAction("Show");
         }
-        }*/
+        
         public IActionResult Delete(string id)
         {
             var ps = db.PowerStatuses.Find(id);

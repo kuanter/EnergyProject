@@ -1,0 +1,60 @@
+﻿@model EnergyProject.ViewModels.MeterCreateViewModel
+
+
+@{
+    ViewData["Title"] = "Create Meter";
+}
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Create Meter</h1>
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-ghost"
+               asp-area="Admin"
+               asp-controller="Meter"
+               asp-action="Show">
+                Back to list
+            </a>
+        </div>
+    </div>
+    <form asp-area="Admin"
+          asp-controller="Meter"
+          asp-action="CreatePost"
+          method="post"
+          enctype="multipart/form-data"
+          class="form-grid">
+        <div class="card mt-24">
+
+            <div class="form-row">
+                <p>
+                    <label asp-for="PaymentAccountId" class="form-label">Address</label><br />
+                    <select asp-for="PaymentAccountId" asp-items="Model.PaymentAccountOptions" class="form-control" )">
+                        <option value="">-- Choose Payment Account --</option>
+                    </select>
+                    <span asp-validation-for="PaymentAccountId" class="text-danger"></span>
+                </p>
+               
+                <label asp-for="SerialNumber" class="form-label">Serial Number</label>
+                <input asp-for="SerialNumber" class="form-input" />
+                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-actions">
+                <button type="submit" class="user-btn user-btn-primary">
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </form>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</section>

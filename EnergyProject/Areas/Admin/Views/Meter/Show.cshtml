@@ -1,0 +1,68 @@
+﻿@using System.Linq
+@model IEnumerable<EnergyProject.Models.Meter>
+
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Meter</h1>
+            <p class="lead">
+                List of all meters.
+            </p>
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-primary"
+               asp-area="Admin"
+               asp-controller="Meter"
+               asp-action="Create">
+                Create meter
+            </a>
+        </div>
+    </div>
+
+    <div class="card mt-24">
+        <div class="table-wrapper">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Serial Number</th>
+                        <th>Install Date</th>
+                        <th>Is Active</th>
+                        <th>Payment Account Id</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null)
+                    {
+                        <tr class="empty-row">
+                            <td colspan="6">There are no payment accounts yet.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var m in Model)
+                        {
+                            <tr>
+                                <td data-label="Id">@m.Id</td>
+                                <td data-label="User Id">@m.SerialNumber</td>
+                                <td data-label="Address Id">@m.InstallDate</td>
+                                @if (m.IsActive){
+                                    <td data-label="Meter Id">Active</td>
+                                }
+                                else
+                                {
+                                    <td data-label="Meter Id">Inactive</td>
+                                }
+                                <td data-label="Meter Id">@m.PaymentAccountId</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
