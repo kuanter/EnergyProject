@@ -1,0 +1,88 @@
+﻿@model EnergyProject.ViewModels.CardDataCreateViewModel;
+
+
+@{
+    ViewData["Title"] = "Create Card";
+}
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Create Card</h1>
+
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-ghost"
+               asp-area="Client"
+               asp-controller="CardData"
+               asp-action="Show">
+                Back to list
+            </a>
+        </div>
+    </div>
+    <form asp-area="Client"
+          asp-controller="CardData"
+          asp-action="CreatePost"
+          method="post"
+          enctype="multipart/form-data"
+          class="form-grid">
+        <div class="card mt-24">
+
+            <div class="form-row">
+                <p>
+                    <label asp-for="CardNumber" class="form-label"></label>
+                    <input asp-for="CardNumber" class="form-input" />
+                    <span asp-validation-for="CardNumber" class="text-danger"></span>
+                </p>
+                <p>
+                    <label asp-for="ExpMonth" class="form-label"></label>
+                    <input asp-for="ExpMonth" class="form-input" />
+                    <span asp-validation-for="ExpMonth" class="text-danger"></span>
+                </p>
+                <p>
+                    <label asp-for="ExpYear" class="form-label"></label>
+                    <input asp-for="ExpYear" class="form-input" />
+                    <span asp-validation-for="ExpYear" class="text-danger"></span>
+                </p>
+                <p>
+                    <label asp-for="CardName" class="form-label"></label>
+                    <input asp-for="CardName" class="form-input" />
+                    <span asp-validation-for="CardName" class="text-danger"></span>
+                </p>
+                <br>
+                <select asp-for="AddressId" asp-items="Model.Addresses" class="form-control">
+                    <option value="">-- Choose Address --</option>
+                </select>
+                <p>
+                    <label class="form-label">City</label>
+                    <input asp-for="City" class="form-control" />
+                </p>
+                <p>
+                    <label class="form-label">Street</label>
+                    <input asp-for="Street" class="form-control" />
+                </p>
+
+                <p>
+                    <label class="form-label">House</label>
+                    <input asp-for="House" class="form-control" />
+                </p>
+
+                <p>
+                    <label class="form-label">Apartment</label>
+                    <input asp-for="Apartment" class="form-control" />
+                </p>
+            </div>
+
+
+            <div class="form-actions">
+                <button type="submit" class="user-btn user-btn-primary">
+                    Save
+                </button>
+            </div>
+
+        </div>
+    </form>
+</section>
+

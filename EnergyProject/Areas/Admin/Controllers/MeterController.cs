@@ -37,6 +37,7 @@ namespace EnergyProject.Areas.Admin.Controllers
             db.PowerStatuses.Add(ps);
             db.SaveChanges();
             return RedirectToAction("Show");
+        }
         }*/
         public IActionResult Delete(string id)
         {

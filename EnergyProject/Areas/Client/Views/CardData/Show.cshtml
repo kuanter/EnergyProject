@@ -13,10 +13,7 @@
             </p>
         </div>
         <div class="page-header-actions">
-            <a class="user-btn user-btn-primary"
-               asp-area="Client"
-               asp-controller="СardData"
-               asp-action="Create">
+            <a class="user-btn user-btn-primary" href="Create">
                 Create Card
             </a>
         </div>
@@ -32,6 +29,7 @@
                         <th>Card Number</th>
                         <th>Card Name</th>
                         <th>Default</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,6 +49,7 @@
                                 <td data-label="Address Id">@c.CardNumber</td>
                                 <td data-label="Meter Id">@c.CardName</td>
                                 <td data-label="Meter Id">@c.IsDefault</td>
+                                <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="Delete" asp-route-Id="@c.Id">Delete</a></td>
                             </tr>
                         }
                     }
