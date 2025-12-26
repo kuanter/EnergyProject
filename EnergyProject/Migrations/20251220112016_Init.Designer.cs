@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnergyProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251129115056_Init")]
+    [Migration("20251220112016_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -104,10 +104,6 @@ namespace EnergyProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("BillId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("CardName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -115,13 +111,11 @@ namespace EnergyProject.Migrations
                     b.Property<long>("CardNumber")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ExpMonth")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ExpMonth")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ExpYear")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ExpYear")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
@@ -132,11 +126,7 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
-
-                    b.HasIndex("BillId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("UserId");
 
@@ -321,15 +311,9 @@ namespace EnergyProject.Migrations
             modelBuilder.Entity("EnergyProject.Models.CardData", b =>
                 {
                     b.HasOne("EnergyProject.Models.Address", "Address")
-                        .WithOne("CardData")
-                        .HasForeignKey("EnergyProject.Models.CardData", "AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EnergyProject.Models.Bill", "Bill")
-                        .WithOne("CardData")
-                        .HasForeignKey("EnergyProject.Models.CardData", "BillId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithMany("CardDatas")
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("EnergyProject.Models.User", "User")
@@ -339,8 +323,6 @@ namespace EnergyProject.Migrations
                         .IsRequired();
 
                     b.Navigation("Address");
-
-                    b.Navigation("Bill");
 
                     b.Navigation("User");
                 });
@@ -396,14 +378,7 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("EnergyProject.Models.Address", b =>
                 {
-                    b.Navigation("CardData")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EnergyProject.Models.Bill", b =>
-                {
-                    b.Navigation("CardData")
-                        .IsRequired();
+                    b.Navigation("CardDatas");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Meter", b =>

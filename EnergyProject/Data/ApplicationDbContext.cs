@@ -62,12 +62,12 @@ namespace EnergyProject.Data
                  .HasForeignKey(p => p.PowerStatusId)
                  .OnDelete(DeleteBehavior.Restrict);
 
-            // Bill = CardData
+            /* Bill = CardData
             modelBuilder.Entity<Bill>()
                 .HasOne(b => b.CardData)
                 .WithOne(c => c.Bill)
                 .HasForeignKey<CardData>(b => b.BillId);
-
+            */
             // Address = CardData 
             modelBuilder.Entity<CardData>()
                 .HasOne(a => a.Address)

@@ -161,11 +161,10 @@ namespace EnergyProject.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CardNumber = table.Column<long>(type: "bigint", nullable: false),
-                    ExpMonth = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpMonth = table.Column<int>(type: "int", nullable: false),
+                    ExpYear = table.Column<int>(type: "int", nullable: false),
                     CardName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsDefault = table.Column<bool>(type: "bit", nullable: false),
-                    BillId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AddressId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -177,13 +176,7 @@ namespace EnergyProject.Migrations
                         column: x => x.AddressId,
                         principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CardDatas_Bills_BillId",
-                        column: x => x.BillId,
-                        principalTable: "Bills",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CardDatas_Users_UserId",
                         column: x => x.UserId,
@@ -226,14 +219,7 @@ namespace EnergyProject.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CardDatas_AddressId",
                 table: "CardDatas",
-                column: "AddressId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CardDatas_BillId",
-                table: "CardDatas",
-                column: "BillId",
-                unique: true);
+                column: "AddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CardDatas_UserId",
@@ -271,6 +257,9 @@ namespace EnergyProject.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Bills");
+
+            migrationBuilder.DropTable(
                 name: "CardDatas");
 
             migrationBuilder.DropTable(
@@ -278,9 +267,6 @@ namespace EnergyProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Addresses");
-
-            migrationBuilder.DropTable(
-                name: "Bills");
 
             migrationBuilder.DropTable(
                 name: "Meters");

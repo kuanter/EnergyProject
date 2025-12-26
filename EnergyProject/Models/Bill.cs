@@ -12,6 +12,6 @@
         public string CardDataId { get; set; }
 
         public PaymentAccount PaymentAccount { get; set; }
-        public CardData CardData { get; set; }
+  
     }
 }

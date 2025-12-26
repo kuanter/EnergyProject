@@ -32,7 +32,7 @@
                         <th>Install Date</th>
                         <th>Is Active</th>
                         <th>Payment Account Id</th>
-                        
+                        <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,6 +58,7 @@
                                     <td data-label="Meter Id">Inactive</td>
                                 }
                                 <td data-label="Meter Id">@m.PaymentAccountId</td>
+                                <td><a class="user-btn user-btn-primary" asp-controller="MeterReading" asp-action="Info" asp-route-id="@m.Id">Meter Readings</a></td>
                             </tr>
                         }
                     }

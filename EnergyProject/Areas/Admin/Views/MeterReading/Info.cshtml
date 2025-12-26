@@ -1,0 +1,30 @@
+﻿@if (Model.MeterReadings.Count > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-sm table-hover">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Value KW/h</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reading in Model.MeterReadings)
+                {
+                    <tr>
+                        <td>@reading.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td><strong class="text-primary">@reading.ValueKWh KW/h</strong></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}
+else
+{
+    <div class="alert alert-info text-center">
+        <h4>No readings yet</h4>
+        <p>Turn on meter and click "Generate New Reading" to create first reading for this meter.</p>
+    </div>
+}

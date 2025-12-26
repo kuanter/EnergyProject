@@ -51,10 +51,6 @@
                     <input asp-for="CardName" class="form-input" />
                     <span asp-validation-for="CardName" class="text-danger"></span>
                 </p>
-                <br>
-                <select asp-for="AddressId" asp-items="Model.Addresses" class="form-control">
-                    <option value="">-- Choose Address --</option>
-                </select>
                 <p>
                     <label class="form-label">City</label>
                     <input asp-for="City" class="form-control" />
