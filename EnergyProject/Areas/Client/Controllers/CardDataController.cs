@@ -62,8 +62,10 @@ namespace EnergyProject.Areas.Client.Controllers
         }
 
         [HttpPost]
+
         public IActionResult CreatePost(CardDataCreateViewModel cd)
         {
+            ModelState.Remove(nameof(cd.AddressId));
             if (!IsLuhnValid(cd.CardNumber.ToString()))
                 ModelState.AddModelError(string.Empty, "Invalid card number");
 
@@ -92,7 +94,7 @@ namespace EnergyProject.Areas.Client.Controllers
             Card.ExpYear = cd.ExpYear;
             Card.CardNumber = cd.CardNumber;
             Card.CardName = cd.CardName;
-            Card.UserId = "1"; // todo
+            Card.UserId = "U01"; // todo
 
             if (exists)
             {

@@ -1,6 +1,7 @@
 ﻿using EnergyProject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
@@ -26,6 +27,8 @@ namespace EnergyProject.ViewModels
         [StringLength(64, ErrorMessage = "Name on card is too long.")]
         public string CardName { get; set; }
         public bool IsDefault { get; set; }
+        
+        [BindNever]
         public string AddressId { get; set; }
 
         public string City { get; set; }
