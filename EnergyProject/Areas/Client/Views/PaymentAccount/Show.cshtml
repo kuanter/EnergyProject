@@ -51,7 +51,15 @@
                                 <td data-label="User Id">@pa.UserId</td>
                                 <td data-label="Address Id">@pa.Address.City @pa.Address.Street @pa.Address.House @pa.Address.Apartment</td>
                                 <td data-label="Meter Id">@pa.Tariff.PricePerKWh</td>
-                                <td data-label="Meter Id">@pa.Meter.SerialNumber</td>
+                                @if (pa.Meter != null)
+                                {
+                                    <td data-label="Meter Id">@pa.Meter.SerialNumber </td>
+
+                                }
+                                else
+                                {
+                                    <td data-label="Meter Id">NULL </td>
+                                }
                                 <td data-label="Meter Id">@pa.PowerStatus.Status</td>
                             </tr>
                         }

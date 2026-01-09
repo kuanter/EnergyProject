@@ -1,15 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EnergyProject.ViewModels
 {
     public class PaymentAccountCreateViewModel
     {
-        public string Id { get; set; }
-        public string UserId { get; set; }
-        public string AddressId { get; set; }
         public string TariffId { get; set; }
-
-        public List<SelectListItem> AddressOptions { get; set; } = new();
+        
+        [BindNever]
+        public string AddressId { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string House { get; set; }
+        public string Apartment { get; set; }
         public List<SelectListItem> TariffOptions { get; set; } = new();
 
     }

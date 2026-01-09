@@ -125,26 +125,6 @@ namespace EnergyProject.Areas.Client.Controllers
             if (!ModelState.IsValid)
                 return View("Create", cd);
 
-            /*if (string.IsNullOrWhiteSpace(cd.AddressId))
-            {
-                if (string.IsNullOrWhiteSpace(cd.City) ||
-                    string.IsNullOrWhiteSpace(cd.Street) ||
-                    string.IsNullOrWhiteSpace(cd.House))
-                {
-                    ModelState.AddModelError(string.Empty, "Please choose an address or fill in City, Street and House");
-                }
-                else 
-                {
-                    cd.AddressId = Guid.NewGuid().ToString();
-                }
-            }
-
-            if (!ModelState.IsValid)
-                return View("Create", cd);
-
-           */
-
-
             db.CardDatas.Add(Card);
             db.SaveChanges();
             return RedirectToAction("Show");

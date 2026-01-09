@@ -34,22 +34,30 @@
         
                 <div class="form-row">
                     <p>
-                        <label asp-for="AddressId" class="form-label">Address</label><br />
-                        <select asp-for="AddressId" asp-items="Model.AddressOptions" class="form-control")">
-                            <option value="">-- Choose address --</option>
-                        </select>
-                        <span asp-validation-for="AddressId" class="text-danger"></span>
-                    </p>
-                    <p>
                         <label asp-for="TariffId" class="form-label">Tariff</label><br />
                         <select asp-for="TariffId" asp-items="Model.TariffOptions" class="form-control" )">
                             <option value="">-- Choose Tariff --</option>
                         </select>
                         <span asp-validation-for="TariffId" class="text-danger"></span>
                     </p>
-                    <!--<label asp-for="UserId" class="form-label"></label>
-                    <input asp-for="UserId" class="form-input" />
-                    <span asp-validation-for="UserId" class="text-danger"></span>-->
+                    <p>
+                        <label class="form-label">City</label>
+                        <input asp-for="City" class="form-control" />
+                    </p>
+                    <p>
+                        <label class="form-label">Street</label>
+                        <input asp-for="Street" class="form-control" />
+                    </p>
+
+                    <p>
+                        <label class="form-label">House</label>
+                        <input asp-for="House" class="form-control" />
+                    </p>
+
+                    <p>
+                        <label class="form-label">Apartment</label>
+                        <input asp-for="Apartment" class="form-control" />
+                    </p>
                 </div>
             
 
