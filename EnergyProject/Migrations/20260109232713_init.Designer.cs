@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnergyProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251226150939_Fix")]
-    partial class Fix
+    [Migration("20260109232713_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,6 @@ namespace EnergyProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentAccountId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Street")
@@ -53,7 +52,8 @@ namespace EnergyProject.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PaymentAccountId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[PaymentAccountId] IS NOT NULL");
 
                     b.ToTable("Addresses");
                 });
@@ -67,8 +67,7 @@ namespace EnergyProject.Migrations
                         .HasColumnType("real");
 
                     b.Property<string>("CardDataId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("ConsumptionKWh")
                         .HasColumnType("real");
@@ -85,6 +84,10 @@ namespace EnergyProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CardDataId")
+                        .IsUnique()
+                        .HasFilter("[CardDataId] IS NOT NULL");
 
                     b.HasIndex("PaymentAccountId");
 
@@ -188,7 +191,6 @@ namespace EnergyProject.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MeterId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PowerStatusId")
@@ -286,20 +288,25 @@ namespace EnergyProject.Migrations
                 {
                     b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
                         .WithOne("Address")
-                        .HasForeignKey("EnergyProject.Models.Address", "PaymentAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EnergyProject.Models.Address", "PaymentAccountId");
 
                     b.Navigation("PaymentAccount");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Bill", b =>
                 {
+                    b.HasOne("EnergyProject.Models.CardData", "CardData")
+                        .WithOne()
+                        .HasForeignKey("EnergyProject.Models.Bill", "CardDataId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
                         .WithMany("Bills")
                         .HasForeignKey("PaymentAccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("CardData");
 
                     b.Navigation("PaymentAccount");
                 });
@@ -389,8 +396,7 @@ namespace EnergyProject.Migrations
 
                     b.Navigation("Bills");
 
-                    b.Navigation("Meter")
-                        .IsRequired();
+                    b.Navigation("Meter");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.PowerStatus", b =>

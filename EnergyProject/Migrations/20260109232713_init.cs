@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EnergyProject.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,7 +62,7 @@ namespace EnergyProject.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AddressId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TariffId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MeterId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MeterId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PowerStatusId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -97,8 +97,7 @@ namespace EnergyProject.Migrations
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     House = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apartment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CardDataId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -107,31 +106,7 @@ namespace EnergyProject.Migrations
                         name: "FK_Addresses_PaymentAccounts_PaymentAccountId",
                         column: x => x.PaymentAccountId,
                         principalTable: "PaymentAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Bills",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ConsumptionKWh = table.Column<float>(type: "real", nullable: false),
-                    Amount = table.Column<float>(type: "real", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GeneratedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    CardDataId = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bills", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Bills_PaymentAccounts_PaymentAccountId",
-                        column: x => x.PaymentAccountId,
-                        principalTable: "PaymentAccounts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -205,11 +180,48 @@ namespace EnergyProject.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Bills",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ConsumptionKWh = table.Column<float>(type: "real", nullable: false),
+                    Amount = table.Column<float>(type: "real", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GeneratedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentAccountId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CardDataId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bills_CardDatas_CardDataId",
+                        column: x => x.CardDataId,
+                        principalTable: "CardDatas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bills_PaymentAccounts_PaymentAccountId",
+                        column: x => x.PaymentAccountId,
+                        principalTable: "PaymentAccounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_PaymentAccountId",
                 table: "Addresses",
                 column: "PaymentAccountId",
-                unique: true);
+                unique: true,
+                filter: "[PaymentAccountId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bills_CardDataId",
+                table: "Bills",
+                column: "CardDataId",
+                unique: true,
+                filter: "[CardDataId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Bills_PaymentAccountId",
@@ -260,16 +272,16 @@ namespace EnergyProject.Migrations
                 name: "Bills");
 
             migrationBuilder.DropTable(
-                name: "CardDatas");
-
-            migrationBuilder.DropTable(
                 name: "MeterReadings");
 
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "CardDatas");
 
             migrationBuilder.DropTable(
                 name: "Meters");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "PaymentAccounts");

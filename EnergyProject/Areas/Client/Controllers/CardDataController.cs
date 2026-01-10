@@ -29,6 +29,22 @@ namespace EnergyProject.Areas.Client.Controllers
             db.SaveChanges();
             return RedirectToAction("Show");
         }
+
+        public IActionResult SetAsDefault(string id)
+        {
+            var user = db.Users
+                .Include(u => u.Cards).Where(u => u.Id == "U01").First();
+                
+            foreach (var cd in user.Cards) 
+            {
+                cd.IsDefault = false;
+            }
+            var card = db.CardDatas.Find(id);
+            card.IsDefault = true;
+            db.SaveChanges();
+            return RedirectToAction("Show");
+        }
+
         public IActionResult Create()
         {
             CardDataCreateViewModel cd = new CardDataCreateViewModel();

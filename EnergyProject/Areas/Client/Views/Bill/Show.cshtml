@@ -1,0 +1,62 @@
+﻿@using System.Linq
+@model IEnumerable<EnergyProject.Models.Bill>
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Bills</h1>
+            <p class="lead">
+                List of all Bills linked to your payment accounts.
+            </p>
+        </div>
+    </div>
+    @ViewData["Amount"]
+    <div class="card mt-24">
+        <div class="table-wrapper">
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <!--<th>ConsumptionKWh</th>-->
+                        <th>Payment Account Id</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Time</th>
+                        <th>Card</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null)
+                    {
+                        <tr class="empty-row">
+                            <td colspan="6">There are no bills yet.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var bill in Model)
+                        {
+                            <tr>
+                                <td data-label="Id">@bill.Id</td>
+                                <td data-label="PaymentAccountId">@bill.PaymentAccountId</td>
+                                <td data-label="Amount">@bill.Amount</td>
+                                <td data-label="Address Id">@bill.Status</td>
+                                <td data-label="GeneratedAt">@bill.GeneratedAt</td>
+                                @if (bill.CardData != null)
+                                {
+                                    <td data-label="CardDataId">@bill.CardData.CardNumber</td>
+                                }
+                                else
+                                {
+                                    <td data-label="CardDataId">You didnt pay yet</td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

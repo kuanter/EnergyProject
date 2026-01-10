@@ -20,6 +20,8 @@
                 Create payment account
             </a>
         </div>
+    
+       
     </div>
 
     <div class="card mt-24">
@@ -33,6 +35,7 @@
                         <th>Tariff</th>
                         <th>Meter Id</th>
                         <th>Power status Id</th>
+                        <th>Bills</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,13 +47,14 @@
                     }
                     else
                     {
+                        // todo delete func 
                         @foreach (var pa in Model)
                         {
                             <tr>
                                 <td data-label="Id">@pa.Id</td>
                                 <td data-label="User Id">@pa.UserId</td>
                                 <td data-label="Address Id">@pa.Address.City @pa.Address.Street @pa.Address.House @pa.Address.Apartment</td>
-                                <td data-label="Meter Id">@pa.Tariff.PricePerKWh</td>
+                                <td data-label="Meter Id">@pa.Tariff.Name</td>
                                 @if (pa.Meter != null)
                                 {
                                     <td data-label="Meter Id">@pa.Meter.SerialNumber </td>
@@ -60,7 +64,17 @@
                                 {
                                     <td data-label="Meter Id">NULL </td>
                                 }
-                                <td data-label="Meter Id">@pa.PowerStatus.Status</td>
+                                <td data-label="PowerStatus">@pa.PowerStatus.Status</td>
+                                <td data-label="Bill">
+                                    <a class="user-btn user-btn-primary"
+                                       asp-area="Client"
+                                       asp-controller="Bill"
+                                       asp-action="Show"
+                                       asp-route-id="@pa.Id">
+                                       
+                                        Bills
+                                    </a>
+                                </td>
                             </tr>
                         }
                     }
