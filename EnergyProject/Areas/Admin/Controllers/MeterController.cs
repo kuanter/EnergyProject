@@ -71,5 +71,25 @@ namespace EnergyProject.Areas.Admin.Controllers
             db.SaveChanges();
             return RedirectToAction("Show");
         }
+
+       
+        public IActionResult Activate(string Id) 
+        { 
+            var meter = db.Meters.Find(Id);
+            if (meter != null) 
+            {
+                if (meter.IsActive)
+                {
+                    meter.IsActive = false;
+                }else
+                {
+                    meter.IsActive = true;
+                }
+                db.Meters.Update(meter);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Show");
+        }
+
     }
 }

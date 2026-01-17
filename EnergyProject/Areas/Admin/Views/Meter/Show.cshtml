@@ -51,11 +51,11 @@
                                 <td data-label="User Id">@m.SerialNumber</td>
                                 <td data-label="Address Id">@m.InstallDate</td>
                                 @if (m.IsActive){
-                                    <td data-label="Meter Id">Active</td>
+                                    <td data-label="Meter Id"><a class="user-btn user-btn-primary" asp-controller="Meter" asp-action="Activate" asp-route-id="@m.Id">Active</a></td>
                                 }
                                 else
                                 {
-                                    <td data-label="Meter Id">Inactive</td>
+                                    <td data-label="Meter Id"><a class="user-btn user-btn-primary" asp-controller="Meter" asp-action="Activate" asp-route-id="@m.Id">Inactive</a></td>
                                 }
                                 <td data-label="Meter Id">@m.PaymentAccountId</td>
                                 <td><a class="user-btn user-btn-primary" asp-controller="MeterReading" asp-action="Info" asp-route-id="@m.Id">Meter Readings</a></td>

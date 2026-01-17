@@ -18,7 +18,7 @@ namespace EnergyProject.Areas.Client.Controllers
         }
         public IActionResult Show()
         {
-            var Cards = db.CardDatas;
+            var Cards = db.CardDatas.Where(u => u.UserId == "U01").ToList();
             return View(Cards);
         }
 

@@ -126,7 +126,7 @@ namespace EnergyProject.Areas.Client.Controllers
             bill.Status = "Paid";
             bill.GeneratedAt = DateTime.Now;
             bill.PaymentAccountId = TempData.Peek("PaymentAccount")?.ToString(); 
-            bill.ConsumptionKWh = float.Parse(TempData.Peek("Consumption")?.ToString() ?? "0", CultureInfo.InvariantCulture);
+            bill.ConsumptionKWh = float.Parse(TempData["Consumption"]?.ToString() ?? "0", CultureInfo.InvariantCulture);
             bill.Amount = float.Parse(TempData.Peek("Amount")?.ToString() ?? "0", CultureInfo.InvariantCulture);             
 
             bill.CardDataId = billCreateView.CardDataId;

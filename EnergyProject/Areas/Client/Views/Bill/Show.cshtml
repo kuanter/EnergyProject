@@ -17,41 +17,40 @@
             <p class="lead">List of all Bills linked to your payment accounts.</p>
         </div>
 
-        @if (Model != null && Model.Any())
-        {
-            <div class="home-kpi">
-                <div class="kpi-card">
-                    <span class="kpi-label">Total</span>
-                    <span class="kpi-value">@totalAmount</span>
-                    <span class="kpi-caption">All bills</span>
-                </div>
-
-                <div class="kpi-card">
-                    <span class="kpi-label">Paid</span>
-                    <span class="kpi-value">@totalPaid</span>
-                    <span class="kpi-caption">Confirmed payments</span>
-                </div>
-
-                @if (dueNow > 0)
-                {
-                    <a asp-action="Create"
-                       class="kpi-card kpi-card-action"
-                       title="Go to total payment">
-                        <span class="kpi-label">Unpaid</span>
-                        <span class="kpi-value">@dueNow </span>
-                        <span class="kpi-caption">Click to pay total</span>
-                    </a>
-                }
-                else
-                {
-                    <div class="kpi-card">
-                        <span class="kpi-label">Unpaid</span>
-                        <span class="kpi-value">0</span>
-                        <span class="kpi-caption">Nothing to pay</span>
-                    </div>
-                }
+      
+        <div class="home-kpi">
+            <div class="kpi-card">
+                <span class="kpi-label">Total</span>
+                <span class="kpi-value">@totalAmount €</span>
+                <span class="kpi-caption">All bills</span>
             </div>
-        }
+
+            <div class="kpi-card">
+                <span class="kpi-label">Paid</span>
+                <span class="kpi-value">@totalPaid €</span>
+                <span class="kpi-caption">Confirmed payments</span>
+            </div>
+
+            @if (dueNow > 0)
+            {
+                <a asp-action="Create"
+                    class="kpi-card kpi-card-action"
+                    title="Go to total payment">
+                    <span class="kpi-label">Unpaid</span>
+                    <span class="kpi-value">@dueNow €</span>
+                    <span class="kpi-caption">Click to pay total</span>
+                </a>
+            }
+            else
+            {
+                <div class="kpi-card">
+                    <span class="kpi-label">Unpaid</span>
+                    <span class="kpi-value">0 €</span>
+                    <span class="kpi-caption">Nothing to pay</span>
+                </div>
+            }
+        </div>
+        
     </div>
     <div class="card mt-24">
         <div class="table-wrapper">
