@@ -18,12 +18,12 @@ namespace EnergyProject.Areas.Client.Controllers
         }
         public IActionResult Show()
         {
-            // to do
             var pa = db.PaymentAccounts
                 .Include(P => P.Tariff)
                 .Include(P => P.Address)
                 .Include(P => P.Meter)
-                .Include(P => P.PowerStatus)    
+                .Include(P => P.PowerStatus) 
+                .Where(pa => pa.UserId == "U01")
                 .ToList();
             return View(pa);
             

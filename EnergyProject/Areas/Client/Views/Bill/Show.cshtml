@@ -2,25 +2,65 @@
 @model IEnumerable<EnergyProject.Models.Bill>
 
 <link rel="stylesheet" href="~/css/user.css" />
+@{
+    var totalPaid = Math.Round((Model?.Where(b => b.Status == "Paid").Sum(b => (double)b.Amount) ?? 0.0), 2); 
+    var failedAmount = Math.Round((Model?.Where(b => b.Status == "Unpaid").Sum(b => (double)b.Amount) ?? 0.0), 2); 
+    var dueNow = Math.Round((double)(ViewBag.DueAmount ?? 0.0), 2);
+    var totalAmount = totalPaid + dueNow;
+}
+
 
 <section class="page">
     <div class="page-header">
         <div>
             <h1 class="h1">Bills</h1>
-            <p class="lead">
-                List of all Bills linked to your payment accounts.
-            </p>
+            <p class="lead">List of all Bills linked to your payment accounts.</p>
         </div>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="home-kpi">
+                <div class="kpi-card">
+                    <span class="kpi-label">Total</span>
+                    <span class="kpi-value">@totalAmount</span>
+                    <span class="kpi-caption">All bills</span>
+                </div>
+
+                <div class="kpi-card">
+                    <span class="kpi-label">Paid</span>
+                    <span class="kpi-value">@totalPaid</span>
+                    <span class="kpi-caption">Confirmed payments</span>
+                </div>
+
+                @if (dueNow > 0)
+                {
+                    <a asp-action="Create"
+                       class="kpi-card kpi-card-action"
+                       title="Go to total payment">
+                        <span class="kpi-label">Unpaid</span>
+                        <span class="kpi-value">@dueNow </span>
+                        <span class="kpi-caption">Click to pay total</span>
+                    </a>
+                }
+                else
+                {
+                    <div class="kpi-card">
+                        <span class="kpi-label">Unpaid</span>
+                        <span class="kpi-value">0</span>
+                        <span class="kpi-caption">Nothing to pay</span>
+                    </div>
+                }
+            </div>
+        }
     </div>
-    @ViewData["Amount"]
     <div class="card mt-24">
         <div class="table-wrapper">
             <table class="user-table">
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <!--<th>ConsumptionKWh</th>-->
                         <th>Payment Account Id</th>
+                        <th>ConsumptionKWh</th>
                         <th>Amount</th>
                         <th>Status</th>
                         <th>Time</th>
@@ -41,6 +81,7 @@
                             <tr>
                                 <td data-label="Id">@bill.Id</td>
                                 <td data-label="PaymentAccountId">@bill.PaymentAccountId</td>
+                                <td data-label="ConsumptionKWh">@bill.ConsumptionKWh</td>
                                 <td data-label="Amount">@bill.Amount</td>
                                 <td data-label="Address Id">@bill.Status</td>
                                 <td data-label="GeneratedAt">@bill.GeneratedAt</td>

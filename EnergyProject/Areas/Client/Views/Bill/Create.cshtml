@@ -1,0 +1,61 @@
+﻿@model EnergyProject.ViewModels.BillCreateViewModel
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<link rel="stylesheet" href="~/css/user.css" />
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <h1 class="h1">Payment</h1>
+            <p class="lead">
+                After submit we will create a "receipt" row in the <strong>Bills</strong> table linked to the chosen payment account.
+            </p>
+        </div>
+        <div class="page-header-actions">
+            <a class="user-btn user-btn-ghost"
+               asp-area="Client"
+               asp-controller="PaymentAccount"
+               asp-action="Show">
+                Back to accounts
+            </a>
+        </div>
+    </div>
+    <form asp-area="Client"
+          asp-controller="Bill"
+          asp-action="CreatePost"
+          method="post"
+          class="form-grid">
+        <div class="card mt-24">
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-row">
+                <!--<p>
+                    <label asp-for="PaymentAccountId" class="form-label">Payment account</label>
+                    <select asp-for="PaymentAccountId" asp-items="Model." class="form-control">
+                    </select>
+                    <span asp-validation-for="PaymentAccountId" class="text-danger"></span>
+                </p>
+                -->
+                <!--
+                <p>
+                    <label asp-for="Amount" class="form-label">Amount</label>
+                    <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0" placeholder="e.g., 12.50" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </p>
+                -->
+                <p>
+                    <label asp-for="CardDataId" class="form-label">Card (optional)</label>
+                    <select asp-for="CardDataId" asp-items="Model.CardDataOptions" class="form-control"></select>
+                    <span asp-validation-for="CardDataId" class="text-danger"></span>
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="user-btn user-btn-primary">Pay</button>
+            </div>
+        </div>
+    </form>
+</section>

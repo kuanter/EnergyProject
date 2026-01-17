@@ -390,6 +390,87 @@ a.card:hover {
   gap: 0.6rem;
 }
 
+/* ===== Bills KPI (Total / Paid / Unpaid) ===== */
+
+@media (min-width: 860px) {
+    .home-kpi {
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        align-items: stretch;
+    }
+}
+
+
+.kpi-value {
+    font-variant-numeric: tabular-nums;
+}
+
+/* "Unpaid" (link) */
+.kpi-card-action {
+    cursor: pointer;
+    position: relative;
+    transition: transform 120ms ease-out, border-color 120ms ease-out, box-shadow 120ms ease-out, background-color 120ms ease-out;
+}
+
+    .kpi-card-action:hover {
+        transform: translateY(-1px);
+        border-color: var(--accent);
+        background-color: var(--accent-soft);
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+    }
+
+    /* accessibility */
+    .kpi-card-action:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+    }
+
+    .kpi-card-action::after {
+        content: "?";
+        position: absolute;
+        right: 0.9rem;
+        top: 0.9rem;
+        font-size: 1rem;
+        color: var(--accent);
+        opacity: 0.75;
+    }
+
+    /* Unpaid  */
+    .kpi-card-action .kpi-label {
+        color: #b91c1c;
+    }
+
+    .kpi-card-action .kpi-value {
+        color: #991b1b;
+    }
+
+/* =====  Paid/Unpaid  ===== */
+
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.16rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    border: 1px solid var(--border-subtle);
+}
+
+.status-paid {
+    background-color: #dcfce7;
+    color: #166534;
+    border-color: rgba(22, 101, 52, 0.18);
+}
+
+.status-unpaid {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border-color: rgba(185, 28, 28, 0.18);
+}
+
+
 /* Responsive */
 
 @media (min-width: 900px) {

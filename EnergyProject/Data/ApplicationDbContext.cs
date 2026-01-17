@@ -65,8 +65,8 @@ namespace EnergyProject.Data
             //Bill = CardData
             modelBuilder.Entity<Bill>()
                 .HasOne(b => b.CardData)
-                .WithOne()
-                .HasForeignKey<Bill>(b => b.CardDataId)
+                .WithMany(c => c.Bills)
+                .HasForeignKey(b => b.CardDataId)
                 .OnDelete(DeleteBehavior.Restrict);
 
 
