@@ -1,12 +1,35 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Dashboard";
 }
-<h1>Admin - Dashboard</h1>
-<div class="home-actions">
-    <h3><a asp-area="Admin" asp-controller="Client" asp-action="Show">Show users</a></h3>
-    <h3><a asp-area="Admin" asp-controller="PowerStatus" asp-action="Show">Show PowerStatus</a></h3>
-    <h3><a asp-area="Admin" asp-controller="Tariff" asp-action="Show">Show Tariffs</a></h3>
-    <h3><a asp-area="Admin" asp-controller="Meter" asp-action="Show">Show Meter</a></h3>
-</div>
+
+<section class="page">
+    <div class="page-header">
+        <div>
+            <p class="eyebrow">Admin</p>
+            <h1 class="h1">Dashboard</h1>
+            <p class="lead">Quick access to the main management screens.</p>
+        </div>
+    </div>
+
+    <div class="home-grid mt-32">
+        <div class="card-header"><span class="card-pill">Manage Users</span></div>
+        <a class="card" asp-area="Admin" asp-controller="Client" asp-action="Show">
+            <p class="card-text">Search and remove user accounts.</p>
+        </a>
+
+        <div class="card-header"><span class="card-pill">Power Status</span></div>
+        <a class="card" asp-area="Admin" asp-controller="PowerStatus" asp-action="Show">
+            <p class="card-text">Add and update planned outages and status changes.</p>
+        </a>
+
+        <div class="card-header"><span class="card-pill">Tariffs</span></div>
+        <a class="card" asp-area="Admin" asp-controller="Tariff" asp-action="Show">
+            <p class="card-text">Create, update and remove tariffs.</p>
+        </a>
+
+        <div class="card-header"><span class="card-pill">Meters</span></div>
+        <a class="card" asp-area="Admin" asp-controller="Meter" asp-action="Show">
+            <p class="card-text">Manage meters and link them to payment accounts.</p>
+        </a>
+    </div>
+</section>

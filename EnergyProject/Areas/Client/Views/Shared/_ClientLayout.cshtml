@@ -40,9 +40,16 @@
         </main>
     </div>
 
-    <footer class="border-top modal-footer text-muted app-footer">
-        <div class="container">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Dashboard">admin</a>
+    <footer class="border-top text-muted app-footer">
+        <div class="container py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span class="app-footer__copy">© @DateTime.Now.Year EnergyProject</span>
+
+            <div class="app-footer__links">
+                <a class="app-footer__link" asp-area="Client" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+                <!-- Keep the admin entry subtle TODO -->
+                <a class="app-footer__admin" asp-area="Admin" asp-controller="Home" asp-action="Dashboard" aria-label="Admin area">•</a>
+            </div>
         </div>
     </footer>
 

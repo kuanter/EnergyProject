@@ -28,6 +28,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Tariff" asp-action="Show">Tariff</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Meter" asp-action="Show">Meter</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-muted" asp-area="Client" asp-controller="Home" asp-action="Home">Client</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -38,9 +46,14 @@
             @RenderBody()
         </main>
     </div>
-    
-    <footer class="border-top footer text-muted">
-        
+
+    <footer class="border-top text-muted app-footer">
+        <div class="container py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span class="app-footer__copy">© @DateTime.Now.Year EnergyProject</span>
+            <div class="app-footer__links">
+                <a class="app-footer__link" asp-area="Client" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

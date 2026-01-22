@@ -9,9 +9,6 @@ namespace EnergyProject.Areas.Client.Controllers
     [Area("Client")]
     public class HomeController : Controller
     {
-        //public IActionResult Accounts() => View();
-        //public IActionResult Meters()     => View();
-        //public IActionResult CreateBill() => View();
 
         ApplicationDbContext db;
         public HomeController(ApplicationDbContext db_)
@@ -22,6 +19,11 @@ namespace EnergyProject.Areas.Client.Controllers
         {
             return View();
         }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
         public IActionResult Profile()
         {
             EnergyProject.Models.User user1;
@@ -29,9 +31,5 @@ namespace EnergyProject.Areas.Client.Controllers
             // To do
             return View(user1);
         }
-        /*public IActionResult Readings() => View();
-        public IActionResult Support() => View();
-        public IActionResult Consumption() => View();
-        public IActionResult Cards() => View();*/
     }
 }
