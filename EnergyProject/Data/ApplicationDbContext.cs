@@ -1,10 +1,12 @@
 ﻿using EnergyProject.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EnergyProject.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Address>Addresses { get; set; }
         public DbSet<Bill> Bills { get; set; }
