@@ -23,9 +23,9 @@ namespace EnergyProject.Areas.Admin.Controllers
                 q = q.Trim();
 
                 users = users.Where(u =>
-                    EF.Functions.Like(u.FullName, "%" + q + "%") ||
+                    EF.Functions.Like(u.UserName, "%" + q + "%") ||
                     EF.Functions.Like(u.Email, "%" + q + "%") ||
-                    EF.Functions.Like(u.Phone, "%" + q + "%")
+                    EF.Functions.Like(u.PhoneNumber, "%" + q + "%")
                 );
             }
 

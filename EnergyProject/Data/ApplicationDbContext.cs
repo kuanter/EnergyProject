@@ -1,12 +1,12 @@
 ﻿using EnergyProject.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace EnergyProject.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public DbSet<Address>Addresses { get; set; }
         public DbSet<Bill> Bills { get; set; }
@@ -16,13 +16,17 @@ namespace EnergyProject.Data
         public DbSet<PaymentAccount> PaymentAccounts { get; set; }
         public DbSet<PowerStatus> PowerStatuses { get; set; }
         public DbSet<Tariff> Tariffs { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Client> Clients { get; set; }
+        public Admin AdminProfile { get; set; }
+        public Client ClientProfile { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             //User = PaymentAccount 
             modelBuilder.Entity<PaymentAccount>()
                 .HasOne(p => p.User)
@@ -92,6 +96,29 @@ namespace EnergyProject.Data
                 .HasOne(p => p.Address)
                 .WithOne(a => a.PaymentAccount)
                 .HasForeignKey<Address>(a => a.PaymentAccountId);
+            
+
+
+            modelBuilder.Entity<Client>()
+                .HasOne(c => c.User)
+                .WithOne()
+                .HasForeignKey<Client>(c => c.UserId);
+
+            modelBuilder.Entity<Admin>()
+                .HasOne(a => a.User)
+                .WithOne()
+                .HasForeignKey<Admin>(a => a.UserId);
+
+           /* modelBuilder.Entity<IdentityUserLogin<string>>()
+                .HasKey(l => new { l.LoginProvider, l.ProviderKey });
+
+            modelBuilder.Entity<IdentityUserRole<string>>()
+                .HasKey(r => new { r.UserId, r.RoleId });
+
+            modelBuilder.Entity<IdentityUserToken<string>>()
+                .HasKey(t => t.UserId);*/
+
+
         }
     }
 }

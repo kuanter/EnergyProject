@@ -23,8 +23,8 @@ namespace EnergyProject.Areas.Client.Controllers
         {
             // db.Users.Update(CurrUser);
             Models.User User = db.Users.First(u => u.Id == CurrUser.Id);
-            User.Phone = CurrUser.Phone;
-            User.FullName = CurrUser.FullName;
+            User.PhoneNumber = CurrUser.PhoneNumber;
+            User.UserName = CurrUser.UserName;
             User.Email = CurrUser.Email;
             await db.SaveChangesAsync();
             return RedirectToAction("Profile", "Home");
