@@ -1,10 +1,12 @@
-using System.Diagnostics;
 using EnergyProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "AdminOnly")]
     public class HomeController : Controller
     {
         

@@ -1,10 +1,12 @@
 ﻿using EnergyProject.Data;
 using EnergyProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "AdminOnly")]
     public class PowerStatusController : Controller
     {
         public ApplicationDbContext db;

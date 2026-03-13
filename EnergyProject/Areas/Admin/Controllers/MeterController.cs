@@ -1,12 +1,14 @@
 ﻿using EnergyProject.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "AdminOnly")]
     public class MeterController : Controller
     {
         public ApplicationDbContext db;

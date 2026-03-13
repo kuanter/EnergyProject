@@ -1,5 +1,6 @@
 ﻿using EnergyProject.Data;
 using EnergyProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace EnergyProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "AdminOnly")]
     public class TariffController : Controller
     {
         public ApplicationDbContext db;

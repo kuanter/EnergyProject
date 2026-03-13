@@ -1,11 +1,13 @@
 ﻿using EnergyProject.Data;
-using Microsoft.AspNetCore.Mvc;
 using EnergyProject.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Policy = "AdminOnly")]
     public class ClientController : Controller
     {
         public ApplicationDbContext db;

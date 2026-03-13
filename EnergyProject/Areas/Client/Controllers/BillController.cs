@@ -1,6 +1,7 @@
 ﻿using EnergyProject.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using System.Runtime.CompilerServices;
 namespace EnergyProject.Areas.Client.Controllers
 {
     [Area("Client")]
+    [Authorize(Policy = "ClientOnly")]
     public class BillController : Controller
     {
         ApplicationDbContext db;

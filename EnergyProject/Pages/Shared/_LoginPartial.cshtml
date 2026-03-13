@@ -5,13 +5,15 @@
 @inject UserManager<User> UserManager
 
 <ul class="navbar-nav">
+<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Home">EnergyProject</a>
 @if (SignInManager.IsSignedIn(User))
 {
+
     <li class="nav-item">
         <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
     </li>
     <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Account/Register", new { area = "Identity" })">
             <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
         </form>
     </li>

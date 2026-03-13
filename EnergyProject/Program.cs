@@ -1,6 +1,8 @@
 using EnergyProject.Data;
+using EnergyProject.Migrations;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using static System.Formats.Asn1.AsnWriter;
@@ -43,6 +45,8 @@ namespace EnergyProject
                 options.AddPolicy("ClientOnly", policy => policy.RequireRole("Client"));
             });
 
+
+
             List<string> Roles = new List<string> { "Admin", "Client" };
 
 
@@ -56,7 +60,18 @@ namespace EnergyProject
                     await roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
-           
+            /*
+            var user = CreateUser();
+
+            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+            var result = await _userManager.CreateAsync(user, Input.Password);
+
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "Client");
+            }
+            */
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

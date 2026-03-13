@@ -1,14 +1,17 @@
 ﻿using EnergyProject.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 
 namespace EnergyProject.Areas.Client.Controllers
 {
     [Area("Client")]
+    [Authorize(Policy = "ClientOnly")]
     public class PaymentAccountController : Controller
     {
         ApplicationDbContext db;
@@ -23,7 +26,6 @@ namespace EnergyProject.Areas.Client.Controllers
                 .Include(P => P.Address)
                 .Include(P => P.Meter)
                 .Include(P => P.PowerStatus) 
-                .Where(pa => pa.UserId == "U01")
                 .ToList();
             return View(pa);
             
@@ -49,7 +51,7 @@ namespace EnergyProject.Areas.Client.Controllers
             );
 
             PaymentAccount paymentAccount = new PaymentAccount();
-            paymentAccount.UserId = "U01"; // todo
+            paymentAccount.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             paymentAccount.Id = Guid.NewGuid().ToString();
 
             if (exists)

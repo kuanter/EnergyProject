@@ -1,10 +1,12 @@
 ﻿using EnergyProject.Data;
 using EnergyProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnergyProject.Areas.Client.Controllers
 {
     [Area("Client")]
+    [Authorize(Policy = "ClientOnly")]
     public class UserController : Controller
     {
         ApplicationDbContext db;

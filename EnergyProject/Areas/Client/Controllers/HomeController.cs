@@ -1,12 +1,14 @@
-using System.Diagnostics;
 using EnergyProject.Data;
 using EnergyProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
+using System.Diagnostics;
 
 namespace EnergyProject.Areas.Client.Controllers 
 {
     [Area("Client")]
+    [Authorize(Policy = "ClientOnly")]
     public class HomeController : Controller
     {
 

@@ -36,11 +36,7 @@
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="Meter" asp-action="Show">Meter</a>
                             </li>
                         }
-                        @if (User.IsInRole("Client"))
-                        {
-                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Home">EnergyProject</a>
-                            
-                        }
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

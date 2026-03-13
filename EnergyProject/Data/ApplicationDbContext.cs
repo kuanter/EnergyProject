@@ -1,8 +1,9 @@
 ﻿using EnergyProject.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace EnergyProject.Data
 {
@@ -20,10 +21,14 @@ namespace EnergyProject.Data
         public DbSet<Client> Clients { get; set; }
         public Admin AdminProfile { get; set; }
         public Client ClientProfile { get; set; }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private string userId => _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -109,15 +114,18 @@ namespace EnergyProject.Data
                 .WithOne()
                 .HasForeignKey<Admin>(a => a.UserId);
 
-           /* modelBuilder.Entity<IdentityUserLogin<string>>()
-                .HasKey(l => new { l.LoginProvider, l.ProviderKey });
+            /* modelBuilder.Entity<IdentityUserLogin<string>>()
+                 .HasKey(l => new { l.LoginProvider, l.ProviderKey });
 
-            modelBuilder.Entity<IdentityUserRole<string>>()
-                .HasKey(r => new { r.UserId, r.RoleId });
+             modelBuilder.Entity<IdentityUserRole<string>>()
+                 .HasKey(r => new { r.UserId, r.RoleId });
 
-            modelBuilder.Entity<IdentityUserToken<string>>()
-                .HasKey(t => t.UserId);*/
+             modelBuilder.Entity<IdentityUserToken<string>>()
+                 .HasKey(t => t.UserId);*/
 
+            modelBuilder.Entity<PaymentAccount>()
+              .HasQueryFilter(be =>
+                  be.UserId == userId);
 
         }
     }
