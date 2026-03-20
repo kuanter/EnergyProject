@@ -3,6 +3,7 @@ using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -86,7 +87,7 @@ namespace EnergyProject.Areas.Client.Controllers
             paymentAccount.TariffId = paymentAccountCreateViewModel.TariffId;
             paymentAccount.PowerStatusId = "PS01";
 
-
+            ModelState.Remove("");
             if (!ModelState.IsValid)
                 return RedirectToAction(nameof(Create));
 

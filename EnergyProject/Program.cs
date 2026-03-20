@@ -34,6 +34,7 @@ namespace EnergyProject
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 6;
+                options.User.AllowedUserNameCharacters = null;
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -47,11 +48,11 @@ namespace EnergyProject
 
 
 
-            List<string> Roles = new List<string> { "Admin", "Client" };
+            //List<string> Roles = new List<string> { "Admin", "Client" };
 
 
             var app = builder.Build();
-
+            /*
             using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -60,7 +61,7 @@ namespace EnergyProject
                     await roleManager.CreateAsync(new IdentityRole(role));
                 }
             }
-            /*
+            
             var user = CreateUser();
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
@@ -103,9 +104,11 @@ namespace EnergyProject
                 name: "Admin",
                 pattern: "{area=Admin}/{controller=Home}/{action=Dashboard}/{id?}");
 
+            await app.Services.SeedAsync();
 
-        
             app.Run();
         }
+
+      
     }
 }
