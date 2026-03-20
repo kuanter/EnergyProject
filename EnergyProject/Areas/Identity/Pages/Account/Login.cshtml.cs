@@ -115,8 +115,20 @@ namespace EnergyProject.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    if (User.IsInRole("Admin"))
+                    {
+                        string area = "Admin";
+                        return RedirectToAction("Dashboard", "Home", new { area });
+                    }
+                    else if (User.IsInRole("Client"))
+                    {
+                        string area = "Client";
+                        return RedirectToAction("Home", "Home", new { area });
+                    }
+                    else
+                    {
+                        return Redirect("");
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {

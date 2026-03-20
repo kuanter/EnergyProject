@@ -36,7 +36,7 @@ namespace EnergyProject.Data
                 user.UserName = "admin@gmail.com";
                 user.EmailConfirmed = true;
 
-                var result = await userManager.CreateAsync(user,"Admin!123");
+                var result = await userManager.CreateAsync(user,"1q");
                 await userManager.AddToRoleAsync(user, "Admin");
 
                 // Tariffs

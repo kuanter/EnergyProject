@@ -36,9 +36,15 @@
                                 <a class="nav-link text-dark" asp-area="Admin" asp-controller="Meter" asp-action="Show">Meter</a>
                             </li>
                         }
-                        
+                        else if (User.IsInRole("Client"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="Client" asp-controller="Home" asp-action="Home">EnergyProject</a>
+                            </li>
+                        }
+                        <partial name="_LoginPartial" />
+
                     </ul>
-                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
