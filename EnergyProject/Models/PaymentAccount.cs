@@ -16,6 +16,23 @@
         public Meter? Meter { get; set; }
         public PowerStatus PowerStatus { get; set; }
         public ICollection<Bill> Bills { get; set; }
-        
+
+        public PaymentAccount()
+        {
+            Bills = new List<Bill>();
+        }
+
+        public PaymentAccount(string id, string userId, string addressId, string tariffId,
+            string? meterId, string powerStatusId)
+        {
+            Id = id;
+            UserId = userId;
+            AddressId = addressId;
+            TariffId = tariffId;
+            MeterId = meterId;
+            PowerStatusId = powerStatusId;
+            Bills = new List<Bill>();
+        }
+
     }
 }

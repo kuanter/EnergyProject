@@ -18,124 +18,174 @@ namespace EnergyProject.Data
 
             try
             {
-                if (await userManager.FindByEmailAsync("admin@gmail.com") != null)
-                {
-                    Console.WriteLine("Basic data already exists");
-                    return;
-                }
-
-                List <string>Roles = new List<string> { "Admin", "Client" };
-
-                foreach (string role in Roles)
-                {
-                    await roleManager.CreateAsync(new IdentityRole(role));
-                }
-
-                User user = new User();
-                user.Email = "admin@gmail.com";
-                user.UserName = "admin@gmail.com";
-                user.EmailConfirmed = true;
-
-                var result = await userManager.CreateAsync(user,"1q");
-                await userManager.AddToRoleAsync(user, "Admin");
-
-                // Tariffs
-                if (!await db.Tariffs.AnyAsync(t => t.Name == "Standard"))
-                {
-                    db.Tariffs.Add(new Tariff
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Standard",
-                        PricePerKWh = 4.5f
-                    });
-                }
-
-                if (!await db.Tariffs.AnyAsync(t => t.Name == "Night"))
-                {
-                    db.Tariffs.Add(new Tariff
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Night",
-                        PricePerKWh = 2.8f
-                    });
-                }
-
-                if (!await db.Tariffs.AnyAsync(t => t.Name == "Business"))
-                {
-                    db.Tariffs.Add(new Tariff
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Name = "Business",
-                        PricePerKWh = 5.2f
-                    });
-                }
-
-                // Addresses
-                if (!await db.Addresses.AnyAsync(a =>
-                    a.City == "Bratislava" &&
-                    a.Street == "Main Street" &&
-                    a.House == "12" &&
-                    a.Apartment == "5"))
-                {
-                    db.Addresses.Add(new Address
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        City = "Bratislava",
-                        Street = "Main Street",
-                        House = "12",
-                        Apartment = "5",
-                        PaymentAccountId = null
-                    });
-                }
-
-                if (!await db.Addresses.AnyAsync(a =>
-                    a.City == "Kosice" &&
-                    a.Street == "Green Avenue" &&
-                    a.House == "45" &&
-                    a.Apartment == "11"))
-                {
-                    db.Addresses.Add(new Address
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        City = "Kosice",
-                        Street = "Green Avenue",
-                        House = "45",
-                        Apartment = "11",
-                        PaymentAccountId = null
-                    });
-                }
-
-                if (!await db.Addresses.AnyAsync(a =>
-                    a.City == "Zilina" &&
-                    a.Street == "River Road" &&
-                    a.House == "8" &&
-                    a.Apartment == "2"))
-                {
-                    db.Addresses.Add(new Address
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        City = "Zilina",
-                        Street = "River Road",
-                        House = "8",
-                        Apartment = "2",
-                        PaymentAccountId = null
-                    });
-                }
-
+                await SeedRolesAsync(roleManager);
+                await SeedAdminAsync(userManager);
+                await SeedTariffsAsync(db);
+                await SeedAddressesAsync(db);
+                await SeedPowerStatusesAsync(db);
 
                 await db.SaveChangesAsync();
-
-                Console.WriteLine("Seeding completed successfully");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to seed data {ex.Message}");
                 return;
+            }
+        }
 
+        private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
+        {
+            List<string> roles = new List<string> { "Admin", "Client" };
+
+            foreach (string role in roles)
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+        }
+
+        private static async Task SeedAdminAsync(UserManager<User> userManager)
+        {
+            User? user = await userManager.FindByEmailAsync("admin@gmail.com");
+
+            if (user == null)
+            {
+                user = new User("admin@gmail.com", "admin@gmail.com", true);
+
+                var result = await userManager.CreateAsync(user, "1Q");
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+                }
             }
 
-
-
+            if (!await userManager.IsInRoleAsync(user, "Admin"))
+            {
+                await userManager.AddToRoleAsync(user, "Admin");
+            }
         }
+
+        private static async Task SeedTariffsAsync(ApplicationDbContext db)
+        {
+            if (!await db.Tariffs.AnyAsync(t => t.Name == "Standard"))
+            {
+                db.Tariffs.Add(
+                    new Tariff(Guid.NewGuid().ToString(), "Standard", 4.5f)
+                );
+            }
+
+            if (!await db.Tariffs.AnyAsync(t => t.Name == "Night"))
+            {
+                db.Tariffs.Add(
+                    new Tariff(Guid.NewGuid().ToString(), "Night", 2.8f)
+                );
+            }
+
+            if (!await db.Tariffs.AnyAsync(t => t.Name == "Business"))
+            {
+                db.Tariffs.Add(
+                    new Tariff(Guid.NewGuid().ToString(), "Business", 5.2f)
+                );
+            }
+        }
+
+        private static async Task SeedAddressesAsync(ApplicationDbContext db)
+        {
+            if (!await db.Addresses.AnyAsync(a =>
+                a.City == "Bratislava" &&
+                a.Street == "Main Street" &&
+                a.House == "12" &&
+                a.Apartment == "5"))
+            {
+                db.Addresses.Add(
+                    new Address(
+                        Guid.NewGuid().ToString(),
+                        "Bratislava",
+                        "Main Street",
+                        "12",
+                        "5",
+                        null
+                    )
+                );
+            }
+
+            if (!await db.Addresses.AnyAsync(a =>
+                a.City == "Kosice" &&
+                a.Street == "Green Avenue" &&
+                a.House == "45" &&
+                a.Apartment == "11"))
+            {
+                db.Addresses.Add(
+                    new Address(
+                        Guid.NewGuid().ToString(),
+                        "Kosice",
+                        "Green Avenue",
+                        "45",
+                        "11",
+                        null
+                    )
+                );
+            }
+
+            if (!await db.Addresses.AnyAsync(a =>
+                a.City == "Zilina" &&
+                a.Street == "River Road" &&
+                a.House == "8" &&
+                a.Apartment == "2"))
+            {
+                db.Addresses.Add(
+                    new Address(
+                        Guid.NewGuid().ToString(),
+                        "Zilina",
+                        "River Road",
+                        "8",
+                        "2",
+                        null
+                    )
+                );
+            }
+        }
+
+        private static async Task SeedPowerStatusesAsync(ApplicationDbContext db)
+        {
+            if (!await db.PowerStatuses.AnyAsync(p => p.Status == "Active"))
+            {
+                db.PowerStatuses.Add(
+                    new PowerStatus(
+                        Guid.NewGuid().ToString(),
+                        "Active",
+                        "Connected and working normally",
+                        DateTime.UtcNow
+                    )
+                );
+            }
+
+            if (!await db.PowerStatuses.AnyAsync(p => p.Status == "Disconnected"))
+            {
+                db.PowerStatuses.Add(
+                    new PowerStatus(
+                        Guid.NewGuid().ToString(),
+                        "Disconnected",
+                        "Disconnected because of unpaid bills",
+                        DateTime.UtcNow
+                    )
+                );
+            }
+
+            if (!await db.PowerStatuses.AnyAsync(p => p.Status == "Maintenance"))
+            {
+                db.PowerStatuses.Add(
+                    new PowerStatus(
+                        Guid.NewGuid().ToString(),
+                        "Maintenance",
+                        "Temporarily unavailable due to technical works",
+                        DateTime.UtcNow
+                    )
+                );
+            }
+        }
+        
     }
 }

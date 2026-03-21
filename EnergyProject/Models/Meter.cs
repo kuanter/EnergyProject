@@ -10,5 +10,19 @@
         public PaymentAccount PaymentAccount { get; set; }
 
         public ICollection<MeterReading> MeterReadings { get; set; }
+
+        public Meter()
+        {
+            MeterReadings = new List<MeterReading>();
+        }
+        public Meter(string id, string serialNumber, DateTime installDate, bool isActive, string paymentAccountId)
+        {
+            Id = id;
+            SerialNumber = serialNumber;
+            InstallDate = installDate;
+            IsActive = isActive;
+            PaymentAccountId = paymentAccountId;
+            MeterReadings = new List<MeterReading>();
+        }
     }
 }

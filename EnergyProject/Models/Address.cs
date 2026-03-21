@@ -11,6 +11,22 @@
         //todo
         public string? PaymentAccountId { get; set; }
         public PaymentAccount? PaymentAccount { get; set; }
-       
+
+        public Address()
+        {
+            CardDatas = new List<CardData>();
+        }
+
+        public Address(string id, string city, string street, string house, string apartment, string? paymentAccountId = null)
+        {
+            Id = id;
+            City = city;
+            Street = street;
+            House = house;
+            Apartment = apartment;
+            PaymentAccountId = paymentAccountId;
+            CardDatas = new List<CardData>();
+        }
+
     }
 }

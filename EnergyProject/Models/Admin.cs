@@ -10,5 +10,13 @@ namespace EnergyProject.Models
         [ForeignKey("User")]
         public string UserId { get; set; }
         public User User { get; set; }
+
+        public Admin() { }
+
+        public Admin(string userId)
+        {
+            UserId = userId;
+        }
+
     }
 }

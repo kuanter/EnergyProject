@@ -11,6 +11,21 @@
         public string? CardDataId { get; set; }
         public CardData? CardData { get; set; }
         public PaymentAccount PaymentAccount { get; set; }
-  
+
+
+        public Bill() { }
+
+        public Bill(string id, float consumptionKWh, float amount, string status,
+            DateTime generatedAt, string paymentAccountId, string? cardDataId = null)
+        {
+            Id = id;
+            ConsumptionKWh = consumptionKWh;
+            Amount = amount;
+            Status = status;
+            GeneratedAt = generatedAt;
+            PaymentAccountId = paymentAccountId;
+            CardDataId = cardDataId;
+        }
+
     }
 }

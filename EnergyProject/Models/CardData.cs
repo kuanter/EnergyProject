@@ -13,5 +13,25 @@
         public string UserId { get; set; }
         public User User { get; set; }
         public ICollection<Bill> Bills { get; set; } = new List<Bill>();
+
+        public CardData()
+        {
+            Bills = new List<Bill>();
+        }
+
+        public CardData(string id, long cardNumber, int expMonth, int expYear,
+            string cardName, bool isDefault, string addressId, string userId)
+        {
+            Id = id;
+            CardNumber = cardNumber;
+            ExpMonth = expMonth;
+            ExpYear = expYear;
+            CardName = cardName;
+            IsDefault = isDefault;
+            AddressId = addressId;
+            UserId = userId;
+            Bills = new List<Bill>();
+        }
+
     }
 }
