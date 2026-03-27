@@ -4,6 +4,7 @@ using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
@@ -24,7 +25,7 @@ namespace EnergyProject.Areas.Admin.Controllers
         public IActionResult Create()
         {
             var vm = new MeterCreateViewModel();
-            vm.PaymentAccountOptions = db.PaymentAccounts
+            vm.PaymentAccountOptions = db.PaymentAccounts.IgnoreQueryFilters()
                 .Where(p => p.MeterId == null)
                 .Select(p =>
                 new SelectListItem

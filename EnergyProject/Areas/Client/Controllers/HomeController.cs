@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace EnergyProject.Areas.Client.Controllers 
 {
@@ -28,9 +29,13 @@ namespace EnergyProject.Areas.Client.Controllers
         }
         public IActionResult Profile()
         {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             EnergyProject.Models.User user1;
-            user1 = db.Users.First();
-            // To do
+            user1 = db.Users.FirstOrDefault(u => u.Id == currentUserId);
+            if (user1 == null)
+            {
+                return NotFound();
+            }
             return View(user1);
         }
     }

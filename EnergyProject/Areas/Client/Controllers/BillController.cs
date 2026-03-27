@@ -102,15 +102,13 @@ namespace EnergyProject.Areas.Client.Controllers
             var user = db.Users
                 .Include(u => u.PaymentAccounts)
                 .ThenInclude(m => m.Meter)
-                .ThenInclude(mr => mr.MeterReadings)
-                .Where(u => u.Id == "U01").First();
+                .ThenInclude(mr => mr.MeterReadings).First();
 
             var pa = user.PaymentAccounts.ToList();
 
             BillCreateViewModel billCreateViewModel = new BillCreateViewModel();
 
             billCreateViewModel.CardDataOptions = db.CardDatas
-                .Where(cd => cd.UserId == "U01")
                 .Select(cd => new SelectListItem
                 {
                     Value = cd.Id.ToString(),

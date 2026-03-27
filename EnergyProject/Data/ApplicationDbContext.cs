@@ -22,7 +22,7 @@ namespace EnergyProject.Data
         public Admin AdminProfile { get; set; }
         public Client ClientProfile { get; set; }
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private string userId => _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        public string userId => _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
@@ -127,6 +127,9 @@ namespace EnergyProject.Data
               .HasQueryFilter(be =>
                   be.UserId == userId);
 
+            modelBuilder.Entity<CardData>()
+              .HasQueryFilter(be =>
+                  be.UserId == userId);
         }
     }
 }

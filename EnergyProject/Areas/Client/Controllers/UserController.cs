@@ -2,6 +2,7 @@
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace EnergyProject.Areas.Client.Controllers
 {
@@ -16,8 +17,12 @@ namespace EnergyProject.Areas.Client.Controllers
         }
         public IActionResult Update(string Id) 
         {
-            Models.User CurrUser = db.Users.First(u => u.Id == Id);
-
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Models.User CurrUser = db.Users.FirstOrDefault(u => u.Id == currentUserId);
+            if (CurrUser == null)
+            {
+                return NotFound();
+            }
             return View(CurrUser);
         }
         [HttpPost]

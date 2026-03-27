@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EnergyProject.Areas.Client.Controllers
 {
@@ -20,13 +21,19 @@ namespace EnergyProject.Areas.Client.Controllers
         }
         public IActionResult Show()
         {
-            var Cards = db.CardDatas.Where(u => u.UserId == "U01").ToList();
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var Cards = db.CardDatas.Where(u => u.UserId == currentUserId).ToList();
             return View(Cards);
         }
 
         public IActionResult Delete(string id)
         {
-            var cd = db.CardDatas.Find(id);
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var cd = db.CardDatas.FirstOrDefault(c => c.Id == id && c.UserId == currentUserId);
+            if (cd == null)
+            {
+                return NotFound();
+            }
             db.CardDatas.Remove(cd);
             db.SaveChanges();
             return RedirectToAction("Show");
@@ -35,7 +42,7 @@ namespace EnergyProject.Areas.Client.Controllers
         public IActionResult SetAsDefault(string id)
         {
             var user = db.Users
-                .Include(u => u.Cards).Where(u => u.Id == "U01").First();
+                .Include(u => u.Cards).Where(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).First();
                 
             foreach (var cd in user.Cards) 
             {
@@ -112,7 +119,7 @@ namespace EnergyProject.Areas.Client.Controllers
             Card.ExpYear = cd.ExpYear;
             Card.CardNumber = cd.CardNumber;
             Card.CardName = cd.CardName;
-            Card.UserId = "U01"; // todo
+            Card.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // todo
 
             if (exists)
             {

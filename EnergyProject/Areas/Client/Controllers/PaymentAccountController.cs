@@ -23,19 +23,22 @@ namespace EnergyProject.Areas.Client.Controllers
         public IActionResult Show()
         {
             var pa = db.PaymentAccounts
-                .Include(P => P.Tariff)
-                .Include(P => P.Address)
-                .Include(P => P.Meter)
-                .Include(P => P.PowerStatus) 
-                .ToList();
+             .Where(P => P.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+             .Include(P => P.Tariff)
+             .Include(P => P.Address)
+             .Include(P => P.Meter)
+             .Include(P => P.PowerStatus)
+             .ToList();
             return View(pa);
             
         }
         
         public IActionResult Create() {
             var vm = new PaymentAccountCreateViewModel();
-            vm.TariffOptions = db.Tariffs.Select(t => new SelectListItem {
-                Value = t.Id.ToString(), Text = $"Tariff ID: {t.Id}, Price per KWh: {t.PricePerKWh}"
+            vm.TariffOptions = db.Tariffs.Select(t => new SelectListItem
+            {
+                Value = t.Id.ToString(),
+                Text = $" {t.Name}, Price per KWh: {t.PricePerKWh}"
             }).ToList();
             return View(vm);
         }
@@ -67,6 +70,8 @@ namespace EnergyProject.Areas.Client.Controllers
                 { 
                     ModelState.AddModelError(string.Empty, "A payment account already exists for this address.");
                 }
+                address.PaymentAccountId = paymentAccount.Id;
+
                 paymentAccountCreateViewModel.AddressId = address.Id;
             }
             else
@@ -85,7 +90,15 @@ namespace EnergyProject.Areas.Client.Controllers
 
             paymentAccount.AddressId = paymentAccountCreateViewModel.AddressId;
             paymentAccount.TariffId = paymentAccountCreateViewModel.TariffId;
-            paymentAccount.PowerStatusId = "PS01";
+            foreach (var ps in db.PowerStatuses)
+            {
+                if (ps.Status == "Active")
+                {
+                    paymentAccount.PowerStatusId = ps.Id;
+                    break;
+                }
+            }
+         
 
             ModelState.Remove("");
             if (!ModelState.IsValid)
