@@ -15,47 +15,86 @@ namespace EnergyProject.Areas.Client.Controllers
     {
 
         ApplicationDbContext db;
-        public CardDataController(ApplicationDbContext db_)
+        private readonly ILogger _logger;
+        public CardDataController(ApplicationDbContext db_, ILogger<HomeController> logger)
         {
             db = db_;
+            _logger = logger;
         }
         public IActionResult Show()
         {
+            _logger.LogInformation("Used ShowCardDataController");
+
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var Cards = db.CardDatas.Where(u => u.UserId == currentUserId).ToList();
+
+            _logger.LogInformation("Get cards");
+
             return View(Cards);
         }
 
         public IActionResult Delete(string id)
         {
+            _logger.LogInformation("Used DeleteCardDataController");
+
             var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cd = db.CardDatas.FirstOrDefault(c => c.Id == id && c.UserId == currentUserId);
+
+            _logger.LogInformation("Get card");
+
             if (cd == null)
             {
+                _logger.LogInformation("card is null");
                 return NotFound();
             }
             db.CardDatas.Remove(cd);
+
+            _logger.LogInformation("Delete card");
+
             db.SaveChanges();
+
+            _logger.LogInformation("Save card");
+
             return RedirectToAction("Show");
         }
 
         public IActionResult SetAsDefault(string id)
         {
+            _logger.LogInformation("Used SetAsDefaultCardDataController");
             var user = db.Users
                 .Include(u => u.Cards).Where(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).First();
-                
+
+            _logger.LogInformation("Get user");
+
             foreach (var cd in user.Cards) 
             {
                 cd.IsDefault = false;
             }
+
+            _logger.LogInformation("Reset cards");
+
             var card = db.CardDatas.Find(id);
+
+            if (card == null)
+            {
+                _logger.LogInformation("card is null");
+                return NotFound();
+            }
+
+            _logger.LogInformation("Get card");
+
             card.IsDefault = true;
             db.SaveChanges();
+
+            _logger.LogInformation("Save card");
+
             return RedirectToAction("Show");
         }
 
         public IActionResult Create()
         {
+            _logger.LogInformation("Used CreateCardDataController");
+
             CardDataCreateViewModel cd = new CardDataCreateViewModel();
             return View(cd);
         }
@@ -90,18 +129,27 @@ namespace EnergyProject.Areas.Client.Controllers
 
         public IActionResult CreatePost(CardDataCreateViewModel cd)
         {
+            _logger.LogInformation("Used CreatePostCardDataController");
+
             ModelState.Remove(nameof(cd.AddressId));
             if (!IsLuhnValid(cd.CardNumber.ToString()))
+            {
                 ModelState.AddModelError(string.Empty, "Invalid card number");
+                _logger.LogInformation("Invalid card number");
+            }
 
             var now = DateTime.UtcNow;
             if (cd.ExpYear < now.Year || (cd.ExpYear == now.Year && cd.ExpMonth < now.Month))
+            {
                 ModelState.AddModelError(string.Empty, "Card is expired");
+                _logger.LogInformation("Card is expired");
+            }
 
             if (string.IsNullOrWhiteSpace(cd.City) ||
                    string.IsNullOrWhiteSpace(cd.Street) ||
                    string.IsNullOrWhiteSpace(cd.House))
             {
+                _logger.LogInformation("Address is invalid");
                 ModelState.AddModelError(string.Empty, "Please choose an address or fill in City, Street and House");
             }
 
@@ -111,6 +159,8 @@ namespace EnergyProject.Areas.Client.Controllers
                 x.House == cd.House &&
                 x.Apartment == cd.Apartment
             );
+
+            _logger.LogInformation("Check address");
 
             CardData Card = new CardData();
             Card.Id = Guid.NewGuid().ToString();
@@ -131,6 +181,8 @@ namespace EnergyProject.Areas.Client.Controllers
                     x.House == cd.House &&
                     x.Apartment == cd.Apartment
                 ).Id;
+
+                _logger.LogInformation("Get address");
             }
             else 
             {
@@ -143,15 +195,22 @@ namespace EnergyProject.Areas.Client.Controllers
                 cd.AddressId = a.Id;
                 db.Addresses.Add(a);
 
+                _logger.LogInformation("Add address");
             }
 
             Card.AddressId = cd.AddressId;
 
             if (!ModelState.IsValid)
+            {
+                _logger.LogInformation("ModelState is invalid");
                 return View("Create", cd);
+            }
 
             db.CardDatas.Add(Card);
+            _logger.LogInformation("Add card");
             db.SaveChanges();
+            _logger.LogInformation("Save card");
+
             return RedirectToAction("Show");
         }
 

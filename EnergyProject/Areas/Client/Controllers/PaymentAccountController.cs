@@ -16,8 +16,10 @@ namespace EnergyProject.Areas.Client.Controllers
     public class PaymentAccountController : Controller
     {
         ApplicationDbContext db;
-        public PaymentAccountController(ApplicationDbContext db_)
+        private readonly ILogger _logger;
+        public PaymentAccountController(ApplicationDbContext db_, ILogger<HomeController> logger)
         {
+            _logger = logger;
             db = db_;
         }
         public IActionResult Show()
@@ -29,23 +31,32 @@ namespace EnergyProject.Areas.Client.Controllers
              .Include(P => P.Meter)
              .Include(P => P.PowerStatus)
              .ToList();
+
+            _logger.LogInformation("Get paymentAccounts");
             return View(pa);
             
         }
         
         public IActionResult Create() {
+            _logger.LogInformation("Used CreatePaymentAccountController");
+
             var vm = new PaymentAccountCreateViewModel();
             vm.TariffOptions = db.Tariffs.Select(t => new SelectListItem
             {
                 Value = t.Id.ToString(),
                 Text = $" {t.Name}, Price per KWh: {t.PricePerKWh}"
             }).ToList();
+
+            _logger.LogInformation("Get tariffs");
+
             return View(vm);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreatePost(PaymentAccountCreateViewModel paymentAccountCreateViewModel)
         {
+            _logger.LogInformation("Used CreatePostPaymentAccountController");
+
             ModelState.Remove(nameof(paymentAccountCreateViewModel.AddressId));
             bool exists = db.Addresses.Any(x =>
                 x.City == paymentAccountCreateViewModel.City &&
@@ -53,6 +64,8 @@ namespace EnergyProject.Areas.Client.Controllers
                 x.House == paymentAccountCreateViewModel.House &&
                 x.Apartment == paymentAccountCreateViewModel.Apartment
             );
+
+            _logger.LogInformation("Check address");
 
             PaymentAccount paymentAccount = new PaymentAccount();
             paymentAccount.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
@@ -66,8 +79,12 @@ namespace EnergyProject.Areas.Client.Controllers
                     x.House == paymentAccountCreateViewModel.House &&
                     x.Apartment == paymentAccountCreateViewModel.Apartment
                 );
+
+                _logger.LogInformation("Get address");
+
                 if (address.PaymentAccountId != null) 
-                { 
+                {
+                    _logger.LogInformation("paymentAccount exists");
                     ModelState.AddModelError(string.Empty, "A payment account already exists for this address.");
                 }
                 address.PaymentAccountId = paymentAccount.Id;
@@ -85,7 +102,7 @@ namespace EnergyProject.Areas.Client.Controllers
                 a.PaymentAccountId = paymentAccount.Id;
                 paymentAccountCreateViewModel.AddressId = a.Id;
                 db.Addresses.Add(a);
-
+                _logger.LogInformation("Add address");
             }
 
             paymentAccount.AddressId = paymentAccountCreateViewModel.AddressId;
@@ -98,14 +115,21 @@ namespace EnergyProject.Areas.Client.Controllers
                     break;
                 }
             }
-         
+
+            _logger.LogInformation("Set paymentAccount data");
 
             ModelState.Remove("");
             if (!ModelState.IsValid)
+            {
+                _logger.LogInformation("ModelState is invalid");
                 return RedirectToAction(nameof(Create));
-
+            }
             db.PaymentAccounts.Add(paymentAccount);
+            _logger.LogInformation("Add paymentAccount");
+
             await db.SaveChangesAsync();
+            _logger.LogInformation("Save paymentAccount");
+
             return RedirectToAction("Show", "PaymentAccount");
         }
 

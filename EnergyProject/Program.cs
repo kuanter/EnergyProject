@@ -45,7 +45,8 @@ namespace EnergyProject
                 options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
                 options.AddPolicy("ClientOnly", policy => policy.RequireRole("Client"));
             });
-
+            builder.Logging.AddConsole();
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
 
             //List<string> Roles = new List<string> { "Admin", "Client" };
