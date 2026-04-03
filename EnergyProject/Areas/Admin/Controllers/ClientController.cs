@@ -1,4 +1,5 @@
-﻿using EnergyProject.Data;
+﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Data;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +11,14 @@ namespace EnergyProject.Areas.Admin.Controllers
     [Authorize(Policy = "AdminOnly")]
     public class ClientController : Controller
     {
-        public ApplicationDbContext db;
-        public ClientController(ApplicationDbContext db_)
+        private readonly IUserService _userService;
+        public ClientController(IUserService userService)
         {
-            db = db_;
-
+            _userService = userService;
         }
         public IActionResult Show(string? q)
         {
-            var users = db.Users.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(q))
-            {
-                q = q.Trim();
-
-                users = users.Where(u =>
-                    EF.Functions.Like(u.UserName, "%" + q + "%") ||
-                    EF.Functions.Like(u.Email, "%" + q + "%") ||
-                    EF.Functions.Like(u.PhoneNumber, "%" + q + "%")
-                );
-            }
-
-            var list = users.ToList();
+            var list = _userService.Show(q);
             return View(list);
         }
      

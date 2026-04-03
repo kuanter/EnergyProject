@@ -1,3 +1,5 @@
+using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Services;
 using EnergyProject.Data;
 using EnergyProject.Migrations;
 using EnergyProject.Models;
@@ -47,6 +49,8 @@ namespace EnergyProject
             });
             builder.Logging.AddConsole();
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+            builder.Services.AddScoped<IUserService, UserService>();
 
 
             //List<string> Roles = new List<string> { "Admin", "Client" };

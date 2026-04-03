@@ -20,15 +20,26 @@
     </div>
 
     <table class="table">
-        <tbody>
             @if (!Model.Any())
             {
-                <tr>
-                    <td colspan="6">No users found.</td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td colspan="6">No users found.</td>
+                    </tr>
+                </tbody>
             }
             else
             {
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>User Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
                 @foreach (var user in Model)
                 {
                     <tr>
@@ -49,8 +60,8 @@
                         </td>
                     </tr>
                 }
-            }
-        </tbody>
+                </tbody>
 
+            }
     </table>
 </section>
