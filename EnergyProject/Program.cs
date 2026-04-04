@@ -1,6 +1,8 @@
 using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Services;
-using EnergyProject.Data;
+using EnergyProject.Infrastructure.Data;
+using EnergyProject.Infrastructure.Interfaces;
+using EnergyProject.Infrastructure.Repositories;
 using EnergyProject.Migrations;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Identity;
@@ -51,6 +53,8 @@ namespace EnergyProject
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 
             //List<string> Roles = new List<string> { "Admin", "Client" };

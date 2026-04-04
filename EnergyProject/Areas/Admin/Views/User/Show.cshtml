@@ -10,7 +10,7 @@
         <h1 class="h1">Users</h1>
 
         <div class="search">
-            <form method="get" asp-area="Admin" asp-controller="Client" asp-action="Show">
+            <form method="get" asp-area="Admin" asp-controller="User" asp-action="Show">
                 <input name="q"
                        placeholder="Search by name, email or phone"
                        value="@Context.Request.Query["q"]" />

@@ -1,5 +1,4 @@
 ﻿using EnergyProject.Application.Interfaces;
-using EnergyProject.Data;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +8,16 @@ namespace EnergyProject.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Policy = "AdminOnly")]
-    public class ClientController : Controller
+    public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public ClientController(IUserService userService)
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
-        public IActionResult Show(string? q)
+        public async Task<IActionResult> Show(string? q)
         {
-            var list = _userService.Show(q);
+            var list = await _userService.Show(q);
             return View(list);
         }
      

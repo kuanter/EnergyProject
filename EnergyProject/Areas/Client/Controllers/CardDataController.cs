@@ -1,4 +1,4 @@
-﻿using EnergyProject.Data;
+﻿using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;

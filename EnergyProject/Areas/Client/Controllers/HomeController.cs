@@ -1,4 +1,4 @@
-using EnergyProject.Data;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

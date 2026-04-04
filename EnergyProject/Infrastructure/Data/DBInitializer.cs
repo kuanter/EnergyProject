@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
-namespace EnergyProject.Data
+namespace EnergyProject.Infrastructure.Data
 {
     public static class DBInitializer
     {

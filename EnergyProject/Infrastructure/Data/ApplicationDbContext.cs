@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Security.Claims;
 
-namespace EnergyProject.Data
+namespace EnergyProject.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {

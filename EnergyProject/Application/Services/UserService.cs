@@ -1,5 +1,6 @@
 ﻿using EnergyProject.Application.Interfaces;
-using EnergyProject.Data;
+using EnergyProject.Infrastructure.Data;
+using EnergyProject.Infrastructure.Interfaces;
 using EnergyProject.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,29 +8,19 @@ namespace EnergyProject.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _db;
-        public UserService(ApplicationDbContext db)
+        private readonly IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
         {
-            _db = db;
+            _userRepository = userRepository;
         }
 
         public async Task<List<User>> Show(string? q)
         {
-            var users = _db.Users.AsQueryable();
-
             if (!string.IsNullOrWhiteSpace(q))
-            {
                 q = q.Trim();
+            var users = _userRepository.GetUsersWithFilters(q);
 
-                users = users.Where(u =>
-                    EF.Functions.Like(u.UserName, "%" + q + "%") ||
-                    EF.Functions.Like(u.Email, "%" + q + "%") ||
-                    EF.Functions.Like(u.PhoneNumber, "%" + q + "%")
-                );
-            }
-
-            return users.ToList();
-
+            return users;
         }
     }
 }
