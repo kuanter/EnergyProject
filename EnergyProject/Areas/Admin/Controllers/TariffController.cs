@@ -1,4 +1,5 @@
-﻿using EnergyProject.Infrastructure.Data;
+﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,25 +13,20 @@ namespace EnergyProject.Areas.Admin.Controllers
     public class TariffController : Controller
     {
         public ApplicationDbContext db;
-        public TariffController(ApplicationDbContext context)
+        private ITariffService _tariffService;
+        public TariffController(ApplicationDbContext context, ITariffService tariffService)
         {
             db = context;
+            _tariffService = tariffService;
         }
-        public IActionResult Show()
+        public async Task<IActionResult> Show()
         {
-            var Tarriffs = db.Tariffs.ToList();
-            return View(Tarriffs);
+            return View(await _tariffService.Show());
         }
 
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var tariff = db.Tariffs.Find(id);
-            if (tariff != null)
-            {
-                db.Tariffs.Remove(tariff);
-                db.SaveChanges();
-                return RedirectToAction("Show");
-            }
+            await _tariffService.Delete(id);
             return RedirectToAction("Show");
         }
 
@@ -39,17 +35,15 @@ namespace EnergyProject.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult CreatePost(Tariff t) 
+        public async Task<IActionResult> CreatePost(Tariff t) 
         {
-            t.Id = Guid.NewGuid().ToString();
-            db.Tariffs.Add(t);
-            db.SaveChanges();
+            await _tariffService.Create(t);
             return RedirectToAction("Show");
         }
 
-        public IActionResult Update(string Id)
+        public async Task<IActionResult> Update(string Id)
         {
-            var tariff = db.Tariffs.Find(Id);
+            var tariff = await _tariffService.GetById(Id);
             if (tariff != null)
             {
                 return View(tariff);
@@ -57,10 +51,9 @@ namespace EnergyProject.Areas.Admin.Controllers
             return NotFound();
         }
 
-        public IActionResult UpdatePost(Tariff t)
+        public async Task<IActionResult> UpdatePost(Tariff t)
         {
-            db.Tariffs.Update(t);
-            db.SaveChanges();
+            await _tariffService.Update(t);
             return RedirectToAction("Show");
         }
     }

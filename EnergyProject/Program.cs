@@ -54,6 +54,7 @@ namespace EnergyProject
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ITariffService, TariffService>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 

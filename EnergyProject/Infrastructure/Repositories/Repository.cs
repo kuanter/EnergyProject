@@ -27,14 +27,18 @@ namespace EnergyProject.Infrastructure.Repositories
         public async Task Create(T entity)
         {
             await _dbSet.AddAsync(entity);
+            await _db.SaveChangesAsync();
         }
         public async Task Update(T entity)
         {
             _dbSet.Update(entity);
+            await _db.SaveChangesAsync();
         }
+
         public async Task Delete(T entity)
         {
             _dbSet.Remove(entity);
+            await _db.SaveChangesAsync();
         }
     }
 }
