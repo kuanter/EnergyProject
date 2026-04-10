@@ -1,7 +1,9 @@
-﻿using EnergyProject.Infrastructure.Data;
+﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
@@ -9,51 +11,43 @@ namespace EnergyProject.Areas.Admin.Controllers
     [Authorize(Policy = "AdminOnly")]
     public class PowerStatusController : Controller
     {
-        public ApplicationDbContext db;
-        public PowerStatusController(ApplicationDbContext context)
+        private IPowerStatusService _powerStatusService;
+        public PowerStatusController(IPowerStatusService tariffService)
         {
-            db = context;
+            _powerStatusService = tariffService;
         }
-        public IActionResult Show()
+        public async Task<IActionResult> Show()
         {
-            var PowerStatuses = db.PowerStatuses.ToList();
-            return View(PowerStatuses);
+            return View(await _powerStatusService.Show());
         }
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult CreatePost(PowerStatus ps)
+        public async Task<IActionResult> CreatePost(PowerStatus ps)
         {
-            ps.Id = Guid.NewGuid().ToString();
-            ps.UpdatedAt = DateTime.Now;
-            db.PowerStatuses.Add(ps);
-            db.SaveChanges();
+            await _powerStatusService.Create(ps);
             return RedirectToAction("Show");
         }
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var ps = db.PowerStatuses.Find(id);
-            db.PowerStatuses.Remove(ps);
-            db.SaveChanges();
+            await _powerStatusService.Delete(id);
             return RedirectToAction("Show");
         }
-        public IActionResult Update(string Id) 
+        public async Task<IActionResult> Update(string Id) 
         {
-            var ps = db.PowerStatuses.Find(Id);
-            if (ps != null)
+            var powerStatus = await _powerStatusService.GetById(Id);
+            if (powerStatus != null)
             {
-                return View(ps);
+                return View(powerStatus);
             }
             return NotFound();
         }
         [HttpPost]
-        public IActionResult UpdatePost(PowerStatus ps) 
+        public async Task<IActionResult> UpdatePost(PowerStatus ps) 
         {
-            ps.UpdatedAt = DateTime.Now;
-            db.PowerStatuses.Update(ps);
-            db.SaveChanges();
+            await _powerStatusService.Update(ps);
             return RedirectToAction("Show");
         }
     }

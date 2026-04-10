@@ -53,6 +53,7 @@ namespace EnergyProject
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IPowerStatusService, PowerStatusService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ITariffService, TariffService>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));

@@ -12,11 +12,9 @@ namespace EnergyProject.Areas.Admin.Controllers
     [Authorize(Policy = "AdminOnly")]
     public class TariffController : Controller
     {
-        public ApplicationDbContext db;
         private ITariffService _tariffService;
-        public TariffController(ApplicationDbContext context, ITariffService tariffService)
+        public TariffController(ITariffService tariffService)
         {
-            db = context;
             _tariffService = tariffService;
         }
         public async Task<IActionResult> Show()
