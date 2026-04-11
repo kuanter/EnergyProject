@@ -31,21 +31,6 @@ namespace EnergyProject.Areas.Client.Controllers
             _logger.LogInformation("Used PrivacyClientController");
             return View();
         }
-        public IActionResult Profile()
-        {
-            _logger.LogInformation("Used ProfileClientController");
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            EnergyProject.Models.User user1;
-            user1 = db.Users.FirstOrDefault(u => u.Id == currentUserId);
-            
-            _logger.LogInformation("Get user");
-
-            if (user1 == null)
-            {
-                _logger.LogInformation("user is null");
-                return NotFound();
-            }
-            return View(user1);
-        }
+        
     }
 }

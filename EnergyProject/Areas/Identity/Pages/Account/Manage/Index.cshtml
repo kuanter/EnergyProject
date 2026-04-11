@@ -25,6 +25,29 @@
     </div>
 </div>
 
+<div class="card card-muted">
+    <div class="card-header">
+        <span class="card-pill">Information</span>
+    </div>
+    <h2 class="card-title">Data &amp; security</h2>
+    <p class="card-text">
+        For security reasons we do not display your password here.
+        If you need to change it, use the password change function in the application.
+    </p>
+    <p class="card-text mt-12">
+        Make sure your email and phone number are always up to date so we can contact you
+        about your consumption and payments.
+    </p>
+    <p class="card-footer">
+        <a class="user-btn user-btn-primary"
+           asp-area="Client"
+           asp-controller="CardData"
+           asp-action="Show">
+            View my cards
+        </a>
+    </p>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
