@@ -12,9 +12,9 @@ namespace EnergyProject.Areas.Admin.Controllers
     public class PowerStatusController : Controller
     {
         private IPowerStatusService _powerStatusService;
-        public PowerStatusController(IPowerStatusService tariffService)
+        public PowerStatusController(IPowerStatusService powerStatusService)
         {
-            _powerStatusService = tariffService;
+            _powerStatusService = powerStatusService;
         }
         public async Task<IActionResult> Show()
         {

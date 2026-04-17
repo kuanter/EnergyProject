@@ -15,10 +15,10 @@
 
         public Bill() { }
 
-        public Bill(string id, float consumptionKWh, float amount, string status,
+        public Bill( float consumptionKWh, float amount, string status,
             DateTime generatedAt, string paymentAccountId, string? cardDataId = null)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             ConsumptionKWh = consumptionKWh;
             Amount = amount;
             Status = status;

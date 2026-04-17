@@ -22,10 +22,10 @@
             Bills = new List<Bill>();
         }
 
-        public PaymentAccount(string id, string userId, string addressId, string tariffId,
+        public PaymentAccount(string userId, string addressId, string tariffId,
             string? meterId, string powerStatusId)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             UserId = userId;
             AddressId = addressId;
             TariffId = tariffId;

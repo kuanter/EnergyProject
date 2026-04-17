@@ -12,9 +12,9 @@
             PaymentAccounts = new List<PaymentAccount>();
         }
 
-        public Tariff(string id, string name, float pricePerKWh)
+        public Tariff(string name, float pricePerKWh)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString(); 
             Name = name;
             PricePerKWh = pricePerKWh;
             PaymentAccounts = new List<PaymentAccount>();

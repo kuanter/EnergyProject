@@ -19,17 +19,25 @@
             Bills = new List<Bill>();
         }
 
-        public CardData(string id, long cardNumber, int expMonth, int expYear,
-            string cardName, bool isDefault, string addressId, string userId)
+        public CardData(long cardNumber, int expMonth, int expYear,
+            string cardName, bool ?isDefault, string addressId, string userId)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             CardNumber = cardNumber;
             ExpMonth = expMonth;
             ExpYear = expYear;
             CardName = cardName;
-            IsDefault = isDefault;
             AddressId = addressId;
             UserId = userId;
+            if (isDefault == null)
+            {
+                IsDefault = false;
+            }
+            else
+            {
+                IsDefault = (bool)isDefault;
+            }
+
             Bills = new List<Bill>();
         }
 

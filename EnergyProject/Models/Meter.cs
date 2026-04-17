@@ -15,12 +15,12 @@
         {
             MeterReadings = new List<MeterReading>();
         }
-        public Meter(string id, string serialNumber, DateTime installDate, bool isActive, string paymentAccountId)
+        public Meter(string serialNumber, string paymentAccountId)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             SerialNumber = serialNumber;
-            InstallDate = installDate;
-            IsActive = isActive;
+            InstallDate = DateTime.Now;
+            IsActive = false;
             PaymentAccountId = paymentAccountId;
             MeterReadings = new List<MeterReading>();
         }

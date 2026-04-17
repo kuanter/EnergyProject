@@ -13,12 +13,12 @@
             PaymentAccounts = new List<PaymentAccount>();
         }
 
-        public PowerStatus(string id, string status, string reason, DateTime updatedAt)
+        public PowerStatus(string status, string reason)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
+            UpdatedAt = DateTime.Now; 
             Status = status;
             Reason = reason;
-            UpdatedAt = updatedAt;
             PaymentAccounts = new List<PaymentAccount>();
         }
 

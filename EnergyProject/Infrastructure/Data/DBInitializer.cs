@@ -72,21 +72,21 @@ namespace EnergyProject.Infrastructure.Data
             if (!await db.Tariffs.AnyAsync(t => t.Name == "Standard"))
             {
                 db.Tariffs.Add(
-                    new Tariff(Guid.NewGuid().ToString(), "Standard", 4.5f)
+                    new Tariff( "Standard", 4.5f)
                 );
             }
 
             if (!await db.Tariffs.AnyAsync(t => t.Name == "Night"))
             {
                 db.Tariffs.Add(
-                    new Tariff(Guid.NewGuid().ToString(), "Night", 2.8f)
+                    new Tariff( "Night", 2.8f)
                 );
             }
 
             if (!await db.Tariffs.AnyAsync(t => t.Name == "Business"))
             {
                 db.Tariffs.Add(
-                    new Tariff(Guid.NewGuid().ToString(), "Business", 5.2f)
+                    new Tariff( "Business", 5.2f)
                 );
             }
         }
@@ -101,7 +101,6 @@ namespace EnergyProject.Infrastructure.Data
             {
                 db.Addresses.Add(
                     new Address(
-                        Guid.NewGuid().ToString(),
                         "Bratislava",
                         "Main Street",
                         "12",
@@ -119,7 +118,6 @@ namespace EnergyProject.Infrastructure.Data
             {
                 db.Addresses.Add(
                     new Address(
-                        Guid.NewGuid().ToString(),
                         "Kosice",
                         "Green Avenue",
                         "45",
@@ -137,7 +135,6 @@ namespace EnergyProject.Infrastructure.Data
             {
                 db.Addresses.Add(
                     new Address(
-                        Guid.NewGuid().ToString(),
                         "Zilina",
                         "River Road",
                         "8",
@@ -154,10 +151,8 @@ namespace EnergyProject.Infrastructure.Data
             {
                 db.PowerStatuses.Add(
                     new PowerStatus(
-                        Guid.NewGuid().ToString(),
                         "Active",
-                        "Connected and working normally",
-                        DateTime.UtcNow
+                        "Connected and working normally"
                     )
                 );
             }
@@ -166,10 +161,8 @@ namespace EnergyProject.Infrastructure.Data
             {
                 db.PowerStatuses.Add(
                     new PowerStatus(
-                        Guid.NewGuid().ToString(),
                         "Disconnected",
-                        "Disconnected because of unpaid bills",
-                        DateTime.UtcNow
+                        "Disconnected because of unpaid bills"
                     )
                 );
             }
@@ -178,10 +171,8 @@ namespace EnergyProject.Infrastructure.Data
             {
                 db.PowerStatuses.Add(
                     new PowerStatus(
-                        Guid.NewGuid().ToString(),
                         "Maintenance",
-                        "Temporarily unavailable due to technical works",
-                        DateTime.UtcNow
+                        "Temporarily unavailable due to technical works"
                     )
                 );
             }

@@ -17,9 +17,9 @@
             CardDatas = new List<CardData>();
         }
 
-        public Address(string id, string city, string street, string house, string apartment, string? paymentAccountId = null)
+        public Address(string city, string street, string house, string apartment, string? paymentAccountId = null)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
             City = city;
             Street = street;
             House = house;

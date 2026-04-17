@@ -1,10 +1,12 @@
-﻿using EnergyProject.Infrastructure.Data;
+﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
@@ -12,16 +14,18 @@ namespace EnergyProject.Areas.Admin.Controllers
     [Authorize(Policy = "AdminOnly")]
     public class MeterController : Controller
     {
-        public ApplicationDbContext db;
-        public MeterController(ApplicationDbContext context)
+        private IMeterService _meterService;
+        private readonly ApplicationDbContext db;
+        public MeterController(ApplicationDbContext context, IMeterService meterService)
         {
-            db = context;
+                db = context;
+                _meterService = meterService;
         }
-        public IActionResult Show()
+        public async Task<IActionResult> Show()
         {
-            var Meters = db.Meters.ToList();
-            return View(Meters);
+            return View(await _meterService.Show());
         }
+       
         public IActionResult Create()
         {
             var vm = new MeterCreateViewModel();
@@ -37,62 +41,18 @@ namespace EnergyProject.Areas.Admin.Controllers
            return View(vm);
         }
         [HttpPost]
-        public IActionResult CreatePost(MeterCreateViewModel mcvm)
+        public async Task<IActionResult> CreatePost(MeterCreateViewModel mcvm)
         {
-            Meter m = new Meter();
-            m.Id = Guid.NewGuid().ToString();
-            m.SerialNumber = mcvm.SerialNumber;
-            m.PaymentAccountId = mcvm.PaymentAccountId;
-            m.InstallDate = DateTime.Now;
-            m.IsActive = false;
-            db.Meters.Add(m);
-            db.SaveChanges();
-            return RedirectToAction("Show");
-        }
-        
-        public IActionResult Delete(string id)
-        {
-            var ps = db.PowerStatuses.Find(id);
-            db.PowerStatuses.Remove(ps);
-            db.SaveChanges();
-            return RedirectToAction("Show");
-        }
-        public IActionResult Update(string Id)
-        {
-            var ps = db.PowerStatuses.Find(Id);
-            if (ps != null)
-            {
-                return View(ps);
-            }
-            return NotFound();
-        }
-        [HttpPost]
-        public IActionResult UpdatePost(PowerStatus ps)
-        {
-            ps.UpdatedAt = DateTime.Now;
-            db.PowerStatuses.Update(ps);
-            db.SaveChanges();
+            await _meterService.Create(mcvm);
             return RedirectToAction("Show");
         }
 
-       
-        public IActionResult Activate(string Id) 
-        { 
-            var meter = db.Meters.Find(Id);
-            if (meter != null) 
-            {
-                if (meter.IsActive)
-                {
-                    meter.IsActive = false;
-                }else
-                {
-                    meter.IsActive = true;
-                }
-                db.Meters.Update(meter);
-                db.SaveChanges();
-            }
+         public async Task<IActionResult> SwitchMeterStatus(string Id) 
+         { 
+             await _meterService.SwitchMeterStatus(Id);
             return RedirectToAction("Show");
-        }
+         }
+        
 
     }
 }
