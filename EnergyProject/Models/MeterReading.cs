@@ -10,11 +10,11 @@
         public Meter Meter { get; set; }
 
         public MeterReading() { }
-        public MeterReading(string id, float valueKWh, DateTime createdAt, string meterId)
+        public MeterReading(float valueKWh, string meterId)
         {
             Id = Guid.NewGuid().ToString();
+            CreatedAt = DateTime.Now;
             ValueKWh = valueKWh;
-            CreatedAt = createdAt;
             MeterId = meterId;
         }
     }
