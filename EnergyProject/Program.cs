@@ -55,9 +55,12 @@ namespace EnergyProject
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPowerStatusService, PowerStatusService>();
             builder.Services.AddScoped<IMeterService, MeterService>();
-            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IMeterReadingService, MeterReadingService>();
             builder.Services.AddScoped<ITariffService, TariffService>();
+            
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IMeterRepository, MeterRepository>();
+            builder.Services.AddScoped<IMeterReadingRepository, MeterReadingRepository>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 

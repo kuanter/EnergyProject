@@ -58,7 +58,7 @@
                                     <td data-label="Meter Id"><a class="user-btn user-btn-primary" asp-controller="Meter" asp-action="SwitchMeterStatus" asp-route-id="@m.Id">Inactive</a></td>
                                 }
                                 <td data-label="Meter Id">@m.PaymentAccountId</td>
-                                <td><a class="user-btn user-btn-primary" asp-controller="MeterReading" asp-action="Info" asp-route-id="@m.Id">Meter Readings</a></td>
+                                <td><a class="user-btn user-btn-primary" asp-controller="MeterReading" asp-action="Show" asp-route-id="@m.Id">Meter Readings</a></td>
                             </tr>
                         }
                     }

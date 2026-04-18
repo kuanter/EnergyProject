@@ -1,0 +1,67 @@
+﻿@using System.Linq
+@model IEnumerable<EnergyProject.Models.MeterReading>
+
+@{
+    ViewData["Title"] = "Meter Readings";
+    var readings = Model?.ToList() ?? new List<EnergyProject.Models.MeterReading>();
+}
+
+<link rel="stylesheet" href="~/css/admin-users.css" />
+
+<section class="page">
+    <div class="toolbar">
+        <div>
+            <h1 class="h1">Meter Readings</h1>
+            <p class="lead">List of generated readings for the selected meter.</p>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a class="btn"
+               asp-area="Admin"
+               asp-controller="Meter"
+               asp-action="Show">
+                Back to Meters
+            </a>
+
+            <button type="button" class="btn" onclick="location.reload();">
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    @if (!readings.Any())
+    {
+        <div class="alert alert-info text-center">
+            <h4>No readings yet</h4>
+            <p>Turn on the meter and refresh this page to generate the first reading.</p>
+        </div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Date</th>
+                    <th>Value (kWh)</th>
+                    <th>Meter Id</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reading in readings)
+                {
+                    <tr>
+                        <td>@reading.Id</td>
+                        <td>@reading.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                        <td><span class="chip chip-dark">@reading.ValueKWh kWh</span></td>
+                        <td>@reading.MeterId</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="mt-3 text-muted small">
+            A new reading is generated every time this page is refreshed while the meter is active.
+        </div>
+    }
+</section>

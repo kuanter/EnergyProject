@@ -12,27 +12,15 @@ namespace EnergyProject.Areas.Admin.Controllers
     [Authorize(Policy = "AdminOnly")]
     public class MeterReadingController : Controller
     {
-        public IMeterReadingService meterReadingService;
-        public MeterReadingController(IMeterReadingService _meterReadingService)
+        public IMeterReadingService _meterReadingService;
+        public MeterReadingController(IMeterReadingService meterReadingService)
         {
-            meterReadingService = _meterReadingService;
-        }
-        
-        private void AddReadingOnInfo(string id) // AddReading RENAME 
-        {
-            meterReadingService.AddReadingOnInfo(id);
+            _meterReadingService = meterReadingService;
         }
 
-        public IActionResult Info(string Id)
+        public IActionResult Show(string Id)
         {
-           
-            AddReadingOnInfo(Id);
-
-            var meterReadings = db.Meters
-                .Include(m => m.MeterReadings.OrderByDescending(r => r.CreatedAt))
-                .FirstOrDefault(m => m.Id == Id);
-
-            return View(meterReadings);
+            return View(_meterReadingService.GetMeterReadings(Id));
         }
     }
 }

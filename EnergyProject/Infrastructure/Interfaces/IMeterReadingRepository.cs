@@ -2,8 +2,9 @@
 
 namespace EnergyProject.Infrastructure.Interfaces
 {
-    public interface IMeterReadingRepository : IRepository<MeterReading>
+    public interface IMeterReadingRepository
     {
-        public void AddReadingOnInfo(string id, float inc);
+        public void AddReading(string id, float inc);
+        public List<MeterReading> GetMeterReadings(string Id);
     }
 }
