@@ -1,4 +1,5 @@
-﻿using EnergyProject.Infrastructure.Data;
+﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -17,23 +18,17 @@ namespace EnergyProject.Areas.Client.Controllers
     {
         ApplicationDbContext db;
         private readonly ILogger _logger;
-        public PaymentAccountController(ApplicationDbContext db_, ILogger<HomeController> logger)
+        private IPaymentAccountService _paymentAccountService;
+        public PaymentAccountController(ApplicationDbContext db_, ILogger<HomeController> logger, IPaymentAccountService paymentAccountService)
         {
             _logger = logger;
             db = db_;
+            _paymentAccountService = paymentAccountService;
         }
         public IActionResult Show()
         {
-            var pa = db.PaymentAccounts
-             .Where(P => P.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
-             .Include(P => P.Tariff)
-             .Include(P => P.Address)
-             .Include(P => P.Meter)
-             .Include(P => P.PowerStatus)
-             .ToList();
-
             _logger.LogInformation("Get paymentAccounts");
-            return View(pa);
+            return View(_paymentAccountService.GetAllFullData());
             
         }
         

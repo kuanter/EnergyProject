@@ -1,5 +1,7 @@
 using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces.Stuff;
 using EnergyProject.Application.Services;
+using EnergyProject.Application.Services.Stuff;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
 using EnergyProject.Infrastructure.Repositories;
@@ -52,15 +54,18 @@ namespace EnergyProject
             builder.Logging.AddConsole();
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPowerStatusService, PowerStatusService>();
             builder.Services.AddScoped<IMeterService, MeterService>();
             builder.Services.AddScoped<IMeterReadingService, MeterReadingService>();
             builder.Services.AddScoped<ITariffService, TariffService>();
-            
+            builder.Services.AddScoped<IPaymentAccountService, PaymentAccountService>();
+
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IMeterRepository, MeterRepository>();
             builder.Services.AddScoped<IMeterReadingRepository, MeterReadingRepository>();
+            builder.Services.AddScoped<IPaymentAccountRepository, PaymentAccountRepository>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 
