@@ -19,7 +19,7 @@ namespace EnergyProject.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Show()
         {
-            return View(await _tariffService.Show());
+            return View(await _tariffService.GetAll());
         }
 
         public async Task<IActionResult> Delete(string id)

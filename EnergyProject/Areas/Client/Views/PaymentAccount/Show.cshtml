@@ -39,39 +39,52 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model == null)
+                    @if (Model == null || !Model.Any())
                     {
                         <tr class="empty-row">
-                            <td colspan="6">There are no payment accounts yet.</td>
+                            <td colspan="7">There are no payment accounts yet.</td>
                         </tr>
                     }
                     else
                     {
-                        // todo delete func 
                         @foreach (var pa in Model)
                         {
                             <tr>
-                                <td data-label="Id">@pa.Id</td>
-                                <td data-label="User Id">@pa.UserId</td>
-                                <td data-label="Address Id">@pa.Address.City @pa.Address.Street @pa.Address.House @pa.Address.Apartment</td>
-                                <td data-label="Meter Id">@pa.Tariff.Name</td>
+                                <td data-label="Id" title="@pa.Id">@pa.Id.Substring(0, 8)...</td>
+
+                                <td data-label="User Id" title="@pa.UserId">@pa.UserId.Substring(0, 8)...</td>
+
+                                <td data-label="Address">
+                                    @if (pa.Address != null)
+                                    {
+                                        <span>@pa.Address.City, @pa.Address.Street @pa.Address.House, @pa.Address.Apartment</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: red;">Address not found</span>
+                                    }
+                                </td>
+
+                                <td data-label="Tariff">@(pa.Tariff?.Name ?? "No tariff")</td>
+
                                 @if (pa.Meter != null)
                                 {
-                                    <td data-label="Meter Id">@pa.Meter.SerialNumber </td>
-
+                                    <td data-label="Meter Id">@pa.Meter.SerialNumber</td>
                                 }
                                 else
                                 {
-                                    <td data-label="Meter Id">NULL </td>
+                                    <td data-label="Meter Id">NULL</td>
                                 }
-                                <td data-label="PowerStatus">@pa.PowerStatus.Status</td>
-                                <td data-label="Bill">
+
+                            
+                                <td data-label="PowerStatus">@(pa.PowerStatus?.Status ?? "Unknown")</td>
+
+                                <td data-label="Bills">
                                     <a class="user-btn user-btn-primary"
                                        asp-area="Client"
                                        asp-controller="Bill"
                                        asp-action="Show"
                                        asp-route-id="@pa.Id">
-                                       
                                         Bills
                                     </a>
                                 </td>

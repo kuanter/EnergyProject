@@ -12,7 +12,7 @@ namespace EnergyProject.Application.Services
             _repository = repository;
         }
 
-        public async Task<List<Tariff>> Show() 
+        public async Task<List<Tariff>> GetAll() 
         {
             return await _repository.GetAll();
         }

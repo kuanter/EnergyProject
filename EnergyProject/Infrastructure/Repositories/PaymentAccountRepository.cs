@@ -15,14 +15,14 @@ namespace EnergyProject.Infrastructure.Repositories
 {
     public class PaymentAccountRepository : IPaymentAccountRepository
     {
-        public readonly ApplicationDbContext db;
+        public readonly ApplicationDbContext _db;
         public PaymentAccountRepository(ApplicationDbContext context)
         {
-            db = context;
+            _db = context;
         }
         public List<PaymentAccount> GetAllFullData(string userId) 
         {
-            var pa = db.PaymentAccounts
+            var pa = _db.PaymentAccounts
              .Where(P => P.UserId == userId)
              .Include(P => P.Tariff)
              .Include(P => P.Address)
@@ -31,6 +31,11 @@ namespace EnergyProject.Infrastructure.Repositories
              .ToList();
 
             return pa;
+        }
+        public async Task AddAsync(PaymentAccount paymentAccount)
+        {
+            await _db.PaymentAccounts.AddAsync(paymentAccount);
+            await _db.SaveChangesAsync();
         }
     }
 }

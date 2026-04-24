@@ -31,100 +31,44 @@ namespace EnergyProject.Areas.Client.Controllers
             return View(_paymentAccountService.GetAllFullData());
             
         }
-        
-        public IActionResult Create() {
-            _logger.LogInformation("Used CreatePaymentAccountController");
 
-            var vm = new PaymentAccountCreateViewModel();
-            vm.TariffOptions = db.Tariffs.Select(t => new SelectListItem
-            {
-                Value = t.Id.ToString(),
-                Text = $" {t.Name}, Price per KWh: {t.PricePerKWh}"
-            }).ToList();
+        public async Task<IActionResult> Create() {
+            _logger.LogInformation("Used CreatePaymentAccountController");
 
             _logger.LogInformation("Get tariffs");
 
-            return View(vm);
+            return View(await _paymentAccountService.Create());
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePost(PaymentAccountCreateViewModel paymentAccountCreateViewModel)
+        public async Task<IActionResult> CreatePost(PaymentAccountCreateViewModel model)
         {
-            _logger.LogInformation("Used CreatePostPaymentAccountController");
+            _logger.LogInformation("Used CreatePost PaymentAccountController");
 
-            ModelState.Remove(nameof(paymentAccountCreateViewModel.AddressId));
-            bool exists = db.Addresses.Any(x =>
-                x.City == paymentAccountCreateViewModel.City &&
-                x.Street == paymentAccountCreateViewModel.Street &&
-                x.House == paymentAccountCreateViewModel.House &&
-                x.Apartment == paymentAccountCreateViewModel.Apartment
-            );
+            ModelState.Remove(nameof(model.AddressId));
 
-            _logger.LogInformation("Check address");
-
-            PaymentAccount paymentAccount = new PaymentAccount();
-            paymentAccount.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
-            paymentAccount.Id = Guid.NewGuid().ToString();
-
-            if (exists)
-            {
-                var address = db.Addresses.FirstOrDefault(x =>
-                    x.City == paymentAccountCreateViewModel.City &&
-                    x.Street == paymentAccountCreateViewModel.Street &&
-                    x.House == paymentAccountCreateViewModel.House &&
-                    x.Apartment == paymentAccountCreateViewModel.Apartment
-                );
-
-                _logger.LogInformation("Get address");
-
-                if (address.PaymentAccountId != null) 
-                {
-                    _logger.LogInformation("paymentAccount exists");
-                    ModelState.AddModelError(string.Empty, "A payment account already exists for this address.");
-                }
-                address.PaymentAccountId = paymentAccount.Id;
-
-                paymentAccountCreateViewModel.AddressId = address.Id;
-            }
-            else
-            {
-                Address a = new Address();
-                a.Apartment = paymentAccountCreateViewModel.Apartment;
-                a.City = paymentAccountCreateViewModel.City;
-                a.Street = paymentAccountCreateViewModel.Street;
-                a.House = paymentAccountCreateViewModel.House;
-                a.Id = Guid.NewGuid().ToString();
-                a.PaymentAccountId = paymentAccount.Id;
-                paymentAccountCreateViewModel.AddressId = a.Id;
-                db.Addresses.Add(a);
-                _logger.LogInformation("Add address");
-            }
-
-            paymentAccount.AddressId = paymentAccountCreateViewModel.AddressId;
-            paymentAccount.TariffId = paymentAccountCreateViewModel.TariffId;
-            foreach (var ps in db.PowerStatuses)
-            {
-                if (ps.Status == "Active")
-                {
-                    paymentAccount.PowerStatusId = ps.Id;
-                    break;
-                }
-            }
-
-            _logger.LogInformation("Set paymentAccount data");
-
-            ModelState.Remove("");
             if (!ModelState.IsValid)
             {
-                _logger.LogInformation("ModelState is invalid");
-                return RedirectToAction(nameof(Create));
+                var freshVm = await _paymentAccountService.Create();
+                model.TariffOptions = freshVm.TariffOptions;
+                return View("Create", model);
             }
-            db.PaymentAccounts.Add(paymentAccount);
-            _logger.LogInformation("Add paymentAccount");
 
-            await db.SaveChangesAsync();
-            _logger.LogInformation("Save paymentAccount");
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _paymentAccountService.CreateAsync(model, userId);
 
+            if (!result.Succeeded)
+            {
+                _logger.LogInformation("PaymentAccount creation failed: " + result.ErrorMessage);
+                ModelState.AddModelError(string.Empty, result.ErrorMessage);
+
+                var freshVm = await _paymentAccountService.Create();
+                model.TariffOptions = freshVm.TariffOptions;
+
+                return View("Create", model);
+            }
+
+            _logger.LogInformation("PaymentAccount created successfully");
             return RedirectToAction("Show", "PaymentAccount");
         }
 

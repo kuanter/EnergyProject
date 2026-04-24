@@ -23,7 +23,7 @@
         }
 
         public PaymentAccount(string userId, string addressId, string tariffId,
-            string? meterId, string powerStatusId)
+             string powerStatusId, string? meterId)
         {
             Id = Guid.NewGuid().ToString();
             UserId = userId;

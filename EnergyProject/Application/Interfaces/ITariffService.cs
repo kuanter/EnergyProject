@@ -5,7 +5,7 @@ namespace EnergyProject.Application.Interfaces
 {
     public interface ITariffService
     {
-        public Task<List<Tariff>> Show();
+        public Task<List<Tariff>> GetAll();
         public Task<Tariff> GetById(string Id);
         public Task Create(Tariff t);
         public Task Update(Tariff t);

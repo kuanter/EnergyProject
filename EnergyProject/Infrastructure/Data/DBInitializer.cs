@@ -19,11 +19,28 @@ namespace EnergyProject.Infrastructure.Data
             try
             {
                 await SeedRolesAsync(roleManager);
-                await SeedAdminAsync(userManager);
                 await SeedTariffsAsync(db);
-                await SeedAddressesAsync(db);
                 await SeedPowerStatusesAsync(db);
+                await SeedAddressesAsync(db);
+                await db.SaveChangesAsync();
 
+             
+                await SeedAdminAsync(userManager);
+                await SeedClientAsync(userManager, db);
+                await db.SaveChangesAsync();
+
+             
+                await SeedPaymentAccountsAsync(db, userManager);
+                await db.SaveChangesAsync();
+
+              
+                await SeedMetersAsync(db);
+                await SeedCardDatasAsync(db, userManager);
+                await db.SaveChangesAsync();
+
+                
+                await SeedMeterReadingsAsync(db);
+                await SeedBillsAsync(db);
                 await db.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -64,6 +81,32 @@ namespace EnergyProject.Infrastructure.Data
             if (!await userManager.IsInRoleAsync(user, "Admin"))
             {
                 await userManager.AddToRoleAsync(user, "Admin");
+            }
+        }
+
+        private static async Task SeedClientAsync(UserManager<User> userManager, ApplicationDbContext db)
+        {
+            User? user = await userManager.FindByEmailAsync("client@gmail.com");
+
+            if (user == null)
+            {
+                user = new User("client@gmail.com", "client@gmail.com", true);
+
+                var result = await userManager.CreateAsync(user, "1Qwer$");
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
+                }
+            }
+
+            if (!await userManager.IsInRoleAsync(user, "Client"))
+            {
+                await userManager.AddToRoleAsync(user, "Client");
+            }
+
+            if (!await db.Set<Client>().AnyAsync(c => c.UserId == user.Id))
+            {
+                db.Set<Client>().Add(new Client(user.Id));
             }
         }
 
@@ -177,6 +220,111 @@ namespace EnergyProject.Infrastructure.Data
                 );
             }
         }
-        
+        private static async Task SeedPaymentAccountsAsync(ApplicationDbContext db, UserManager<User> userManager)
+        {
+            var client = await userManager.FindByEmailAsync("client@gmail.com");
+           
+            var address = await db.Addresses.FirstOrDefaultAsync(a => a.City == "Bratislava" && a.PaymentAccountId == null);
+
+            var tariff = await db.Tariffs.FirstOrDefaultAsync(t => t.Name == "Standard");
+            var powerStatus = await db.PowerStatuses.FirstOrDefaultAsync(p => p.Status == "Active");
+
+            if (client != null && address != null && tariff != null && powerStatus != null)
+            {
+                if (!await db.PaymentAccounts.AnyAsync(pa => pa.UserId == client.Id))
+                {
+                    var paymentAccount = new PaymentAccount(
+                        client.Id,
+                        address.Id,
+                        tariff.Id,
+                        null,
+                        powerStatus.Id
+                    );
+
+                    db.PaymentAccounts.Add(paymentAccount);
+                
+                    address.PaymentAccountId = paymentAccount.Id;
+                }
+            }
+        }
+
+        private static async Task SeedMetersAsync(ApplicationDbContext db)
+        {
+            var account = await db.PaymentAccounts.FirstOrDefaultAsync();
+
+            if (account != null)
+            {
+                if (!await db.Set<Meter>().AnyAsync(m => m.PaymentAccountId == account.Id))
+                {
+                    var meter = new Meter("SN-987654321", account.Id);
+                    meter.IsActive = true;
+                    db.Set<Meter>().Add(meter);
+
+                    account.MeterId = meter.Id; 
+                }
+            }
+        }
+
+        private static async Task SeedMeterReadingsAsync(ApplicationDbContext db)
+        {
+            var meter = await db.Set<Meter>().FirstOrDefaultAsync();
+
+            if (meter != null)
+            {
+                if (!await db.Set<MeterReading>().AnyAsync(mr => mr.MeterId == meter.Id))
+                {
+                    db.Set<MeterReading>().Add(new MeterReading(150.5f, meter.Id) { CreatedAt = DateTime.Now.AddMonths(-2) });
+                    db.Set<MeterReading>().Add(new MeterReading(310.2f, meter.Id) { CreatedAt = DateTime.Now.AddMonths(-1) });
+                }
+            }
+        }
+
+        private static async Task SeedCardDatasAsync(ApplicationDbContext db, UserManager<User> userManager)
+        {
+            var client = await userManager.FindByEmailAsync("client@gmail.com");
+            var address = await db.Addresses.FirstOrDefaultAsync();
+
+            if (client != null && address != null)
+            {
+                if (!await db.Set<CardData>().AnyAsync(cd => cd.UserId == client.Id))
+                {
+                    db.Set<CardData>().Add(
+                        new CardData(4111111111111111, 12, 2028, "JOHN DOE", true, address.Id, client.Id)
+                    );
+                }
+            }
+        }
+
+        private static async Task SeedBillsAsync(ApplicationDbContext db)
+        {
+            var account = await db.PaymentAccounts.FirstOrDefaultAsync();
+            var card = await db.Set<CardData>().FirstOrDefaultAsync();
+
+            if (account != null)
+            {
+                if (!await db.Set<Bill>().AnyAsync(b => b.PaymentAccountId == account.Id))
+                {
+               
+                    db.Set<Bill>().Add(new Bill(
+                        159.7f,
+                        718.65f,
+                        "Paid",
+                        DateTime.Now.AddMonths(-1),
+                        account.Id,
+                        card?.Id
+                    ));
+
+                    db.Set<Bill>().Add(new Bill(
+                        120.0f,
+                        540.0f,
+                        "Pending",
+                        DateTime.Now,
+                        account.Id,
+                        null
+                    ));
+                }
+            }
+        }
+
     }
 }
