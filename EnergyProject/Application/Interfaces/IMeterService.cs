@@ -8,5 +8,7 @@ namespace EnergyProject.Application.Interfaces
         public Task<List<Meter>> Show();
         public Task Create(MeterCreateViewModel meterCreateViewModel);
         public Task SwitchMeterStatus(string Id);
+
+        public Task<Meter> GetMeterWithMeterReadings(string PaymentAccountId);
     }
 }

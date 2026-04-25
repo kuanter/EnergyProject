@@ -70,8 +70,8 @@ namespace EnergyProject.Application.Services
                 userId,
                 address.Id,
                 model.TariffId,
-                null,
-                activeStatus.Id
+                activeStatus.Id,
+                null
             );
 
             await _paymentAccountRepository.AddAsync(paymentAccount);
