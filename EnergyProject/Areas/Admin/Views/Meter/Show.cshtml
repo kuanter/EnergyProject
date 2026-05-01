@@ -25,25 +25,25 @@
     <div class="card mt-24">
         <div class="table-wrapper">
             <table class="user-table">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Serial Number</th>
-                        <th>Install Date</th>
-                        <th>Is Active</th>
-                        <th>Payment Account Id</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
                 <tbody>
                     @if (Model == null)
                     {
-                        <tr class="empty-row">
-                            <td colspan="6">There are no payment accounts yet.</td>
-                        </tr>
+                        <div class="alert alert-info text-center" role="alert">
+                            <h4>No meters available</h4>
+                        </div>
                     }
                     else
                     {
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Serial Number</th>
+                                <th>Install Date</th>
+                                <th>Is Active</th>
+                                <th>Payment Account Id</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
                         @foreach (var m in Model)
                         {
                             <tr>

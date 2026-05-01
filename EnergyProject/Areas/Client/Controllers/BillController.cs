@@ -1,4 +1,7 @@
-﻿using EnergyProject.Infrastructure.Data;
+﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces.Stuff;
+using EnergyProject.Infrastructure.Data;
+using EnergyProject.Infrastructure.Interfaces;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace EnergyProject.Areas.Client.Controllers
 {
@@ -16,120 +18,29 @@ namespace EnergyProject.Areas.Client.Controllers
     {
         ApplicationDbContext db;
         private readonly ILogger _logger;
-        public BillController(ApplicationDbContext db_, ILogger<HomeController> logger)
+        private readonly IBillService _billService;
+        private readonly IConsumptionService _consumptionService;
+        public BillController(ApplicationDbContext db_, ILogger<HomeController> logger, IBillService billService, IConsumptionService consumptionService)
         {
             db = db_;
             _logger = logger;
+            _billService = billService;
+            _consumptionService = consumptionService;
         }
-     
-        public IActionResult Show(string Id)
+
+
+        public async Task<IActionResult> Show(string Id)
         {
-            _logger.LogInformation("Used ShowBillController");
+            List<Bill> bills = await _billService.GetBill(Id);
+            ConsumptionViewModel consumptionViewModel = await _consumptionService.GetConsumptionViewModel(Id, bills);
 
-            var bills = db.Bills
-                .Where(b => b.PaymentAccountId == Id)
-                .Include(b => b.CardData)
-                .ToList();
-
-            float lastBillAmount = 0;    
-            float lastReadingAmount = 0;
-
-            _logger.LogInformation("Get bills");
-
-            var lastBill = db.Bills
-                .Where(b => b.PaymentAccountId == Id)
-                .Where(b => b.Status == "Paid")
-                .OrderByDescending(b => b.GeneratedAt)
-                .FirstOrDefault();
-
-            _logger.LogInformation("Get lastBill");
-
-            var meter = db.Meters
-                .Include(m => m.MeterReadings)
-                .Where(m => m.PaymentAccountId == Id)
-                .FirstOrDefault();
-
-            _logger.LogInformation("Get meter");
-
-            if (meter != null)
-            {
-                var lastMeterReading = db.MeterReadings
-                    .Where(mr => mr.MeterId == meter.Id) 
-                    .OrderByDescending(m => m.CreatedAt)
-                    .FirstOrDefault();
-
-                _logger.LogInformation("Get lastMeterReading");
-
-                if (lastMeterReading != null)
-                {
-                    lastReadingAmount = lastMeterReading.ValueKWh;
-                }
-                else
-                {
-                    _logger.LogInformation("lastMeterReading is null");
-                }
-
-                if (lastBill != null)
-                {
-
-                    var lastPaidReading = db.MeterReadings
-                        .Where(mr => mr.MeterId == meter.Id && mr.CreatedAt <= lastBill.GeneratedAt)
-                        .OrderByDescending(mr => mr.CreatedAt)
-                        .FirstOrDefault();
-
-                    _logger.LogInformation("Get lastPaidReading");
-
-                    if (lastPaidReading != null)
-                        lastBillAmount = lastPaidReading.ValueKWh;
-                }
-                else
-                {
-                    _logger.LogInformation("lastBill is null");
-                }
-            }
-            else
-            {
-                _logger.LogInformation("meter is null");
-            }
-
-            float totalAmount = lastReadingAmount - lastBillAmount; 
-            if (totalAmount < 0) totalAmount = 0;                   
-            totalAmount = MathF.Round(totalAmount, 2);            
-
-            var pa = db.PaymentAccounts
-                .Where(p => p.Id == Id)
-                .FirstOrDefault();
-
-            _logger.LogInformation("Get paymentAccount");
-
-            if (pa == null)
-            {
-                _logger.LogInformation("paymentAccount is null");
-                return NotFound();
-            }
-
-            var tariff = db.Tariffs
-                .Where(p => p.Id == pa.TariffId)
-                .FirstOrDefault();
-
-            _logger.LogInformation("Get tariff");
-
-            if (tariff == null)
-            {
-                _logger.LogInformation("tariff is null");
-                return NotFound();
-            } 
-
-            float amountToPay = MathF.Round(totalAmount * tariff.PricePerKWh, 2);
-
-
-            TempData["Amount"] = amountToPay.ToString(CultureInfo.InvariantCulture);   
-            TempData["Consumption"] = totalAmount.ToString(CultureInfo.InvariantCulture);
+            TempData["Amount"] = consumptionViewModel.Amount.ToString(CultureInfo.InvariantCulture);
+            TempData["Consumption"] = consumptionViewModel.Consumption.ToString(CultureInfo.InvariantCulture);
             TempData["PaymentAccount"] = Id.ToString();
 
             _logger.LogInformation("Set TempData");
 
-            ViewBag.DueAmount = amountToPay;
+            ViewBag.DueAmount = consumptionViewModel.Amount;
 
             return View(bills);
         }
@@ -138,8 +49,8 @@ namespace EnergyProject.Areas.Client.Controllers
         {
             _logger.LogInformation("Used CreateBillController");
 
-            TempData.Keep("PaymentAccount"); 
-            TempData.Keep("Consumption");   
+            TempData.Keep("PaymentAccount");
+            TempData.Keep("Consumption");
             TempData.Keep("Amount");
 
             _logger.LogInformation("Keep TempData");
@@ -179,7 +90,7 @@ namespace EnergyProject.Areas.Client.Controllers
             bill.Id = Guid.NewGuid().ToString();
             bill.Status = "Paid";
             bill.GeneratedAt = DateTime.Now;
-            bill.PaymentAccountId = TempData.Peek("PaymentAccount")?.ToString(); 
+            bill.PaymentAccountId = TempData.Peek("PaymentAccount")?.ToString();
             bill.ConsumptionKWh = float.Parse(TempData["Consumption"]?.ToString() ?? "0", CultureInfo.InvariantCulture);
             bill.Amount = float.Parse(TempData.Peek("Amount")?.ToString() ?? "0", CultureInfo.InvariantCulture);
 

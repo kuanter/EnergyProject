@@ -237,8 +237,8 @@ namespace EnergyProject.Infrastructure.Data
                         client.Id,
                         address.Id,
                         tariff.Id,
-                        null,
-                        powerStatus.Id
+                        powerStatus.Id,
+                        null
                     );
 
                     db.PaymentAccounts.Add(paymentAccount);

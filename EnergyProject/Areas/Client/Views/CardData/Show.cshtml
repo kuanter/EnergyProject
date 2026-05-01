@@ -21,31 +21,27 @@
     <div class="card mt-24">
         <div class="table-wrapper">
             <table class="user-table">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>User Id</th>
-                        <th>Card Number</th>
-                        <th>Card Name</th>
-                        <th>Default</th>
-                        <th>Set as Default</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
                 <tbody>
                     @if (Model == null)
                     {
-                        <tr class="empty-row">
-                            <td colspan="6">There are no payment accounts yet.</td>
-                        </tr>
+                        <div class="alert alert-info text-center" role="alert">
+                            <h4>No CardData available</h4>
+                        </div>
                     }
                     else
                     {
+                        <thead>
+                            <tr>
+                                <th>Card Number</th>
+                                <th>Card Name</th>
+                                <th>Default</th>
+                                <th>Set as Default</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
                         @foreach (var c in Model)
                         {
                             <tr>
-                                <td data-label="Id">@c.Id</td>
-                                <td data-label="User Id">@c.UserId</td>
                                 <td data-label="Address Id">@c.CardNumber</td>
                                 <td data-label="Meter Id">@c.CardName</td>
                                 <td data-label="Meter Id">@c.IsDefault</td>

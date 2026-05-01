@@ -27,37 +27,34 @@
     <div class="card mt-24">
         <div class="table-wrapper">
             <table class="user-table">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>User Id</th>
-                        <th>Address</th>
-                        <th>Tariff</th>
-                        <th>Meter Id</th>
-                        <th>Power status Id</th>
-                        <th>Bills</th>
-                    </tr>
-                </thead>
-                <tbody>
+               
                     @if (Model == null || !Model.Any())
                     {
-                        <tr class="empty-row">
-                            <td colspan="7">There are no payment accounts yet.</td>
-                        </tr>
+                        <div class="alert alert-info text-center" role="alert">
+                            <h4>No payment account available</h4>
+                        </div>
                     }
                     else
                     {
+                    
+                        <thead>
+                            <tr>
+                                <th>Address</th>
+                                <th>Tariff</th>
+                                <th>Meter Id</th>
+                                <th>Power status</th>
+                                <th>Bills</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         @foreach (var pa in Model)
                         {
                             <tr>
-                                <td data-label="Id" title="@pa.Id">@pa.Id.Substring(0, 8)...</td>
-
-                                <td data-label="User Id" title="@pa.UserId">@pa.UserId.Substring(0, 8)...</td>
 
                                 <td data-label="Address">
                                     @if (pa.Address != null)
                                     {
-                                        <span>@pa.Address.City, @pa.Address.Street @pa.Address.House, @pa.Address.Apartment</span>
+                                        <span>@pa.Address.City, @pa.Address.Street, @pa.Address.House, @pa.Address.Apartment</span>
                                     }
                                     else
                                     {
@@ -85,14 +82,17 @@
                                        asp-controller="Bill"
                                        asp-action="Show"
                                        asp-route-id="@pa.Id">
-                                        Bills
+                                        Get
                                     </a>
                                 </td>
                             </tr>
+                            
                         }
+                        </tbody>
                     }
-                </tbody>
+               
             </table>
         </div>
     </div>
 </section>
+

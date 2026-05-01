@@ -23,6 +23,7 @@ namespace EnergyProject.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Show()
         {
+
             return View(await _meterService.Show());
         }
        

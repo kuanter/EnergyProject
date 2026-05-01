@@ -20,6 +20,7 @@ namespace EnergyProject.Areas.Admin.Controllers
 
         public IActionResult Show(string Id)
         {
+
             return View(_meterReadingService.GetMeterReadings(Id));
         }
     }

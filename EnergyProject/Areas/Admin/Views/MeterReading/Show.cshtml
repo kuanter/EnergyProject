@@ -12,7 +12,8 @@
     <div class="toolbar">
         <div>
             <h1 class="h1">Meter Readings</h1>
-            <p class="lead">List of generated readings for the selected meter.</p>
+            <p class="lead">List of generated readings for the selected meter</p>
+            <p>ID:  @readings.FirstOrDefault()?.MeterId </p>
         </div>
 
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -29,39 +30,32 @@
         </div>
     </div>
 
-    @if (!readings.Any())
+    @if (Model != null && Model.Any())
     {
-        <div class="alert alert-info text-center">
-            <h4>No readings yet</h4>
-            <p>Turn on the meter and refresh this page to generate the first reading.</p>
-        </div>
-    }
-    else
-    {
-        <table class="table">
+        <table class="table table-striped table-hover">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Date</th>
                     <th>Value (kWh)</th>
-                    <th>Meter Id</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var reading in readings)
+                @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@reading.Id</td>
-                        <td>@reading.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss")</td>
-                        <td><span class="chip chip-dark">@reading.ValueKWh kWh</span></td>
-                        <td>@reading.MeterId</td>
+                        <td>@item.Id</td>
+                        <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                        <td><span class="chip chip-dark">@item.ValueKWh kWh</span></td>
                     </tr>
                 }
             </tbody>
         </table>
-
-        <div class="mt-3 text-muted small">
-            A new reading is generated every time this page is refreshed while the meter is active.
+    }
+    else
+    {
+        <div class="alert alert-info text-center" role="alert">
+            <h4>No readings available</h4>
         </div>
     }
 </section>

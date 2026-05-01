@@ -2,34 +2,54 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<section class="page">
-    <div class="page-header">
-        <div>
-            <p class="eyebrow">Admin</p>
-            <h1 class="h1">Dashboard</h1>
-            <p class="lead">Quick access to the main management screens.</p>
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4">Admin Dashboard</h1>
+            <p class="lead">Welcome to the Energy Project management panel.</p>
+            <hr />
         </div>
     </div>
 
-    <div class="home-grid mt-32">
-        <div class="card-header"><span class="card-pill">Manage Users</span></div>
-        <a class="card" asp-area="Admin" asp-controller="Client" asp-action="Show">
-            <p class="card-text">Search and remove user accounts.</p>
-        </a>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title mt-2">Users</h5>
+                    <p class="card-text text-muted">Manage system users, clients, and admins.</p>
+                    <a asp-controller="User" asp-action="Show" class="btn btn-outline-secondary mt-2">Manage Users</a>
+                </div>
+            </div>
+        </div>
 
-        <div class="card-header"><span class="card-pill">Power Status</span></div>
-        <a class="card" asp-area="Admin" asp-controller="PowerStatus" asp-action="Show">
-            <p class="card-text">Add and update planned outages and status changes.</p>
-        </a>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title mt-2">Meters</h5>
+                    <p class="card-text text-muted">Manage client meters and view details.</p>
+                    <a asp-controller="Meter" asp-action="Show" class="btn btn-outline-primary mt-2">Manage Meters</a>
+                </div>
+            </div>
+        </div>
 
-        <div class="card-header"><span class="card-pill">Tariffs</span></div>
-        <a class="card" asp-area="Admin" asp-controller="Tariff" asp-action="Show">
-            <p class="card-text">Create, update and remove tariffs.</p>
-        </a>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title mt-2">Power Status</h5>
+                    <p class="card-text text-muted">Update area power availability and outages.</p>
+                    <a asp-controller="PowerStatus" asp-action="Show" class="btn btn-outline-warning mt-2">Manage Power Status</a>
+                </div>
+            </div>
+        </div>
 
-        <div class="card-header"><span class="card-pill">Meters</span></div>
-        <a class="card" asp-area="Admin" asp-controller="Meter" asp-action="Show">
-            <p class="card-text">Manage meters and link them to payment accounts.</p>
-        </a>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title mt-2">Tariffs</h5>
+                    <p class="card-text text-muted">Configure pricing and energy tariffs.</p>
+                    <a asp-controller="Tariff" asp-action="Show" class="btn btn-outline-success mt-2">Manage Tariffs</a>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+</div>

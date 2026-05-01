@@ -55,6 +55,8 @@ namespace EnergyProject
             builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
             builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+            builder.Services.AddScoped<IConsumptionService, ConsumptionService>();
+
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IPowerStatusService, PowerStatusService>();
             builder.Services.AddScoped<IMeterService, MeterService>();
@@ -72,7 +74,7 @@ namespace EnergyProject
             builder.Services.AddScoped<IBillRepository, BillRepository>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-
+          
             //List<string> Roles = new List<string> { "Admin", "Client" };
 
 

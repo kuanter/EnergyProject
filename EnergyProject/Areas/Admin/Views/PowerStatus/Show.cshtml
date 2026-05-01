@@ -11,27 +11,33 @@
     </div>
     <a asp-area="Admin" asp-controller="PowerStatus" asp-action="Create" class="btn">Add Power Status</a>
     <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Status</th>
-                <th>Reason</th>
-                <th>UpdatedAt</th>
-                <th>Delete Power Status</th>
-                <th>Update Power Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var PowerStatus in Model)
-            {
-                <tr>
-                    <td>@PowerStatus.Id</td>
-                    <td>@PowerStatus.Status</td>
-                    <td><span class="chip chip-dark">@PowerStatus.Reason</span></td>
-                    <td>@PowerStatus.UpdatedAt</td>
-                    <td><a class="btn" asp-area="Admin" asp-controller="PowerStatus" asp-action="Delete" asp-route-Id="@PowerStatus.Id">Delete</a></td>
-                    <td><a class="btn" asp-area="Admin" asp-controller="PowerStatus" asp-action="Update" asp-route-Id="@PowerStatus.Id">Update</a></td>
-                </tr>
+           <tbody>
+            @if(Model == null){
+                <div class="alert alert-info text-center" role="alert">
+                    <h4>No power statuses available</h4>
+                </div>
+            }else{
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>UpdatedAt</th>
+                        <th>Delete Power Status</th>
+                        <th>Update Power Status</th>
+                    </tr>
+                </thead>
+                @foreach (var PowerStatus in Model)
+                {
+                    <tr>
+                        <td>@PowerStatus.Id</td>
+                        <td>@PowerStatus.Status</td>
+                        <td><span class="chip chip-dark">@PowerStatus.Reason</span></td>
+                        <td>@PowerStatus.UpdatedAt</td>
+                        <td><a class="btn" asp-area="Admin" asp-controller="PowerStatus" asp-action="Delete" asp-route-Id="@PowerStatus.Id">Delete</a></td>
+                        <td><a class="btn" asp-area="Admin" asp-controller="PowerStatus" asp-action="Update" asp-route-Id="@PowerStatus.Id">Update</a></td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
