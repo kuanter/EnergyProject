@@ -64,6 +64,7 @@ namespace EnergyProject
             builder.Services.AddScoped<ITariffService, TariffService>();
             builder.Services.AddScoped<IPaymentAccountService, PaymentAccountService>();
             builder.Services.AddScoped<IBillService, BillService>();
+            builder.Services.AddScoped<ICardDataService, CardDataService>();
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IMeterRepository, MeterRepository>();
@@ -72,7 +73,9 @@ namespace EnergyProject
             builder.Services.AddScoped<IPowerStatusRepository, PowerStatusRepository>();
             builder.Services.AddScoped<IPaymentAccountRepository, PaymentAccountRepository>();
             builder.Services.AddScoped<IBillRepository, BillRepository>();
+            builder.Services.AddScoped<ICardDataRepository, CardDataRepository>();
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
 
           
             //List<string> Roles = new List<string> { "Admin", "Client" };

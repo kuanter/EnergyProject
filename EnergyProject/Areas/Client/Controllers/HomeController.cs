@@ -13,11 +13,9 @@ namespace EnergyProject.Areas.Client.Controllers
     public class HomeController : Controller
     {
 
-        ApplicationDbContext db;
         private readonly ILogger _logger;
-        public HomeController(ApplicationDbContext db_, ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger)
         {
-            db = db_;
             _logger = logger;
         }
         public IActionResult Home()

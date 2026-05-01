@@ -1,4 +1,5 @@
-﻿using EnergyProject.Infrastructure.Data;
+﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -16,21 +17,19 @@ namespace EnergyProject.Areas.Client.Controllers
 
         ApplicationDbContext db;
         private readonly ILogger _logger;
-        public CardDataController(ApplicationDbContext db_, ILogger<HomeController> logger)
+        private readonly ICardDataService _cardDataService;
+        public CardDataController(ApplicationDbContext db_, ILogger<HomeController> logger, ICardDataService cardDataService)
         {
             db = db_;
             _logger = logger;
+            _cardDataService = cardDataService;
         }
         public IActionResult Show()
         {
             _logger.LogInformation("Used ShowCardDataController");
-
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var Cards = db.CardDatas.Where(u => u.UserId == currentUserId).ToList();
-
             _logger.LogInformation("Get cards");
 
-            return View(Cards);
+            return View(_cardDataService.GetByCurrUser());
         }
 
         public IActionResult Delete(string id)
