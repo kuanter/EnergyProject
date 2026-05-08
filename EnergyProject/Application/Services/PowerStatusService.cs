@@ -1,38 +1,37 @@
 ﻿using EnergyProject.Application.Interfaces;
 using EnergyProject.Infrastructure.Interfaces;
+using EnergyProject.Infrastructure.Repositories;
 using EnergyProject.Models;
 
 namespace EnergyProject.Application.Services
 {
     public class PowerStatusService : IPowerStatusService
     {
-        private IRepository<PowerStatus> _repository;
-        public PowerStatusService(IRepository<PowerStatus> repository)
+        private IPowerStatusRepository _powerStatusRepository;
+        public PowerStatusService(IPowerStatusRepository powerStatusRepository)
         {
-            _repository = repository;
+            _powerStatusRepository = powerStatusRepository;
         }
         public async Task<List<PowerStatus>> Show() 
         {
-            return await _repository.GetAll();
+            return await _powerStatusRepository.GetAll();
         }
         public async Task<PowerStatus> GetById(string Id) 
         {
-            return await _repository.GetById(Id);
+            return await _powerStatusRepository.GetById(Id);
         }
-        public async Task Create(PowerStatus t) 
+        public async Task Create(PowerStatus ps) 
         {
-            t.Id = Guid.NewGuid().ToString();
-            t.UpdatedAt = DateTime.Now;
-            await _repository.Create(t);
+            await _powerStatusRepository.Create(ps);
         }
-        public async Task Update(PowerStatus t) 
+        public async Task Update(PowerStatus ps) 
         {
-            t.UpdatedAt = DateTime.Now;
-            await _repository.Update(t);
+            ps.UpdatedAt = DateTime.Now;
+            await _powerStatusRepository.Update(ps);
         }
         public async Task Delete(string id) 
         { 
-            await _repository.Delete(await _repository.GetById(id));
+            await _powerStatusRepository.Delete(await _powerStatusRepository.GetById(id));
         }
     }
 }

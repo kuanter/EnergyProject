@@ -28,7 +28,7 @@ namespace EnergyProject.Areas.Client.Controllers
         public IActionResult Show()
         {
             _logger.LogInformation("Get paymentAccounts");
-            return View(_paymentAccountService.GetAllFullData());
+            return View(_paymentAccountService.GetListByCurrUser());
             
         }
 
@@ -53,9 +53,7 @@ namespace EnergyProject.Areas.Client.Controllers
                 model.TariffOptions = freshVm.TariffOptions;
                 return View("Create", model);
             }
-
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var result = await _paymentAccountService.CreateAsync(model, userId);
+            var result = await _paymentAccountService.CreateAsync(model);
 
             if (!result.Succeeded)
             {

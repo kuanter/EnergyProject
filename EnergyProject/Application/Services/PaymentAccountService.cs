@@ -24,10 +24,10 @@ namespace EnergyProject.Application.Services
             _addressRepository = addressRepository;
             _powerStatusRepository = powerStatusRepository;
         }
-        public List<PaymentAccount> GetAllFullData () 
+        public List<PaymentAccount> GetListByCurrUser() 
         { 
             string userId = _currentUserService.GetRequiredUserId();
-            return _paymentAccountRepository.GetAllFullData(userId);
+            return _paymentAccountRepository.GetListByUserIdFullData(userId);
         }
 
         public async Task<PaymentAccountCreateViewModel> Create()
@@ -46,11 +46,11 @@ namespace EnergyProject.Application.Services
             return vm;
         }
 
-        public async Task<(bool Succeeded, string ErrorMessage)> CreateAsync(PaymentAccountCreateViewModel model, string userId)
+        public async Task<(bool Succeeded, string ErrorMessage)> CreateAsync(PaymentAccountCreateViewModel model)
         {
-            var activeStatus = await _powerStatusRepository.GetByStatusAsync("Active");
-            if (activeStatus == null) return (false, "Active power status not found in DB.");
-            var address = await _addressRepository.GetByDetailsAsync(model.City, model.Street, model.House, model.Apartment);
+            string userId = _currentUserService.GetRequiredUserId();
+            var activeStatus = await _powerStatusRepository.GetByStatus("Active");
+            var address = await _addressRepository.GetByDetails(model.City, model.Street, model.House, model.Apartment);
 
             if (address != null)
             {
@@ -62,22 +62,16 @@ namespace EnergyProject.Application.Services
             else
             {
                 address = new Address(model.City, model.Street, model.House, model.Apartment, null);
-                await _addressRepository.AddAsync(address);
-               
+                await _addressRepository.Create(address);
+
             }
 
-            var paymentAccount = new PaymentAccount(
-                userId,
-                address.Id,
-                model.TariffId,
-                activeStatus.Id,
-                null
-            );
+            var paymentAccount = new PaymentAccount(userId,address.Id,model.TariffId,activeStatus.Id);
 
-            await _paymentAccountRepository.AddAsync(paymentAccount);
+            await _paymentAccountRepository.Create(paymentAccount);
 
             address.PaymentAccountId = paymentAccount.Id;
-            await _addressRepository.UpdateAsync(address);
+            await _addressRepository.Update(address);
 
             return (true, string.Empty);
         }

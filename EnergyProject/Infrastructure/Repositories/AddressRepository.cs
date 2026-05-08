@@ -5,16 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnergyProject.Infrastructure.Repositories
 {
-    public class AddressRepository : IAddressRepository
+    public class AddressRepository : Repository<Address>, IAddressRepository
     {
-        private readonly ApplicationDbContext _db;
 
-        public AddressRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
+        public AddressRepository(ApplicationDbContext db) : base(db){}
 
-        public async Task<Address?> GetByDetailsAsync(string city, string street, string house, string apartment)
+        public async Task<Address?> GetByDetails(string city, string street, string house, string apartment)
         {
             return await _db.Addresses.FirstOrDefaultAsync(x =>
                 x.City == city &&
@@ -23,16 +19,6 @@ namespace EnergyProject.Infrastructure.Repositories
                 x.Apartment == apartment);
         }
 
-        public async Task AddAsync(Address address)
-        {
-            await _db.Addresses.AddAsync(address);
-            await _db.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Address address)
-        {
-            _db.Addresses.Update(address);
-            await _db.SaveChangesAsync();
-        }
+      
     }
 }

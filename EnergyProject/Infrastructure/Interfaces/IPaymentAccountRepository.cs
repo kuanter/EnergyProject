@@ -2,9 +2,8 @@
 
 namespace EnergyProject.Infrastructure.Interfaces
 {
-    public interface IPaymentAccountRepository
+    public interface IPaymentAccountRepository : IRepository<PaymentAccount>
     {
-        public List<PaymentAccount> GetAllFullData(string userId);
-        public Task AddAsync(PaymentAccount paymentAccount);
+        public List<PaymentAccount> GetListByUserIdFullData(string userId);
     }
 }

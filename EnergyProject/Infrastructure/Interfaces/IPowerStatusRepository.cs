@@ -2,8 +2,8 @@
 
 namespace EnergyProject.Infrastructure.Interfaces
 {
-    public interface IPowerStatusRepository
+    public interface IPowerStatusRepository : IRepository<PowerStatus>
     {
-        public Task<PowerStatus?> GetByStatusAsync(string statusName);
+        public Task<PowerStatus> GetByStatus(string statusName);
     }
 }

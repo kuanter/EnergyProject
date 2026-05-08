@@ -1,12 +1,7 @@
-﻿using EnergyProject.Application.Interfaces;
-using EnergyProject.Infrastructure.Data;
-using EnergyProject.Models;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace EnergyProject.Areas.Client.Controllers
 {
@@ -14,205 +9,64 @@ namespace EnergyProject.Areas.Client.Controllers
     [Authorize(Policy = "ClientOnly")]
     public class CardDataController : Controller
     {
-
-        ApplicationDbContext db;
         private readonly ILogger _logger;
         private readonly ICardDataService _cardDataService;
-        public CardDataController(ApplicationDbContext db_, ILogger<HomeController> logger, ICardDataService cardDataService)
+
+        public CardDataController(ILogger<HomeController> logger, ICardDataService cardDataService)
         {
-            db = db_;
             _logger = logger;
             _cardDataService = cardDataService;
         }
+
         public IActionResult Show()
         {
             _logger.LogInformation("Used ShowCardDataController");
-            _logger.LogInformation("Get cards");
-
-            return View(_cardDataService.GetByCurrUser());
+            return View(_cardDataService.GetListByCurrUser());
         }
 
-        public IActionResult Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            _logger.LogInformation("Used DeleteCardDataController");
-
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cd = db.CardDatas.FirstOrDefault(c => c.Id == id && c.UserId == currentUserId);
-
-            _logger.LogInformation("Get card");
-
-            if (cd == null)
-            {
-                _logger.LogInformation("card is null");
-                return NotFound();
-            }
-            db.CardDatas.Remove(cd);
-
-            _logger.LogInformation("Delete card");
-
-            db.SaveChanges();
-
-            _logger.LogInformation("Save card");
-
-            return RedirectToAction("Show");
+            await _cardDataService.Delete(id);
+            return RedirectToAction(nameof(Show));
         }
 
-        public IActionResult SetAsDefault(string id)
+        public async Task<IActionResult> SetAsDefault(string id)
         {
             _logger.LogInformation("Used SetAsDefaultCardDataController");
-            var user = db.Users
-                .Include(u => u.Cards).Where(u => u.Id == User.FindFirstValue(ClaimTypes.NameIdentifier)).First();
-
-            _logger.LogInformation("Get user");
-
-            foreach (var cd in user.Cards) 
-            {
-                cd.IsDefault = false;
-            }
-
-            _logger.LogInformation("Reset cards");
-
-            var card = db.CardDatas.Find(id);
-
-            if (card == null)
-            {
-                _logger.LogInformation("card is null");
-                return NotFound();
-            }
-
-            _logger.LogInformation("Get card");
-
-            card.IsDefault = true;
-            db.SaveChanges();
-
-            _logger.LogInformation("Save card");
-
-            return RedirectToAction("Show");
+            await _cardDataService.SetAsDefault(id);
+            return RedirectToAction(nameof(Show));
         }
 
         public IActionResult Create()
         {
             _logger.LogInformation("Used CreateCardDataController");
-
-            CardDataCreateViewModel cd = new CardDataCreateViewModel();
-            return View(cd);
-        }
-
-        private static bool IsLuhnValid(string cardNumber)
-        {
-            if (string.IsNullOrWhiteSpace(cardNumber)) return false;
-
-            for (int i = 0; i < cardNumber.Length; i++)
-                if (cardNumber[i] < '0' || cardNumber[i] > '9')
-                    return false;
-
-            int sum = 0;
-            bool alt = false;
-
-            for (int i = cardNumber.Length - 1; i >= 0; i--)
-            {
-                int n = cardNumber[i] - '0';
-                if (alt)
-                {
-                    n *= 2;
-                    if (n > 9) n -= 9;
-                }
-                sum += n;
-                alt = !alt;
-            }
-
-            return sum % 10 == 0;
+            return View(new CardDataCreateViewModel());
         }
 
         [HttpPost]
-
-        public IActionResult CreatePost(CardDataCreateViewModel cd)
+        public async Task<IActionResult> CreatePost(CardDataCreateViewModel model)
         {
             _logger.LogInformation("Used CreatePostCardDataController");
 
-            ModelState.Remove(nameof(cd.AddressId));
-            if (!IsLuhnValid(cd.CardNumber.ToString()))
-            {
-                ModelState.AddModelError(string.Empty, "Invalid card number");
-                _logger.LogInformation("Invalid card number");
-            }
-
-            var now = DateTime.UtcNow;
-            if (cd.ExpYear < now.Year || (cd.ExpYear == now.Year && cd.ExpMonth < now.Month))
-            {
-                ModelState.AddModelError(string.Empty, "Card is expired");
-                _logger.LogInformation("Card is expired");
-            }
-
-            if (string.IsNullOrWhiteSpace(cd.City) ||
-                   string.IsNullOrWhiteSpace(cd.Street) ||
-                   string.IsNullOrWhiteSpace(cd.House))
-            {
-                _logger.LogInformation("Address is invalid");
-                ModelState.AddModelError(string.Empty, "Please choose an address or fill in City, Street and House");
-            }
-
-            bool exists = db.Addresses.Any(x =>
-                x.City == cd.City &&
-                x.Street == cd.Street &&
-                x.House == cd.House &&
-                x.Apartment == cd.Apartment
-            );
-
-            _logger.LogInformation("Check address");
-
-            CardData Card = new CardData();
-            Card.Id = Guid.NewGuid().ToString();
-            Card.IsDefault = false;
-            Card.ExpMonth = cd.ExpMonth;
-            Card.ExpYear = cd.ExpYear;
-            Card.CardNumber = cd.CardNumber;
-            Card.CardName = cd.CardName;
-            Card.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // todo
-
-            if (exists)
-            {
-                /*TempData["Error"] = "This address already exists, try something differend";
-                return RedirectToAction(nameof(Create));*/
-                cd.AddressId = db.Addresses.FirstOrDefault(x =>
-                    x.City == cd.City &&
-                    x.Street == cd.Street &&
-                    x.House == cd.House &&
-                    x.Apartment == cd.Apartment
-                ).Id;
-
-                _logger.LogInformation("Get address");
-            }
-            else 
-            {
-                Address a = new Address();
-                a.Apartment = cd.Apartment;
-                a.City = cd.City;
-                a.Street = cd.Street;
-                a.House = cd.House;
-                a.Id = Guid.NewGuid().ToString();
-                cd.AddressId = a.Id;
-                db.Addresses.Add(a);
-
-                _logger.LogInformation("Add address");
-            }
-
-            Card.AddressId = cd.AddressId;
+            ModelState.Remove(nameof(model.AddressId));
 
             if (!ModelState.IsValid)
             {
                 _logger.LogInformation("ModelState is invalid");
-                return View("Create", cd);
+                return View("Create", model);
             }
 
-            db.CardDatas.Add(Card);
-            _logger.LogInformation("Add card");
-            db.SaveChanges();
-            _logger.LogInformation("Save card");
+            var result = await _cardDataService.CreateAsync(model);
 
-            return RedirectToAction("Show");
+            if (!result.Succeeded)
+            {
+                _logger.LogInformation("Card creation failed: " + result.ErrorMessage);
+                ModelState.AddModelError(string.Empty, result.ErrorMessage);
+                return View("Create", model);
+            }
+
+            _logger.LogInformation("Card created successfully");
+            return RedirectToAction(nameof(Show));
         }
-
-        
     }
 }

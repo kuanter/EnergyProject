@@ -31,7 +31,7 @@ namespace EnergyProject.Areas.Client.Controllers
 
         public async Task<IActionResult> Show(string Id)
         {
-            List<Bill> bills = await _billService.GetBill(Id);
+            List<Bill> bills = await _billService.GetListByPaymentAccountId(Id);
             ConsumptionViewModel consumptionViewModel = await _consumptionService.GetConsumptionViewModel(Id, bills);
 
             TempData["Amount"] = consumptionViewModel.Amount.ToString(CultureInfo.InvariantCulture);

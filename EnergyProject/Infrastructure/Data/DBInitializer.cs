@@ -237,8 +237,7 @@ namespace EnergyProject.Infrastructure.Data
                         client.Id,
                         address.Id,
                         tariff.Id,
-                        powerStatus.Id,
-                        null
+                        powerStatus.Id
                     );
 
                     db.PaymentAccounts.Add(paymentAccount);
@@ -289,7 +288,7 @@ namespace EnergyProject.Infrastructure.Data
                 if (!await db.Set<CardData>().AnyAsync(cd => cd.UserId == client.Id))
                 {
                     db.Set<CardData>().Add(
-                        new CardData(4111111111111111, 12, 2028, "JOHN DOE", true, address.Id, client.Id)
+                        new CardData(4111111111111111, 12, 2028, "JOHN DOE", false, address.Id, client.Id)
                     );
                 }
             }

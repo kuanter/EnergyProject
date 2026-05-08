@@ -13,7 +13,7 @@ namespace EnergyProject.Infrastructure.Repositories
         {
             db = db_;
         }
-        public async Task<List<Bill>> GetBillWithCardData(string PaymentAccountId) {
+        public async Task<List<Bill>> GetListWithCardDatasByPaymentAccountId(string PaymentAccountId) {
             var bills = db.Bills
                 .Where(b => b.PaymentAccountId == PaymentAccountId)
                 .Include(b => b.CardData)

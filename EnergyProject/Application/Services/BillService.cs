@@ -15,10 +15,10 @@ namespace EnergyProject.Application.Services
             _logger = logger;
         }
 
-        public async Task<List<Bill>> GetBill(string id)
+        public async Task<List<Bill>> GetListByPaymentAccountId(string id)
         {
             _logger.LogInformation("Used ShowBillController");
-            var bills = await _billRepository.GetBillWithCardData(id);
+            var bills = await _billRepository.GetListWithCardDatasByPaymentAccountId(id);
             return bills;
         }
     }

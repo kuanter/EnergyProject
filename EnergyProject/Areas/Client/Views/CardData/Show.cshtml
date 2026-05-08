@@ -21,7 +21,6 @@
     <div class="card mt-24">
         <div class="table-wrapper">
             <table class="user-table">
-                <tbody>
                     @if (Model == null)
                     {
                         <div class="alert alert-info text-center" role="alert">
@@ -30,27 +29,29 @@
                     }
                     else
                     {
-                        <thead>
-                            <tr>
-                                <th>Card Number</th>
-                                <th>Card Name</th>
-                                <th>Default</th>
-                                <th>Set as Default</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        @foreach (var c in Model)
-                        {
-                            <tr>
-                                <td data-label="Address Id">@c.CardNumber</td>
-                                <td data-label="Meter Id">@c.CardName</td>
-                                <td data-label="Meter Id">@c.IsDefault</td>
-                                <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="SetAsDefault" asp-route-Id="@c.Id">Set As Default</a></td>
-                                <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="Delete" asp-route-Id="@c.Id">Delete</a></td>
-                            </tr>
-                        }
+                        <tbody>
+                            <thead>
+                                <tr>
+                                    <th>Card Number</th>
+                                    <th>Card Name</th>
+                                    <th>Default</th>
+                                    <th>Set as Default</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            @foreach (var c in Model)
+                            {
+                                <tr>
+                                    <td data-label="Address Id">@c.CardNumber</td>
+                                    <td data-label="Meter Id">@c.CardName</td>
+                                    <td data-label="Meter Id">@c.IsDefault</td>
+                                    <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="SetAsDefault" asp-route-Id="@c.Id">Set As Default</a></td>
+                                    <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="Delete" asp-route-Id="@c.Id">Delete</a></td>
+                                </tr>
+                            }
+                        </tbody>
                     }
-                </tbody>
+               
             </table>
         </div>
     </div>

@@ -5,16 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EnergyProject.Infrastructure.Repositories
 {
-    public class PowerStatusRepository : IPowerStatusRepository
+    public class PowerStatusRepository : Repository<PowerStatus>, IPowerStatusRepository
     {
-        private readonly ApplicationDbContext _db;
+        public PowerStatusRepository(ApplicationDbContext db) : base(db) {}
 
-        public PowerStatusRepository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
-
-        public async Task<PowerStatus?> GetByStatusAsync(string statusName)
+        public async Task<PowerStatus> GetByStatus(string statusName)
         {
             return await _db.PowerStatuses.FirstOrDefaultAsync(ps => ps.Status == statusName);
         }

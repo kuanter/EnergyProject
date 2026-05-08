@@ -13,14 +13,10 @@ using System.Security.Claims;
 
 namespace EnergyProject.Infrastructure.Repositories
 {
-    public class PaymentAccountRepository : IPaymentAccountRepository
+    public class PaymentAccountRepository : Repository<PaymentAccount>, IPaymentAccountRepository
     {
-        public readonly ApplicationDbContext _db;
-        public PaymentAccountRepository(ApplicationDbContext context)
-        {
-            _db = context;
-        }
-        public List<PaymentAccount> GetAllFullData(string userId) 
+        public PaymentAccountRepository(ApplicationDbContext db) : base(db){}
+        public List<PaymentAccount> GetListByUserIdFullData(string userId) 
         {
             var pa = _db.PaymentAccounts
              .Where(P => P.UserId == userId)
@@ -31,11 +27,6 @@ namespace EnergyProject.Infrastructure.Repositories
              .ToList();
 
             return pa;
-        }
-        public async Task AddAsync(PaymentAccount paymentAccount)
-        {
-            await _db.PaymentAccounts.AddAsync(paymentAccount);
-            await _db.SaveChangesAsync();
         }
     }
 }

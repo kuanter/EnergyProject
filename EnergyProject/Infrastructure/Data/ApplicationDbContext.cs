@@ -1,4 +1,4 @@
-﻿using EnergyProject.Models;
+using EnergyProject.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -78,7 +78,7 @@ namespace EnergyProject.Infrastructure.Data
                 .HasOne(b => b.CardData)
                 .WithMany(c => c.Bills)
                 .HasForeignKey(b => b.CardDataId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
 
             // Address = CardData 
