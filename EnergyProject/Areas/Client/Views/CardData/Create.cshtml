@@ -1,4 +1,4 @@
-﻿@model EnergyProject.ViewModels.CardDataCreateViewModel;
+@model EnergyProject.ViewModels.CardDataCreateViewModel;
 
 
 @{
@@ -30,6 +30,8 @@
           class="form-grid">
         <div class="card mt-24">
 
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-row">
                 <p>
                     <label asp-for="CardNumber" class="form-label"></label>
@@ -54,20 +56,24 @@
                 <p>
                     <label class="form-label">City</label>
                     <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City" class="text-danger"></span>
                 </p>
                 <p>
                     <label class="form-label">Street</label>
                     <input asp-for="Street" class="form-control" />
+                    <span asp-validation-for="Street" class="text-danger"></span>
                 </p>
 
                 <p>
                     <label class="form-label">House</label>
                     <input asp-for="House" class="form-control" />
+                    <span asp-validation-for="House" class="text-danger"></span>
                 </p>
 
                 <p>
                     <label class="form-label">Apartment</label>
                     <input asp-for="Apartment" class="form-control" />
+                    <span asp-validation-for="Apartment" class="text-danger"></span>
                 </p>
             </div>
 
