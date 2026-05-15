@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +24,14 @@ namespace EnergyProject.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(string id)
         {
-            await _tariffService.Delete(id);
+            try
+            {
+                await _tariffService.Delete(id);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            {
+                TempData["Error"] = "Cannot delete tariff: it is currently used by one or more payment accounts.";
+            }
             return RedirectToAction("Show");
         }
 

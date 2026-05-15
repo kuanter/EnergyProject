@@ -16,13 +16,11 @@ namespace EnergyProject.Areas.Client.Controllers
     [Authorize(Policy = "ClientOnly")]
     public class PaymentAccountController : Controller
     {
-        ApplicationDbContext db;
         private readonly ILogger _logger;
         private IPaymentAccountService _paymentAccountService;
-        public PaymentAccountController(ApplicationDbContext db_, ILogger<HomeController> logger, IPaymentAccountService paymentAccountService)
+        public PaymentAccountController(ILogger<HomeController> logger, IPaymentAccountService paymentAccountService)
         {
             _logger = logger;
-            db = db_;
             _paymentAccountService = paymentAccountService;
         }
         public IActionResult Show()

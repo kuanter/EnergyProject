@@ -37,27 +37,28 @@ namespace EnergyProject.Infrastructure.Data
                 .HasOne(p => p.User)
                 .WithMany(u => u.PaymentAccounts)
                 .HasForeignKey(p => p.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // PaymentAccount = Meter
             modelBuilder.Entity<PaymentAccount>()
                 .HasOne(p => p.Meter)
                 .WithOne(m => m.PaymentAccount)
-                .HasForeignKey<Meter>(p => p.PaymentAccountId);
+                .HasForeignKey<Meter>(p => p.PaymentAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Meter = MeterReading
             modelBuilder.Entity<MeterReading>()
                 .HasOne(m => m.Meter)
                 .WithMany(mr => mr.MeterReadings)
                 .HasForeignKey(m => m.MeterId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // PaymentAccount = Bill
             modelBuilder.Entity<Bill>()
                 .HasOne(b => b.PaymentAccount)
                 .WithMany(p => p.Bills)
                 .HasForeignKey(b => b.PaymentAccountId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // PaymentAccount = Tariff
             modelBuilder.Entity<PaymentAccount>()
@@ -78,7 +79,7 @@ namespace EnergyProject.Infrastructure.Data
                 .HasOne(b => b.CardData)
                 .WithMany(c => c.Bills)
                 .HasForeignKey(b => b.CardDataId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
 
             // Address = CardData 
@@ -86,33 +87,34 @@ namespace EnergyProject.Infrastructure.Data
                 .HasOne(a => a.Address)
                 .WithMany(c => c.CardDatas)
                 .HasForeignKey(a => a.AddressId)
-                .OnDelete(DeleteBehavior.Restrict);
-           
+                .OnDelete(DeleteBehavior.NoAction);
+
 
             //User = CardData 
             modelBuilder.Entity<CardData>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Cards)
                 .HasForeignKey(c => c.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //PaymentAccound = Address 
+            //PaymentAccount = Address 
             modelBuilder.Entity<PaymentAccount>()
                 .HasOne(p => p.Address)
                 .WithOne(a => a.PaymentAccount)
-                .HasForeignKey<Address>(a => a.PaymentAccountId);
-            
-
+                .HasForeignKey<Address>(a => a.PaymentAccountId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Client>()
                 .HasOne(c => c.User)
                 .WithOne()
-                .HasForeignKey<Client>(c => c.UserId);
+                .HasForeignKey<Client>(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Admin>()
                 .HasOne(a => a.User)
                 .WithOne()
-                .HasForeignKey<Admin>(a => a.UserId);
+                .HasForeignKey<Admin>(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             /* modelBuilder.Entity<IdentityUserLogin<string>>()
                  .HasKey(l => new { l.LoginProvider, l.ProviderKey });

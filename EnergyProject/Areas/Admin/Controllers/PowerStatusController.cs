@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +32,14 @@ namespace EnergyProject.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Delete(string id)
         {
-            await _powerStatusService.Delete(id);
+            try
+            {
+                await _powerStatusService.Delete(id);
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            {
+                TempData["Error"] = "Cannot delete power status: it is currently used by one or more payment accounts.";
+            }
             return RedirectToAction("Show");
         }
         public async Task<IActionResult> Update(string Id) 

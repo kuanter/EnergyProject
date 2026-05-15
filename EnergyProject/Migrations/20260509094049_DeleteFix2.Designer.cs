@@ -4,6 +4,7 @@ using EnergyProject.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EnergyProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260509094049_DeleteFix2")]
+    partial class DeleteFix2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +55,7 @@ namespace EnergyProject.Migrations
                         .IsUnique()
                         .HasFilter("[PaymentAccountId] IS NOT NULL");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Admin", b =>
@@ -62,7 +65,7 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Bill", b =>
@@ -96,7 +99,7 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("PaymentAccountId");
 
-                    b.ToTable("Bills", (string)null);
+                    b.ToTable("Bills");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.CardData", b =>
@@ -133,7 +136,7 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CardDatas", (string)null);
+                    b.ToTable("CardDatas");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Client", b =>
@@ -143,7 +146,7 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Meter", b =>
@@ -170,7 +173,7 @@ namespace EnergyProject.Migrations
                     b.HasIndex("PaymentAccountId")
                         .IsUnique();
 
-                    b.ToTable("Meters", (string)null);
+                    b.ToTable("Meters");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.MeterReading", b =>
@@ -192,7 +195,7 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("MeterId");
 
-                    b.ToTable("MeterReadings", (string)null);
+                    b.ToTable("MeterReadings");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.PaymentAccount", b =>
@@ -227,7 +230,7 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PaymentAccounts", (string)null);
+                    b.ToTable("PaymentAccounts");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.PowerStatus", b =>
@@ -248,7 +251,7 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PowerStatuses", (string)null);
+                    b.ToTable("PowerStatuses");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.Tariff", b =>
@@ -265,7 +268,7 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tariffs", (string)null);
+                    b.ToTable("Tariffs");
                 });
 
             modelBuilder.Entity("EnergyProject.Models.User", b =>
@@ -496,12 +499,12 @@ namespace EnergyProject.Migrations
                     b.HasOne("EnergyProject.Models.CardData", "CardData")
                         .WithMany("Bills")
                         .HasForeignKey("CardDataId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
                         .WithMany("Bills")
                         .HasForeignKey("PaymentAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("CardData");
@@ -514,12 +517,12 @@ namespace EnergyProject.Migrations
                     b.HasOne("EnergyProject.Models.Address", "Address")
                         .WithMany("CardDatas")
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("EnergyProject.Models.User", "User")
                         .WithMany("Cards")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Address");

@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Models;
 using EnergyProject.ViewModels;
@@ -31,12 +31,13 @@ namespace EnergyProject.Areas.Admin.Controllers
         {
             var vm = new MeterCreateViewModel();
             vm.PaymentAccountOptions = db.PaymentAccounts.IgnoreQueryFilters()
-                .Where(p => p.MeterId == null)
+                .Include(p => p.Address)
+                .Where(p => !db.Meters.Any(m => m.PaymentAccountId == p.Id))
                 .Select(p =>
                 new SelectListItem
                 {
                     Value = p.Id,
-                    Text = p.Id
+                    Text = $"city {p.Address.City}, str. {p.Address.Street}, house {p.Address.House}, ap. {p.Address.Apartment}"
                 }).ToList();
 
            return View(vm);

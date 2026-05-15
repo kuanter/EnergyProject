@@ -48,15 +48,11 @@
                         <td><span class="chip chip-dark">@user.Email</span></td>
                         <td><span class="chip chip-dark">@user.PhoneNumber</span></td>
                         <td>
-                            <form asp-area="Admin"
-                                  asp-controller="Client"
-                                  asp-action="Show"
-                                  method="post"
-                                  onsubmit="return confirm('Delete this user?');">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@user.Id" />
-                                <button type="submit" class="btn">Delete</button>
-                            </form>
+                            <a asp-area="Admin"
+                               asp-controller="User"
+                               asp-action="Delete"
+                               asp-route-userId="@user.Id"
+                               onclick="return confirm('Delete this user?');">Delete</a>
                         </td>
                     </tr>
                 }
