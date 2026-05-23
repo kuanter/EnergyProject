@@ -1,9 +1,12 @@
 ﻿@using System.Linq
-@model IEnumerable<EnergyProject.Models.MeterReading>
+@using EnergyProject.Common.Models
+@using EnergyProject.ViewModels
+@model MeterReadingFilterViewModel
 
 @{
     ViewData["Title"] = "Meter Readings";
-    var readings = Model?.ToList() ?? new List<EnergyProject.Models.MeterReading>();
+    List<MeterReading> readings = Model.meterReadings;
+    string meterId = Model.meterId;
 }
 
 <link rel="stylesheet" href="~/css/admin-users.css" />
@@ -13,25 +16,39 @@
         <div>
             <h1 class="h1">Meter Readings</h1>
             <p class="lead">List of generated readings for the selected meter</p>
-            <p>ID:  @readings.FirstOrDefault()?.MeterId </p>
+            <p>ID: @meterId </p>
         </div>
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <a class="btn"
-               asp-area="Admin"
-               asp-controller="Meter"
-               asp-action="Show">
-                Back to Meters
-            </a>
-
-            <button type="button" class="btn" onclick="location.reload();">
-                Refresh
-            </button>
-        </div>
+        <a class="btn"
+           asp-area="Admin"
+           asp-controller="Meter"
+           asp-action="Show">
+            Back to Meters
+        </a>
     </div>
 
-    @if (Model != null && Model.Any())
+    @if (readings.Count > 0)
     {
+        <form asp-area="Admin"
+              asp-controller="MeterReading"
+              asp-action="Show"
+              asp-route-id="@meterId"
+              method="post"
+              enctype="multipart/form-data">
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <p>
+                    <label class="form-label">Filter</label><br />
+                    <select asp-for="dateTimeFilter" asp-items="Model.DateTimeFilterOptions" class="form-control" )">
+                        <option value="">-- Choose Filter Options --</option>
+                    </select>
+                    <span asp-validation-for="dateTimeFilter" class="text-danger"></span>
+                </p>
+
+                <button type="submit" class="btn"> Refresh</button>
+            </div>
+
+        </form>
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -41,7 +58,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in readings)
                 {
                     <tr>
                         <td>@item.Id</td>

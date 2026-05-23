@@ -1,4 +1,4 @@
-﻿namespace EnergyProject.Models
+﻿namespace EnergyProject.Common.Models
 {
     public class PowerStatus
     {

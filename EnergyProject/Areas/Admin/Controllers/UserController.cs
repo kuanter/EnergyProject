@@ -1,5 +1,5 @@
 ﻿using EnergyProject.Application.Interfaces;
-using EnergyProject.Models;
+using EnergyProject.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

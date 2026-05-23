@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EnergyProject.Models
+namespace EnergyProject.Common.Models
 {
     public class Client
     {

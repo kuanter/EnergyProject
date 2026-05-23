@@ -1,5 +1,5 @@
-﻿using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
+﻿using EnergyProject.Common.Models;
+using EnergyProject.Infrastructure.Interfaces;
 
 namespace EnergyProject.Application.Interfaces
 {

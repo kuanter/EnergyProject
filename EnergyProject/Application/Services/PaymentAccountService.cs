@@ -1,9 +1,9 @@
 ﻿using AspNetCoreGeneratedDocument;
 using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Interfaces.Stuff;
+using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
 using EnergyProject.Infrastructure.Repositories;
-using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

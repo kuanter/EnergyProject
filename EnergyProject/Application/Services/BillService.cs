@@ -1,7 +1,7 @@
 ﻿using EnergyProject.Application.Interfaces;
 using EnergyProject.Areas.Client.Controllers;
+using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
 
 namespace EnergyProject.Application.Services
 {

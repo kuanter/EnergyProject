@@ -1,8 +1,8 @@
 ﻿using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Interfaces.Stuff;
+using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

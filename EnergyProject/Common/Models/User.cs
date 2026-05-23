@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace EnergyProject.Models
+namespace EnergyProject.Common.Models
 { 
     public class User : IdentityUser
     {

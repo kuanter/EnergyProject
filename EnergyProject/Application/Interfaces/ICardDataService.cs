@@ -1,4 +1,4 @@
-using EnergyProject.Models;
+using EnergyProject.Common.Models;
 using EnergyProject.ViewModels;
 
 namespace EnergyProject.Application.Interfaces

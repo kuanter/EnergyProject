@@ -1,7 +1,8 @@
 ﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Common.Enums;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
+using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,11 +18,12 @@ namespace EnergyProject.Areas.Admin.Controllers
         {
             _meterReadingService = meterReadingService;
         }
-
-        public IActionResult Show(string Id)
+        public IActionResult Show(string Id, DateTimeFilter dateTimeFilter)
         {
-
-            return View(_meterReadingService.GetMeterReadings(Id));
+            MeterReadingFilterViewModel meterReadingFilterViewModel = new MeterReadingFilterViewModel();
+            meterReadingFilterViewModel.meterReadings = _meterReadingService.GetMeterReadings(Id, dateTimeFilter);
+            meterReadingFilterViewModel.meterId = Id;
+            return View(meterReadingFilterViewModel);
         }
     }
 }

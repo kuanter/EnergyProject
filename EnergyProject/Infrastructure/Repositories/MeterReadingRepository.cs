@@ -1,6 +1,6 @@
-﻿using EnergyProject.Infrastructure.Data;
+using EnergyProject.Common.Models;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,13 +31,19 @@ namespace EnergyProject.Infrastructure.Repositories
             }
         }
 
-        public List<MeterReading> GetMeterReadings(string Id)
+        public List<MeterReading> GetMeterReadings(string Id, DateTime start, DateTime end)
         {
-            var meter = db.Meters
-                .Include(m => m.MeterReadings.OrderByDescending(r => r.CreatedAt))
-                .FirstOrDefault(m => m.Id == Id);
+            var query = db.MeterReadings
+                .Where(r => r.MeterId == Id);
 
-            return meter.MeterReadings.ToList();
+            if (!start.Equals(end))
+            {
+                query = query.Where(r => r.CreatedAt >= start && r.CreatedAt <= end);
+            }
+
+            return query
+                .OrderByDescending(r => r.CreatedAt)
+                .ToList();
         }
     }
 }

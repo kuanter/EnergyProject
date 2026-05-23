@@ -1,4 +1,4 @@
-using EnergyProject.Models;
+using EnergyProject.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

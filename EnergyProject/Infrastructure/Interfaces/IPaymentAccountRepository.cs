@@ -1,4 +1,4 @@
-﻿using EnergyProject.Models;
+﻿using EnergyProject.Common.Models;
 
 namespace EnergyProject.Infrastructure.Interfaces
 {

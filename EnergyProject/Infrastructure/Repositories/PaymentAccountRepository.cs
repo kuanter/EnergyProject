@@ -1,8 +1,6 @@
 ﻿using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
 using EnergyProject.Infrastructure.Data;
-using EnergyProject.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using EnergyProject.Common.Models;
 
 namespace EnergyProject.Infrastructure.Repositories
 {

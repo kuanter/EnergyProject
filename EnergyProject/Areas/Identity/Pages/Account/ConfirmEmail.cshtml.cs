@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EnergyProject.Models;
+using EnergyProject.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,6 @@
 ﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
 using EnergyProject.ViewModels;
 
 namespace EnergyProject.Application.Services

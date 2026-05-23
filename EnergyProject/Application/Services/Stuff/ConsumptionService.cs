@@ -1,8 +1,8 @@
 ﻿using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Interfaces.Stuff;
 using EnergyProject.Areas.Client.Controllers;
+using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Models;
 using EnergyProject.ViewModels;
 
 namespace EnergyProject.Application.Services.Stuff

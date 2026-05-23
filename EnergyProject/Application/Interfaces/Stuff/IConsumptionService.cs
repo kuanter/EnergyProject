@@ -1,4 +1,4 @@
-﻿using EnergyProject.Models;
+﻿using EnergyProject.Common.Models;
 using EnergyProject.ViewModels;
 
 public interface IConsumptionService
