@@ -1,5 +1,7 @@
-﻿@using System.Linq
+@using System.Linq
+@using System.Globalization
 @using EnergyProject.Common.Models
+@using EnergyProject.Common.Enums
 @using EnergyProject.ViewModels
 @model MeterReadingFilterViewModel
 
@@ -7,16 +9,112 @@
     ViewData["Title"] = "Meter Readings";
     List<MeterReading> readings = Model.meterReadings;
     string meterId = Model.meterId;
+    DateTimeFilter activeFilter = Model.dateTimeFilter;
+
+    // Sort chronologically (oldest → newest) for the chart
+    var sortedReadings = readings.OrderBy(r => r.CreatedAt).ToList();
+
+    // ── Bucket aggregation ────────────────────────────────────────────────
+    // Build a fixed set of X-axis labels and map readings into those buckets.
+    // Empty buckets get null → Chart.js renders them as visually empty bars.
+    var now = DateTime.Now;
+    List<string>  bucketLabels;
+    List<string>  bucketValues;   // null = empty bucket
+
+    switch (activeFilter)
+    {
+        // ── Day: 24 hourly buckets (00:00 … 23:00) ──────────────────────
+        case DateTimeFilter.Day:
+        {
+            // Anchor to the start of the current hour so buckets stay consistent.
+            var anchor = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+            var slots  = Enumerable.Range(0, 24)
+                                   .Select(i => anchor.AddHours(i - 23))
+                                   .ToList();
+
+            bucketLabels = slots.Select(s => s.ToString("HH:00", CultureInfo.InvariantCulture)).ToList();
+            bucketValues = slots.Select(s =>
+            {
+                var inSlot = sortedReadings
+                    .Where(r => r.CreatedAt >= s && r.CreatedAt < s.AddHours(1))
+                    .ToList();
+                return inSlot.Any()
+                    ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
+                    : "null";
+            }).ToList();
+            break;
+        }
+
+        // ── Month: one bucket per day (last 30 days) ────────────────────
+        case DateTimeFilter.Month:
+        {
+            var slots = Enumerable.Range(0, 30)
+                                  .Select(i => now.Date.AddDays(i - 29))
+                                  .ToList();
+
+            bucketLabels = slots.Select(s => s.ToString("dd.MM", CultureInfo.InvariantCulture)).ToList();
+            bucketValues = slots.Select(s =>
+            {
+                var inSlot = sortedReadings
+                    .Where(r => r.CreatedAt.Date == s)
+                    .ToList();
+                return inSlot.Any()
+                    ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
+                    : "null";
+            }).ToList();
+            break;
+        }
+
+        // ── Year: one bucket per month (last 12 months) ─────────────────
+        case DateTimeFilter.Year:
+        {
+            var refMonth = new DateTime(now.Year, now.Month, 1);
+            var slots    = Enumerable.Range(0, 12)
+                                     .Select(i => refMonth.AddMonths(i - 11))
+                                     .ToList();
+
+            bucketLabels = slots.Select(s => s.ToString("MM.yyyy", CultureInfo.InvariantCulture)).ToList();
+            bucketValues = slots.Select(s =>
+            {
+                var inSlot = sortedReadings
+                    .Where(r => r.CreatedAt.Year == s.Year && r.CreatedAt.Month == s.Month)
+                    .ToList();
+                return inSlot.Any()
+                    ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
+                    : "null";
+            }).ToList();
+            break;
+        }
+
+        // ── All: every individual reading, no aggregation ───────────────
+        default:
+        {
+            bucketLabels = sortedReadings
+                .Select(r => r.CreatedAt.ToString("dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture))
+                .ToList();
+            bucketValues = sortedReadings
+                .Select(r => r.ValueKWh.ToString(CultureInfo.InvariantCulture))
+                .ToList();
+            break;
+        }
+    }
+
+    var chartLabelsJson = string.Join(",", bucketLabels.Select(l => $"\"{l}\""));
+    var chartValuesJson = string.Join(",", bucketValues);           // null stays as bare null
+    var chartFilter     = activeFilter.ToString();
 }
 
 <link rel="stylesheet" href="~/css/admin-users.css" />
+<link rel="stylesheet" href="~/css/meter-reading-chart.css" />
 
 <section class="page">
+
+    @* ── Toolbar ──────────────────────────────────────── *@
     <div class="toolbar">
         <div>
             <h1 class="h1">Meter Readings</h1>
             <p class="lead">List of generated readings for the selected meter</p>
-            <p>ID: @meterId </p>
+            <p>ID: @meterId</p>
         </div>
 
         <a class="btn"
@@ -27,28 +125,61 @@
         </a>
     </div>
 
-    @if (readings.Count > 0)
-    {
-        <form asp-area="Admin"
-              asp-controller="MeterReading"
-              asp-action="Show"
-              asp-route-id="@meterId"
-              method="post"
-              enctype="multipart/form-data">
+    @* ── Filter form — always visible ──────────────────── *@
+    <form asp-area="Admin"
+          asp-controller="MeterReading"
+          asp-action="Show"
+          asp-route-id="@meterId"
+          method="post">
 
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <p>
-                    <label class="form-label">Filter</label><br />
-                    <select asp-for="dateTimeFilter" asp-items="Model.DateTimeFilterOptions" class="form-control" )">
-                        <option value="">-- Choose Filter Options --</option>
-                    </select>
-                    <span asp-validation-for="dateTimeFilter" class="text-danger"></span>
-                </p>
-
-                <button type="submit" class="btn"> Refresh</button>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+            <div>
+                <label class="form-label" for="dateTimeFilter">Filter</label>
+                <select id="dateTimeFilter"
+                        name="dateTimeFilter"
+                        asp-for="dateTimeFilter"
+                        asp-items="Model.DateTimeFilterOptions"
+                        class="form-control">
+                    <option value="">-- Choose Filter Options --</option>
+                </select>
+                <span asp-validation-for="dateTimeFilter" class="text-danger"></span>
             </div>
 
-        </form>
+            <button type="submit" class="btn">Refresh</button>
+        </div>
+
+    </form>
+
+    @* ── Chart — always visible for Day/Month/Year; for All only when data exists ── *@
+    @{
+        bool showChart = activeFilter != DateTimeFilter.All || readings.Count > 0;
+    }
+    @if (showChart)
+    {
+        @* Inject config for meter-reading-chart.js *@
+        <script>
+            window.MeterReadingChart = {
+                labels: [@Html.Raw(chartLabelsJson)],
+                values: [@Html.Raw(chartValuesJson)],
+                filter: '@chartFilter'
+            };
+        </script>
+
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <span class="chart-title">Energy Consumption Histogram</span>
+                <span class="chart-subtitle">ValueKWh over time &mdash; @sortedReadings.Count readings</span>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="meterReadingChart"></canvas>
+            </div>
+        </div>
+    }
+
+    @* ── Readings table — only when data exists ──────────────────────── *@
+    @if (readings.Count > 0)
+    {
+        @* ── Readings table ──────────────────────────────── *@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
@@ -72,7 +203,11 @@
     else
     {
         <div class="alert alert-info text-center" role="alert">
-            <h4>No readings available</h4>
+            <h4>No readings in this period</h4>
         </div>
     }
+
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="~/js/meter-reading-chart.js"></script>

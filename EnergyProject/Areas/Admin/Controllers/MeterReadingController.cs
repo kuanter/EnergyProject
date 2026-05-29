@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Common.Enums;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
@@ -23,6 +23,7 @@ namespace EnergyProject.Areas.Admin.Controllers
             MeterReadingFilterViewModel meterReadingFilterViewModel = new MeterReadingFilterViewModel();
             meterReadingFilterViewModel.meterReadings = _meterReadingService.GetMeterReadings(Id, dateTimeFilter);
             meterReadingFilterViewModel.meterId = Id;
+            meterReadingFilterViewModel.dateTimeFilter = dateTimeFilter;  // propagate selected filter to the view
             return View(meterReadingFilterViewModel);
         }
     }
