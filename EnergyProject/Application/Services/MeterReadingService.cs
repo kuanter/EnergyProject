@@ -12,10 +12,6 @@ public class MeterReadingService : IMeterReadingService
 
     public List<MeterReading> GetMeterReadings(string Id, DateTimeFilter dateTimeFilter)
     {
-        var inc = (float)(Random.Shared.NextDouble() * (10.00 - 0.10) + 0.10);
-        inc = MathF.Round(inc, 2);
-        _meterReadingRepository.AddReading(Id, inc);
-
         DateTime start;
         DateTime end = DateTime.Now;
         switch (dateTimeFilter)
@@ -35,5 +31,18 @@ public class MeterReadingService : IMeterReadingService
         }
 
         return _meterReadingRepository.GetMeterReadings(Id, start, end);
+    }
+
+    public void GenerateReading(string Id)
+    {
+        float last_meter_reading_value_kwt = _meterReadingRepository.GetLastMeterReading(Id).ValueKWh;
+        var inc = (float)(Random.Shared.NextDouble() * (10.00 - 0.10) + 0.10);
+        inc = MathF.Round(inc, 2);
+        _meterReadingRepository.AddReading(Id, inc, last_meter_reading_value_kwt);
+    }
+
+    public MeterReading GetLastMeterReading(string meterId)
+    {
+        return _meterReadingRepository.GetLastMeterReading(meterId);
     }
 }

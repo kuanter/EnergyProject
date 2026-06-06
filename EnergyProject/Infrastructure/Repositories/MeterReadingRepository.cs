@@ -13,22 +13,13 @@ namespace EnergyProject.Infrastructure.Repositories
         {
             db = context;
         }
-        public void AddReading(string id, float inc)
+        public void AddReading(string id, float inc, float lastMeterReading)
         {
-            var meter = db.Meters.FirstOrDefault(m => m.Id == id);
-            if (meter.IsActive == true)
-            {
-                var last = db.MeterReadings
-               .Where(r => r.MeterId == id)
-               .OrderByDescending(r => r.CreatedAt)
-               .Select(r => r.ValueKWh)
-               .FirstOrDefault();
+            var next = MathF.Round(lastMeterReading + inc, 2);
 
-                var next = MathF.Round(last + inc, 2);
-
-                db.MeterReadings.Add(new MeterReading(next, id));
-                db.SaveChanges();
-            }
+            db.MeterReadings.Add(new MeterReading(next, id));
+            db.SaveChanges();
+            
         }
 
         public List<MeterReading> GetMeterReadings(string Id, DateTime start, DateTime end)
@@ -45,5 +36,14 @@ namespace EnergyProject.Infrastructure.Repositories
                 .OrderByDescending(r => r.CreatedAt)
                 .ToList();
         }
+
+        public MeterReading GetLastMeterReading(string meterId)
+        {
+            return db.MeterReadings
+            .Where(r => r.MeterId == meterId)
+            .OrderByDescending(r => r.CreatedAt)
+            .FirstOrDefault();
+        }
+
     }
 }

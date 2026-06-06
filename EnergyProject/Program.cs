@@ -2,6 +2,7 @@ using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Interfaces.Stuff;
 using EnergyProject.Application.Services;
 using EnergyProject.Application.Services.Stuff;
+using EnergyProject.Common;
 using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
@@ -77,32 +78,11 @@ namespace EnergyProject
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 
-          
-            //List<string> Roles = new List<string> { "Admin", "Client" };
-
+            builder.Services.AddSignalR();
+            builder.Services.AddHostedService<MeterBackgroundService>();
 
             var app = builder.Build();
-            /*
-            using (var scope = app.Services.CreateScope())
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-                foreach (string role in Roles)
-                {
-                    await roleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
-            
-            var user = CreateUser();
-
-            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-            var result = await _userManager.CreateAsync(user, Input.Password);
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "Client");
-            }
-            */
+       
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -119,7 +99,7 @@ namespace EnergyProject
             app.UseAuthorization();
             app.MapControllers();
             app.MapRazorPages();
-
+            app.MapHub<MeterHub>("/meterHub");
 
             app.MapControllerRoute(
                 name: "default",

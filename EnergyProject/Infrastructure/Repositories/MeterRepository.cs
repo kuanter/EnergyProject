@@ -3,6 +3,7 @@ using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace EnergyProject.Infrastructure.Repositories
 {
     public class MeterRepository : Repository<Meter>, IMeterRepository
@@ -19,6 +20,13 @@ namespace EnergyProject.Infrastructure.Repositories
                 .Include(m => m.MeterReadings)
                 .Where(m => m.PaymentAccountId == PaymentAccountId)
                 .FirstOrDefault();
+        }
+
+        public async Task<List<Meter>> GetActiveMeters()
+        {
+            return await _db.Meters
+                .Where(m => m.IsActive)
+                .ToListAsync();
         }
     }
 }

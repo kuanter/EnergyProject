@@ -10,5 +10,7 @@ namespace EnergyProject.Application.Interfaces
         public Task SwitchMeterStatus(string Id);
 
         public Task<Meter> GetMeterWithMeterReadings(string PaymentAccountId);
+
+        public Task<List<Meter>> GetActiveMeters();
     }
 }

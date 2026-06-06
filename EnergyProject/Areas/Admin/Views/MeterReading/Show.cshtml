@@ -18,90 +18,90 @@
     // Build a fixed set of X-axis labels and map readings into those buckets.
     // Empty buckets get null → Chart.js renders them as visually empty bars.
     var now = DateTime.Now;
-    List<string>  bucketLabels;
-    List<string>  bucketValues;   // null = empty bucket
+    List<string> bucketLabels;
+    List<string> bucketValues;   // null = empty bucket
 
     switch (activeFilter)
     {
         // ── Day: 24 hourly buckets (00:00 … 23:00) ──────────────────────
         case DateTimeFilter.Day:
-        {
-            // Anchor to the start of the current hour so buckets stay consistent.
-            var anchor = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
-            var slots  = Enumerable.Range(0, 24)
-                                   .Select(i => anchor.AddHours(i - 23))
-                                   .ToList();
-
-            bucketLabels = slots.Select(s => s.ToString("HH:00", CultureInfo.InvariantCulture)).ToList();
-            bucketValues = slots.Select(s =>
             {
-                var inSlot = sortedReadings
-                    .Where(r => r.CreatedAt >= s && r.CreatedAt < s.AddHours(1))
-                    .ToList();
-                return inSlot.Any()
-                    ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
-                    : "null";
-            }).ToList();
-            break;
-        }
+                // Anchor to the start of the current hour so buckets stay consistent.
+                var anchor = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+                var slots = Enumerable.Range(0, 24)
+                                       .Select(i => anchor.AddHours(i - 23))
+                                       .ToList();
+
+                bucketLabels = slots.Select(s => s.ToString("HH:00", CultureInfo.InvariantCulture)).ToList();
+                bucketValues = slots.Select(s =>
+                {
+                    var inSlot = sortedReadings
+                        .Where(r => r.CreatedAt >= s && r.CreatedAt < s.AddHours(1))
+                        .ToList();
+                    return inSlot.Any()
+                        ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
+                        : "null";
+                }).ToList();
+                break;
+            }
 
         // ── Month: one bucket per day (last 30 days) ────────────────────
         case DateTimeFilter.Month:
-        {
-            var slots = Enumerable.Range(0, 30)
-                                  .Select(i => now.Date.AddDays(i - 29))
-                                  .ToList();
-
-            bucketLabels = slots.Select(s => s.ToString("dd.MM", CultureInfo.InvariantCulture)).ToList();
-            bucketValues = slots.Select(s =>
             {
-                var inSlot = sortedReadings
-                    .Where(r => r.CreatedAt.Date == s)
-                    .ToList();
-                return inSlot.Any()
-                    ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
-                    : "null";
-            }).ToList();
-            break;
-        }
+                var slots = Enumerable.Range(0, 30)
+                                      .Select(i => now.Date.AddDays(i - 29))
+                                      .ToList();
+
+                bucketLabels = slots.Select(s => s.ToString("dd.MM", CultureInfo.InvariantCulture)).ToList();
+                bucketValues = slots.Select(s =>
+                {
+                    var inSlot = sortedReadings
+                        .Where(r => r.CreatedAt.Date == s)
+                        .ToList();
+                    return inSlot.Any()
+                        ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
+                        : "null";
+                }).ToList();
+                break;
+            }
 
         // ── Year: one bucket per month (last 12 months) ─────────────────
         case DateTimeFilter.Year:
-        {
-            var refMonth = new DateTime(now.Year, now.Month, 1);
-            var slots    = Enumerable.Range(0, 12)
-                                     .Select(i => refMonth.AddMonths(i - 11))
-                                     .ToList();
-
-            bucketLabels = slots.Select(s => s.ToString("MM.yyyy", CultureInfo.InvariantCulture)).ToList();
-            bucketValues = slots.Select(s =>
             {
-                var inSlot = sortedReadings
-                    .Where(r => r.CreatedAt.Year == s.Year && r.CreatedAt.Month == s.Month)
-                    .ToList();
-                return inSlot.Any()
-                    ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
-                    : "null";
-            }).ToList();
-            break;
-        }
+                var refMonth = new DateTime(now.Year, now.Month, 1);
+                var slots = Enumerable.Range(0, 12)
+                                         .Select(i => refMonth.AddMonths(i - 11))
+                                         .ToList();
+
+                bucketLabels = slots.Select(s => s.ToString("MM.yyyy", CultureInfo.InvariantCulture)).ToList();
+                bucketValues = slots.Select(s =>
+                {
+                    var inSlot = sortedReadings
+                        .Where(r => r.CreatedAt.Year == s.Year && r.CreatedAt.Month == s.Month)
+                        .ToList();
+                    return inSlot.Any()
+                        ? inSlot.Last().ValueKWh.ToString(CultureInfo.InvariantCulture)
+                        : "null";
+                }).ToList();
+                break;
+            }
 
         // ── All: every individual reading, no aggregation ───────────────
         default:
-        {
-            bucketLabels = sortedReadings
-                .Select(r => r.CreatedAt.ToString("dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture))
-                .ToList();
-            bucketValues = sortedReadings
-                .Select(r => r.ValueKWh.ToString(CultureInfo.InvariantCulture))
-                .ToList();
-            break;
-        }
+            {
+                bucketLabels = sortedReadings
+                    .Select(r => r.CreatedAt.ToString("dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture))
+                    .ToList();
+                bucketValues = sortedReadings
+                    .Select(r => r.ValueKWh.ToString(CultureInfo.InvariantCulture))
+                    .ToList();
+                break;
+            }
     }
 
     var chartLabelsJson = string.Join(",", bucketLabels.Select(l => $"\"{l}\""));
     var chartValuesJson = string.Join(",", bucketValues);           // null stays as bare null
-    var chartFilter     = activeFilter.ToString();
+    var chartFilter = activeFilter.ToString();
 }
 
 <link rel="stylesheet" href="~/css/admin-users.css" />
@@ -188,12 +188,12 @@
                     <th>Value (kWh)</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="readings">
                 @foreach (var item in readings)
                 {
                     <tr>
                         <td>@item.Id</td>
-                        <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss")</td>
+                        <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)</td>
                         <td><span class="chip chip-dark">@item.ValueKWh kWh</span></td>
                     </tr>
                 }
@@ -211,3 +211,54 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script src="~/js/meter-reading-chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/9.0.6/signalr.min.js"></script>
+<script>
+    console.log("Зайшли");
+    const meterId = "@Model.meterId";
+    const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/meterHub")
+    .build();
+
+    connection.on("ReceiveReading", function(data){
+
+        console.log("new data has been generated");
+
+        const tbody = document.getElementById("readings");
+
+        const tr = document.createElement("tr");
+
+        const tdId = document.createElement("td");
+        const tdDate = document.createElement("td");
+        const tdValue = document.createElement("td");
+
+        tdId.innerText = data.id;
+
+        // формат дати (можеш покращити)
+        const date = new Date(data.createdAt);
+        const day    = String(date.getDate()).padStart(2, '0');
+        const month  = String(date.getMonth() + 1).padStart(2, '0');
+        const year   = date.getFullYear();
+        const hours  = String(date.getHours()).padStart(2, '0');
+        const mins   = String(date.getMinutes()).padStart(2, '0');
+        const secs   = String(date.getSeconds()).padStart(2, '0');
+        tdDate.innerText = `${day}.${month}.${year} ${hours}:${mins}:${secs}`;
+
+
+        tdValue.innerHTML = `<span class="chip chip-dark">${data.valueKWh} kWh</span>`;
+
+        tr.appendChild(tdId);
+        tr.appendChild(tdDate);
+        tr.appendChild(tdValue);
+
+        // додаємо новий рядок НА ПОЧАТОК
+        tbody.prepend(tr);
+    });
+
+    connection.start().then(function ()
+    {
+        console.log("Connected to hub");
+        connection.invoke("Subscribe", meterId);
+
+    });
+
+</script>

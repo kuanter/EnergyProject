@@ -38,7 +38,7 @@
         gradient.addColorStop(0, 'rgba(99, 179, 237, 0.85)');
         gradient.addColorStop(1, 'rgba(49, 130, 206, 0.20)');
 
-        new Chart(ctx, {
+        var chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: cfg.labels,
@@ -123,6 +123,29 @@
                 }
             }
         });
+
+        /**
+         * Appended by SignalR in real time.
+         * For bucketed filters (Day/Month/Year) this is a no-op — the bucket
+         * model doesn't map cleanly to a live append, so the user should
+         * refresh the page to re-aggregate. For 'All' it appends the new point.
+         */
+        cfg.push = function (isoTime, value) {
+            if (cfg.filter !== 'All') return;   // buckets don't support live append
+
+            var date = new Date(isoTime);
+            var pad  = function (n) { return String(n).padStart(2, '0'); };
+            var label =
+                pad(date.getDate())  + '.' +
+                pad(date.getMonth() + 1) + '.' +
+                date.getFullYear()   + ' ' +
+                pad(date.getHours()) + ':' +
+                pad(date.getMinutes());
+
+            chart.data.labels.push(label);
+            chart.data.datasets[0].data.push(value);
+            chart.update('active');
+        };
     }
 
     /* Run after DOM + Chart.js are both ready */

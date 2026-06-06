@@ -35,8 +35,13 @@ namespace EnergyProject.Application.Services
             }
 
         }
-        public async Task<Meter> GetMeterWithMeterReadings(string PaymentAccountId) {
+        public async Task<Meter> GetMeterWithMeterReadings(string PaymentAccountId)
+        {
             return await _meterRepository.GetMeterWithMeterReadings(PaymentAccountId);
+        }
+        public async Task<List<Meter>> GetActiveMeters()
+        {
+            return await _meterRepository.GetActiveMeters();
         }
     }
 }

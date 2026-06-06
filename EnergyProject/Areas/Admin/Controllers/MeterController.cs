@@ -1,12 +1,10 @@
 using EnergyProject.Application.Interfaces;
 using EnergyProject.Infrastructure.Data;
-using EnergyProject.Common.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace EnergyProject.Areas.Admin.Controllers
 {
@@ -18,15 +16,15 @@ namespace EnergyProject.Areas.Admin.Controllers
         private readonly ApplicationDbContext db;
         public MeterController(ApplicationDbContext context, IMeterService meterService)
         {
-                db = context;
-                _meterService = meterService;
+            db = context;
+            _meterService = meterService;
         }
         public async Task<IActionResult> Show()
         {
 
             return View(await _meterService.Show());
         }
-       
+
         public IActionResult Create()
         {
             var vm = new MeterCreateViewModel();
@@ -40,7 +38,7 @@ namespace EnergyProject.Areas.Admin.Controllers
                     Text = $"city {p.Address.City}, str. {p.Address.Street}, house {p.Address.House}, ap. {p.Address.Apartment}"
                 }).ToList();
 
-           return View(vm);
+            return View(vm);
         }
         [HttpPost]
         public async Task<IActionResult> CreatePost(MeterCreateViewModel mcvm)
@@ -49,12 +47,10 @@ namespace EnergyProject.Areas.Admin.Controllers
             return RedirectToAction("Show");
         }
 
-         public async Task<IActionResult> SwitchMeterStatus(string Id) 
-         { 
-             await _meterService.SwitchMeterStatus(Id);
+        public async Task<IActionResult> SwitchMeterStatus(string Id)
+        {
+            await _meterService.SwitchMeterStatus(Id);
             return RedirectToAction("Show");
-         }
-        
-
+        }
     }
 }
