@@ -2,7 +2,6 @@
 @using EnergyProject.Common.Models
 @model IEnumerable<PaymentAccount>
 
-
 <link rel="stylesheet" href="~/css/user.css" />
 
 <section class="page">
@@ -21,33 +20,34 @@
                 Create payment account
             </a>
         </div>
-    
-       
+
+
     </div>
 
     <div class="card mt-24">
         <div class="table-wrapper">
             <table class="user-table">
-               
-                    @if (Model == null || !Model.Any())
-                    {
-                        <div class="alert alert-info text-center" role="alert">
-                            <h4>No payment account available</h4>
-                        </div>
-                    }
-                    else
-                    {
-                    
-                        <thead>
-                            <tr>
-                                <th>Address</th>
-                                <th>Tariff</th>
-                                <th>Meter Id</th>
-                                <th>Power status</th>
-                                <th>Bills</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="alert alert-info text-center" role="alert">
+                        <h4>No payment account available</h4>
+                    </div>
+                }
+                else
+                {
+
+                    <thead>
+                        <tr>
+                            <th>Address</th>
+                            <th>Tariff</th>
+                            <th>Meter Id</th>
+                            <th>Power status</th>
+                            <th>Bills</th>
+                            <th>Readings</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         @foreach (var pa in Model)
                         {
                             <tr>
@@ -74,7 +74,7 @@
                                     <td data-label="Meter Id">NULL</td>
                                 }
 
-                            
+
                                 <td data-label="PowerStatus">@(pa.PowerStatus?.Status ?? "Unknown")</td>
 
                                 <td data-label="Bills">
@@ -86,12 +86,19 @@
                                         Get
                                     </a>
                                 </td>
+                                <td data-label="Readings">
+                                    <a class="user-btn user-btn-primary"
+                                       asp-action="ViewMeterReadings"
+                                       asp-route-id="@pa.Id">
+                                        Get
+                                    </a>
+                                </td>
                             </tr>
-                            
+
                         }
-                        </tbody>
-                    }
-               
+                    </tbody>
+                }
+
             </table>
         </div>
     </div>

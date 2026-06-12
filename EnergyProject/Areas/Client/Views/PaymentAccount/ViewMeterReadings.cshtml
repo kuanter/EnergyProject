@@ -1,4 +1,4 @@
-@using System.Linq
+﻿@using System.Linq
 @using System.Globalization
 @using EnergyProject.Common.Models
 @using EnergyProject.Common.Enums
@@ -8,7 +8,7 @@
 @{
     ViewData["Title"] = "Meter Readings";
     List<MeterReading> readings = Model.meterReadings;
-    string meterId = Model.meterId;
+    string paymentAccountId = ViewBag.PaymentAccountId;
     DateTimeFilter activeFilter = Model.dateTimeFilter;
 
     // Sort chronologically (oldest → newest) for the chart
@@ -113,23 +113,19 @@
     <div class="toolbar">
         <div>
             <h1 class="h1">Meter Readings</h1>
-            <p class="lead">List of generated readings for the selected meter</p>
-            <p>ID: @meterId</p>
+            <p class="lead">List of readings for the selected payment account</p>
+            <p>ID: @paymentAccountId</p>
         </div>
 
         <a class="btn"
-           asp-area="Admin"
-           asp-controller="Meter"
            asp-action="Show">
-            Back to Meters
+            Back to payment accounts
         </a>
     </div>
 
     @* ── Filter form — always visible ──────────────────── *@
-    <form asp-area="Admin"
-          asp-controller="MeterReading"
-          asp-action="Show"
-          asp-route-id="@meterId"
+    <form asp-action="ViewMeterReadings"
+          asp-route-id="@paymentAccountId"
           method="post">
 
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
@@ -213,7 +209,6 @@
 <script src="~/js/meter-reading-chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/9.0.6/signalr.min.js"></script>
 <script>
-   
     const meterId = "@Model.meterId";
     const connection = new signalR.HubConnectionBuilder()
     .withUrl("/meterHub")
@@ -232,6 +227,7 @@
         const tdValue = document.createElement("td");
 
         tdId.innerText = data.id;
+
 
         const date = new Date(data.createdAt);
         const day    = String(date.getDate()).padStart(2, '0');
@@ -260,3 +256,4 @@
     });
 
 </script>
+

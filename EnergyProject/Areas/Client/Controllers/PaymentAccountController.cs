@@ -1,14 +1,9 @@
 ﻿using EnergyProject.Application.Interfaces;
-using EnergyProject.Infrastructure.Data;
+using EnergyProject.Common.Enums;
 using EnergyProject.Common.Models;
 using EnergyProject.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
-
 
 namespace EnergyProject.Areas.Client.Controllers
 {
@@ -18,19 +13,24 @@ namespace EnergyProject.Areas.Client.Controllers
     {
         private readonly ILogger _logger;
         private IPaymentAccountService _paymentAccountService;
-        public PaymentAccountController(ILogger<HomeController> logger, IPaymentAccountService paymentAccountService)
+        private IMeterService _meterService;
+        public IMeterReadingService _meterReadingService;
+        public PaymentAccountController(ILogger<HomeController> logger, IPaymentAccountService paymentAccountService, IMeterService meterService, IMeterReadingService meterReadingService)
         {
             _logger = logger;
             _paymentAccountService = paymentAccountService;
+            _meterService = meterService;
+            _meterReadingService = meterReadingService;
         }
         public IActionResult Show()
         {
             _logger.LogInformation("Get paymentAccounts");
             return View(_paymentAccountService.GetListByCurrUser());
-            
         }
 
-        public async Task<IActionResult> Create() {
+
+        public async Task<IActionResult> Create()
+        {
             _logger.LogInformation("Used CreatePaymentAccountController");
 
             _logger.LogInformation("Get tariffs");
@@ -68,5 +68,16 @@ namespace EnergyProject.Areas.Client.Controllers
             return RedirectToAction("Show", "PaymentAccount");
         }
 
+        public async Task<IActionResult> ViewMeterReadings(string Id, DateTimeFilter dateTimeFilter)
+        {
+            Meter meter = await _meterService.GetMeterWithMeterReadings(Id); // optimize
+
+            MeterReadingFilterViewModel meterReadingFilterViewModel = new MeterReadingFilterViewModel();
+            meterReadingFilterViewModel.meterReadings = _meterReadingService.GetMeterReadings(meter.Id, dateTimeFilter);
+            meterReadingFilterViewModel.meterId = meter.Id;
+            meterReadingFilterViewModel.dateTimeFilter = dateTimeFilter;  // propagate selected filter to the view
+            ViewBag.PaymentAccountId = Id;
+            return View(meterReadingFilterViewModel);
+        }
     }
 }
