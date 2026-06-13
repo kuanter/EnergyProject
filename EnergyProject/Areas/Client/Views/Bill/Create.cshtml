@@ -31,24 +31,20 @@
 
             <div asp-validation-summary="All" class="text-danger"></div>
 
+            <input type="hidden" asp-for="PaymentAccountId" />
+
             <div class="form-row">
-                <!--<p>
-                    <label asp-for="PaymentAccountId" class="form-label">Payment account</label>
-                    <select asp-for="PaymentAccountId" asp-items="Model." class="form-control">
+                <div class="kpi-card" style="margin-bottom: 20px; border: 1px solid var(--gray-300);">
+                    <span class="kpi-label">Amount to Pay</span>
+                    <span class="kpi-value" style="color: var(--primary);">@Model.AmountToPay €</span>
+                    <span class="kpi-caption">Based on your recent consumption (@Model.Consumption kWh)</span>
+                </div>
+
+                <p>
+                    <label asp-for="CardDataId" class="form-label">Credit Card</label>
+                    <select asp-for="CardDataId" asp-items="Model.CardDataOptions" class="form-control">
+                        <option value="">-- Choose Card --</option>
                     </select>
-                    <span asp-validation-for="PaymentAccountId" class="text-danger"></span>
-                </p>
-                -->
-                <!--
-                <p>
-                    <label asp-for="Amount" class="form-label">Amount</label>
-                    <input asp-for="Amount" class="form-control" type="number" step="0.01" min="0" placeholder="e.g., 12.50" />
-                    <span asp-validation-for="Amount" class="text-danger"></span>
-                </p>
-                -->
-                <p>
-                    <label asp-for="CardDataId" class="form-label">Card (optional)</label>
-                    <select asp-for="CardDataId" asp-items="Model.CardDataOptions" class="form-control"></select>
                     <span asp-validation-for="CardDataId" class="text-danger"></span>
                 </p>
             </div>

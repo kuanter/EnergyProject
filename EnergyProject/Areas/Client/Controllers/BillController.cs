@@ -33,6 +33,14 @@ namespace EnergyProject.Areas.Client.Controllers
 
         public async Task<IActionResult> Show(string Id)
         {
+            // Security check: ensure the current user owns this PaymentAccount
+            // ApplicationDbContext automatically applies UserId filter to PaymentAccounts
+            var paExists = await db.PaymentAccounts.AnyAsync(p => p.Id == Id);
+            if (!paExists)
+            {
+                return RedirectToAction("Show", "PaymentAccount");
+            }
+
             List<Bill> bills = await _billService.GetListByPaymentAccountId(Id);
             ConsumptionViewModel consumptionViewModel = await _consumptionService.GetConsumptionViewModel(Id, bills);
 
@@ -43,23 +51,27 @@ namespace EnergyProject.Areas.Client.Controllers
             _logger.LogInformation("Set TempData");
 
             ViewBag.DueAmount = consumptionViewModel.Amount;
+            ViewBag.PaymentAccountId = Id;
 
             return View(bills);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create(string paymentAccountId)
         {
             _logger.LogInformation("Used CreateBillController");
 
-            TempData.Keep("PaymentAccount");
-            TempData.Keep("Consumption");
-            TempData.Keep("Amount");
+            var paExists = await db.PaymentAccounts.AnyAsync(p => p.Id == paymentAccountId);
+            if (!paExists) return RedirectToAction("Show", "PaymentAccount");
 
-            _logger.LogInformation("Keep TempData");
+            List<Bill> bills = await _billService.GetListByPaymentAccountId(paymentAccountId);
+            ConsumptionViewModel consumptionViewModel = await _consumptionService.GetConsumptionViewModel(paymentAccountId, bills);
 
-
-
-            BillCreateViewModel billCreateViewModel = new BillCreateViewModel();
+            BillCreateViewModel billCreateViewModel = new BillCreateViewModel
+            {
+                PaymentAccountId = paymentAccountId,
+                AmountToPay = consumptionViewModel.Amount,
+                Consumption = consumptionViewModel.Consumption
+            };
 
             string currentUserId = _currentUserService.GetRequiredUserId();
             billCreateViewModel.CardDataOptions = db.CardDatas
@@ -72,28 +84,65 @@ namespace EnergyProject.Areas.Client.Controllers
 
             _logger.LogInformation("Get cardDatas");
 
-
             return View(billCreateViewModel);
         }
 
         [HttpPost]
-        public IActionResult CreatePost(BillCreateViewModel billCreateView)
+        public async Task<IActionResult> CreatePost(BillCreateViewModel billCreateView)
         {
             _logger.LogInformation("Used CreatePostBillController");
+
+            var currentUserId = _currentUserService.GetRequiredUserId();
+            var paExists = await db.PaymentAccounts.AnyAsync(p => p.Id == billCreateView.PaymentAccountId);
+            if (!paExists) return RedirectToAction("Show", "PaymentAccount");
+
+            if (!ModelState.IsValid)
+            {
+                billCreateView.CardDataOptions = db.CardDatas
+                    .Where(cd => cd.UserId == currentUserId && cd.IsActive)
+                    .Select(cd => new SelectListItem
+                    {
+                        Value = cd.Id.ToString(),
+                        Text = $"Card Number: {cd.CardNumber}, Exp: {cd.ExpMonth}/{cd.ExpYear}"
+                    }).ToList();
+                return View("Create", billCreateView);
+            }
+
+            var cardExists = await db.CardDatas.AnyAsync(c => c.Id == billCreateView.CardDataId && c.UserId == currentUserId && c.IsActive);
+            if (!cardExists) 
+            {
+                ModelState.AddModelError(string.Empty, "Invalid card selected.");
+                billCreateView.CardDataOptions = db.CardDatas
+                    .Where(cd => cd.UserId == currentUserId && cd.IsActive)
+                    .Select(cd => new SelectListItem
+                    {
+                        Value = cd.Id.ToString(),
+                        Text = $"Card Number: {cd.CardNumber}, Exp: {cd.ExpMonth}/{cd.ExpYear}"
+                    }).ToList();
+                return View("Create", billCreateView);
+            }
+
+            List<Bill> bills = await _billService.GetListByPaymentAccountId(billCreateView.PaymentAccountId);
+            ConsumptionViewModel consumptionViewModel = await _consumptionService.GetConsumptionViewModel(billCreateView.PaymentAccountId, bills);
+
+            if (consumptionViewModel.Amount <= 0)
+            {
+                return RedirectToAction("Show", new { Id = billCreateView.PaymentAccountId });
+            }
 
             Bill bill = new Bill();
             bill.Id = Guid.NewGuid().ToString();
             bill.Status = "Paid";
             bill.GeneratedAt = DateTime.Now;
-            bill.PaymentAccountId = TempData.Peek("PaymentAccount")?.ToString();
-            bill.ConsumptionKWh = float.Parse(TempData["Consumption"]?.ToString() ?? "0", CultureInfo.InvariantCulture);
-            bill.Amount = float.Parse(TempData.Peek("Amount")?.ToString() ?? "0", CultureInfo.InvariantCulture);
+            bill.PaymentAccountId = billCreateView.PaymentAccountId;
+            bill.ConsumptionKWh = consumptionViewModel.Consumption;
+            bill.Amount = consumptionViewModel.Amount;
 
             _logger.LogInformation("Set bill data");
 
             bill.CardDataId = billCreateView.CardDataId;
             db.Bills.Add(bill);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             _logger.LogInformation("Save bill");
 

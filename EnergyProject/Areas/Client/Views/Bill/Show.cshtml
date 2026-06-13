@@ -34,7 +34,7 @@
 
             @if (dueNow > 0)
             {
-                <a asp-action="Create"
+                <a asp-action="Create" asp-route-paymentAccountId="@ViewBag.PaymentAccountId"
                     class="kpi-card kpi-card-action"
                     title="Go to total payment">
                     <span class="kpi-label">Unpaid</span>

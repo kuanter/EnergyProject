@@ -16,6 +16,10 @@ namespace EnergyProject.Infrastructure.Repositories
         }
 
         public async Task<Meter> GetMeterWithMeterReadings(string PaymentAccountId) {
+            
+            var paExists = await _db.PaymentAccounts.AnyAsync(p => p.Id == PaymentAccountId);
+            if (!paExists) return null;
+
             return await _db.Meters
                 .Include(m => m.MeterReadings)
                 .Where(m => m.PaymentAccountId == PaymentAccountId)
