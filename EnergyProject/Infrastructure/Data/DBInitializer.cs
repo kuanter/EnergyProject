@@ -245,7 +245,7 @@ namespace EnergyProject.Infrastructure.Data
 
             if (client != null && address != null && tariff != null && powerStatus != null)
             {
-                if (!await db.PaymentAccounts.AnyAsync(pa => pa.UserId == client.Id))
+                if (!await db.PaymentAccounts.IgnoreQueryFilters().AnyAsync(pa => pa.UserId == client.Id))
                 {
                     var paymentAccount = new PaymentAccount(
                         client.Id,
@@ -263,7 +263,7 @@ namespace EnergyProject.Infrastructure.Data
 
         private static async Task SeedMetersAsync(ApplicationDbContext db)
         {
-            var account = await db.PaymentAccounts.FirstOrDefaultAsync();
+            var account = await db.PaymentAccounts.IgnoreQueryFilters().FirstOrDefaultAsync();
 
             if (account != null)
             {
@@ -299,7 +299,7 @@ namespace EnergyProject.Infrastructure.Data
 
             if (client != null && address != null)
             {
-                if (!await db.Set<CardData>().AnyAsync(cd => cd.UserId == client.Id))
+                if (!await db.Set<CardData>().IgnoreQueryFilters().AnyAsync(cd => cd.UserId == client.Id))
                 {
                     db.Set<CardData>().Add(
                         new CardData(4111111111111111, 12, 2028, "JOHN DOE", false, address.Id, client.Id)
@@ -310,8 +310,8 @@ namespace EnergyProject.Infrastructure.Data
 
         private static async Task SeedBillsAsync(ApplicationDbContext db)
         {
-            var account = await db.PaymentAccounts.FirstOrDefaultAsync();
-            var card = await db.Set<CardData>().FirstOrDefaultAsync();
+            var account = await db.PaymentAccounts.IgnoreQueryFilters().FirstOrDefaultAsync();
+            var card = await db.Set<CardData>().IgnoreQueryFilters().FirstOrDefaultAsync();
 
             if (account != null)
             {
