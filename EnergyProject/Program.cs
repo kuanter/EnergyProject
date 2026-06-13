@@ -40,7 +40,7 @@ namespace EnergyProject
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 2;
+                options.Password.RequiredLength = 8;
                 options.User.AllowedUserNameCharacters = null;
             })
             .AddRoles<IdentityRole>()

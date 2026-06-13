@@ -11,18 +11,27 @@ namespace EnergyProject.Application.Services.Stuff
 
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly IHubContext<MeterHub> _hub;
+        private readonly ILogger<MeterBackgroundService> _logger;
 
-        public MeterBackgroundService(IServiceScopeFactory scopeFactory, IHubContext<MeterHub> hub)
+        public MeterBackgroundService(IServiceScopeFactory scopeFactory, IHubContext<MeterHub> hub, ILogger<MeterBackgroundService> logger)
         {
             _scopeFactory = scopeFactory;
             _hub          = hub;
+            _logger       = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                await ProcessMetersAsync();
+                try
+                {
+                    await ProcessMetersAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "An error occurred while generating meter readings.");
+                }
                 await Task.Delay(Interval, stoppingToken);
             }
         }
