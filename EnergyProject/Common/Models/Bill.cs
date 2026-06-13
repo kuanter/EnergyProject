@@ -1,4 +1,4 @@
-﻿namespace EnergyProject.Common.Models
+namespace EnergyProject.Common.Models
 {
     public class Bill
     {

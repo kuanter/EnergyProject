@@ -1,4 +1,4 @@
-﻿using AspNetCoreGeneratedDocument;
+using AspNetCoreGeneratedDocument;
 using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Interfaces.Stuff;
 using EnergyProject.Common.Models;

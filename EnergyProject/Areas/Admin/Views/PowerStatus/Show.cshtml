@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "AdminPowerStatuses";
 }
 
@@ -7,8 +7,14 @@
 <section class="page">
     <div class="toolbar">
         <h1 class="h1">Power Statuses</h1>
-
     </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center mt-24" role="alert" style="margin-top:20px; margin-bottom:20px; color:red; padding:10px; background-color:#ffe6e6; border-radius:8px;">
+            <h4>@TempData["Error"]</h4>
+        </div>
+    }
     <a asp-area="Admin" asp-controller="PowerStatus" asp-action="Create" class="btn">Add Power Status</a>
     <table class="table">
            <tbody>

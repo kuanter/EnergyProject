@@ -1,4 +1,4 @@
-﻿using EnergyProject.Common.Enums;
+using EnergyProject.Common.Enums;
 using EnergyProject.Common.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 

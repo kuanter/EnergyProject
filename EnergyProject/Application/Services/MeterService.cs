@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
 using EnergyProject.ViewModels;

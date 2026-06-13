@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Interfaces.Stuff;
 using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Data;
@@ -20,12 +20,14 @@ namespace EnergyProject.Areas.Client.Controllers
         private readonly ILogger _logger;
         private readonly IBillService _billService;
         private readonly IConsumptionService _consumptionService;
-        public BillController(ApplicationDbContext db_, ILogger<HomeController> logger, IBillService billService, IConsumptionService consumptionService)
+        private readonly ICurrentUserService _currentUserService;
+        public BillController(ApplicationDbContext db_, ILogger<HomeController> logger, IBillService billService, IConsumptionService consumptionService, ICurrentUserService currentUserService)
         {
             db = db_;
             _logger = logger;
             _billService = billService;
             _consumptionService = consumptionService;
+            _currentUserService = currentUserService;
         }
 
 
@@ -55,20 +57,13 @@ namespace EnergyProject.Areas.Client.Controllers
 
             _logger.LogInformation("Keep TempData");
 
-            var user = db.Users
-                .Include(u => u.PaymentAccounts)
-                .ThenInclude(m => m.Meter)
-                .ThenInclude(mr => mr.MeterReadings).First();
 
-            _logger.LogInformation("Get user");
-
-            var pa = user.PaymentAccounts.ToList();
-
-            _logger.LogInformation("Get paymentAccounts");
 
             BillCreateViewModel billCreateViewModel = new BillCreateViewModel();
 
+            string currentUserId = _currentUserService.GetRequiredUserId();
             billCreateViewModel.CardDataOptions = db.CardDatas
+                .Where(cd => cd.UserId == currentUserId && cd.IsActive)
                 .Select(cd => new SelectListItem
                 {
                     Value = cd.Id.ToString(),

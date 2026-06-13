@@ -1,4 +1,4 @@
-﻿@model EnergyProject.ViewModels.BillCreateViewModel
+@model EnergyProject.ViewModels.BillCreateViewModel
 @{
     ViewData["Title"] = "Payment";
 }
@@ -59,3 +59,9 @@
         </div>
     </form>
 </section>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

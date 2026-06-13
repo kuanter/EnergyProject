@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Common.Enums;
 using EnergyProject.Common.Models;
 using EnergyProject.ViewModels;
@@ -71,6 +71,12 @@ namespace EnergyProject.Areas.Client.Controllers
         public async Task<IActionResult> ViewMeterReadings(string Id, DateTimeFilter dateTimeFilter)
         {
             Meter meter = await _meterService.GetMeterWithMeterReadings(Id); // optimize
+
+            if (meter == null)
+            {
+                TempData["Error"] = "No meter is currently linked to this payment account.";
+                return RedirectToAction(nameof(Show));
+            }
 
             MeterReadingFilterViewModel meterReadingFilterViewModel = new MeterReadingFilterViewModel();
             meterReadingFilterViewModel.meterReadings = _meterReadingService.GetMeterReadings(meter.Id, dateTimeFilter);

@@ -1,4 +1,4 @@
-﻿@using System.Linq
+@using System.Linq
 @using EnergyProject.Common.Models
 @model IEnumerable<PaymentAccount>
 
@@ -20,9 +20,14 @@
                 Create payment account
             </a>
         </div>
-
-
     </div>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center mt-24" role="alert" style="margin-top:20px; color:red; padding:10px; background-color:#ffe6e6; border-radius:8px;">
+            <h4>@TempData["Error"]</h4>
+        </div>
+    }
 
     <div class="card mt-24">
         <div class="table-wrapper">

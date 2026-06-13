@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Application.Interfaces.Stuff;
 using EnergyProject.Areas.Client.Controllers;
 using EnergyProject.Common.Models;
@@ -82,6 +82,7 @@ namespace EnergyProject.Application.Services.Stuff
                 if (paymentAccount == null)
                 {
                     _logger.LogInformation("paymentAccount is null");
+                    return consumptionViewModel;
                 }
 
                 var tariff = await _tariffRepository.GetById(paymentAccount.TariffId);
@@ -91,6 +92,7 @@ namespace EnergyProject.Application.Services.Stuff
                 if (tariff == null)
                 {
                     _logger.LogInformation("tariff is null");
+                    return consumptionViewModel;
                 }
 
                 float amountToPay = MathF.Round(totalAmount * tariff.PricePerKWh, 2);

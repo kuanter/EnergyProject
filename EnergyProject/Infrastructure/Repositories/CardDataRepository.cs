@@ -18,7 +18,7 @@ namespace EnergyProject.Infrastructure.Repositories
         {
             return _db.CardDatas
                 .Include(c => c.Address)
-                .Where(c => c.UserId == userId)
+                .Where(c => c.UserId == userId && c.IsActive)
                 .ToList();
         }
 

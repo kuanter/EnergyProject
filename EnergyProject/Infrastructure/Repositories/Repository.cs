@@ -1,4 +1,4 @@
-﻿using EnergyProject.Infrastructure.Data;
+using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

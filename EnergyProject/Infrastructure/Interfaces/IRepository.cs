@@ -1,4 +1,4 @@
-﻿namespace EnergyProject.Infrastructure.Interfaces
+namespace EnergyProject.Infrastructure.Interfaces
 {
     public interface IRepository<T> where T : class
     {

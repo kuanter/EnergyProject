@@ -1,4 +1,4 @@
-﻿using EnergyProject.Common.Models;
+using EnergyProject.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -18,36 +18,45 @@ namespace EnergyProject.Infrastructure.Data
 
             try
             {
-                await SeedRolesAsync(roleManager);
-                await SeedTariffsAsync(db);
-                await SeedPowerStatusesAsync(db);
-                await SeedAddressesAsync(db);
-                await db.SaveChangesAsync();
-
-             
-                await SeedAdminAsync(userManager);
-                await SeedClientAsync(userManager, db);
-                await db.SaveChangesAsync();
-
-             
-                await SeedPaymentAccountsAsync(db, userManager);
-                await db.SaveChangesAsync();
-
-              
-                await SeedMetersAsync(db);
-                await SeedCardDatasAsync(db, userManager);
-                await db.SaveChangesAsync();
-
+                await SeedMandatoryAsync(db, userManager, roleManager);
                 
-                await SeedMeterReadingsAsync(db);
-                await SeedBillsAsync(db);
-                await db.SaveChangesAsync();
+                // NOTE: The following test data is optional and used only for testing/development purposes.
+                // It can be removed or disabled in production environments.
+                await SeedTestDataAsync(db, userManager);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to seed data {ex.Message}");
                 return;
             }
+        }
+
+        private static async Task SeedMandatoryAsync(ApplicationDbContext db, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            await SeedRolesAsync(roleManager);
+            await SeedTariffsAsync(db);
+            await SeedPowerStatusesAsync(db);
+            await SeedAdminAsync(userManager, db);
+            await db.SaveChangesAsync();
+        }
+
+        // NOTE: This method generates mock data strictly for testing and development.
+        private static async Task SeedTestDataAsync(ApplicationDbContext db, UserManager<User> userManager)
+        {
+            await SeedClientAsync(userManager, db);
+            await SeedAddressesAsync(db);
+            await db.SaveChangesAsync();
+
+            await SeedPaymentAccountsAsync(db, userManager);
+            await db.SaveChangesAsync();
+
+            await SeedMetersAsync(db);
+            await SeedCardDatasAsync(db, userManager);
+            await db.SaveChangesAsync();
+
+            await SeedMeterReadingsAsync(db);
+            await SeedBillsAsync(db);
+            await db.SaveChangesAsync();
         }
 
         private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
@@ -63,7 +72,7 @@ namespace EnergyProject.Infrastructure.Data
             }
         }
 
-        private static async Task SeedAdminAsync(UserManager<User> userManager)
+        private static async Task SeedAdminAsync(UserManager<User> userManager, ApplicationDbContext db)
         {
             User? user = await userManager.FindByEmailAsync("admin@gmail.com");
 
@@ -71,7 +80,7 @@ namespace EnergyProject.Infrastructure.Data
             {
                 user = new User("admin@gmail.com", "admin@gmail.com", true);
 
-                var result = await userManager.CreateAsync(user, "1Q");
+                var result = await userManager.CreateAsync(user, "1Qwer$78");
                 if (!result.Succeeded)
                 {
                     throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
@@ -81,6 +90,11 @@ namespace EnergyProject.Infrastructure.Data
             if (!await userManager.IsInRoleAsync(user, "Admin"))
             {
                 await userManager.AddToRoleAsync(user, "Admin");
+            }
+
+            if (!await db.Set<Admin>().AnyAsync(a => a.UserId == user.Id))
+            {
+                db.Set<Admin>().Add(new Admin(user.Id));
             }
         }
 
@@ -92,7 +106,7 @@ namespace EnergyProject.Infrastructure.Data
             {
                 user = new User("client@gmail.com", "client@gmail.com", true);
 
-                var result = await userManager.CreateAsync(user, "1Qwer$");
+                var result = await userManager.CreateAsync(user, "1Qwer$78");
                 if (!result.Succeeded)
                 {
                     throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));

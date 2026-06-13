@@ -53,6 +53,29 @@ namespace EnergyProject.Application.Services
 
             string userId = _userService.GetRequiredUserId();
 
+            var existingCards = _cardDataRepository.GetListByUserId(userId);
+            var existingCard = existingCards.FirstOrDefault(c => c.CardNumber == model.CardNumber);
+
+            if (existingCard != null)
+            {
+                if (existingCard.IsActive)
+                {
+                    return (false, "This card already exists.");
+                }
+                else
+                {
+                    existingCard.IsActive = true;
+                    existingCard.ExpMonth = model.ExpMonth;
+                    existingCard.ExpYear = model.ExpYear;
+                    existingCard.CardName = model.CardName;
+                    existingCard.IsDefault = model.IsDefault;
+                    existingCard.AddressId = address.Id;
+                    
+                    await _cardDataRepository.Update(existingCard);
+                    return (true, string.Empty);
+                }
+            }
+
             var card = new CardData(
                 model.CardNumber,
                 model.ExpMonth,
@@ -74,7 +97,12 @@ namespace EnergyProject.Application.Services
 
         public async Task Delete(string cardId)
         {
-            await _cardDataRepository.Delete(await _cardDataRepository.GetById(cardId));
+            var card = await _cardDataRepository.GetById(cardId);
+            if (card != null)
+            {
+                card.IsActive = false;
+                await _cardDataRepository.Update(card);
+            }
         }
 
         private static bool IsLuhnValid(string cardNumber)

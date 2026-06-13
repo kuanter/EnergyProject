@@ -1,4 +1,4 @@
-﻿using EnergyProject.Common.Models;
+using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -14,19 +14,19 @@ namespace EnergyProject.Infrastructure.Repositories
             db = db_;
         }
         public async Task<List<Bill>> GetListWithCardDatasByPaymentAccountId(string PaymentAccountId) {
-            var bills = db.Bills
+            var bills = await db.Bills
                 .Where(b => b.PaymentAccountId == PaymentAccountId)
                 .Include(b => b.CardData)
-                .ToList();
+                .ToListAsync();
             return bills;
         }
         public async Task<Bill> GetLastPaidBill(string PaymentAccountId) 
         {
-            return db.Bills
+            return await db.Bills
                 .Where(b => b.PaymentAccountId == PaymentAccountId)
                 .Where(b => b.Status == "Paid")
                 .OrderByDescending(b => b.GeneratedAt)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
     }
 }

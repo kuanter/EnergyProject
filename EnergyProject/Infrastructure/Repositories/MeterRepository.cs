@@ -1,4 +1,4 @@
-﻿using EnergyProject.Common.Models;
+using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +16,10 @@ namespace EnergyProject.Infrastructure.Repositories
         }
 
         public async Task<Meter> GetMeterWithMeterReadings(string PaymentAccountId) {
-            return _db.Meters
+            return await _db.Meters
                 .Include(m => m.MeterReadings)
                 .Where(m => m.PaymentAccountId == PaymentAccountId)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<List<Meter>> GetActiveMeters()

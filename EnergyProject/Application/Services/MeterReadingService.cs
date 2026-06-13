@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Common.Enums;
 using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
@@ -35,7 +35,8 @@ public class MeterReadingService : IMeterReadingService
 
     public void GenerateReading(string Id)
     {
-        float last_meter_reading_value_kwt = _meterReadingRepository.GetLastMeterReading(Id).ValueKWh;
+        var lastReading = _meterReadingRepository.GetLastMeterReading(Id);
+        float last_meter_reading_value_kwt = lastReading != null ? lastReading.ValueKWh : 0f;
         var inc = (float)(Random.Shared.NextDouble() * (10.00 - 0.10) + 0.10);
         inc = MathF.Round(inc, 2);
         _meterReadingRepository.AddReading(Id, inc, last_meter_reading_value_kwt);

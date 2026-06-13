@@ -1,4 +1,4 @@
-﻿@using EnergyProject.Common.Models
+@using EnergyProject.Common.Models
 @using EnergyProject.Common.Models
 @inject SignInManager<User> SignInManager
 @{
@@ -13,6 +13,9 @@
         <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
     }
     <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-area="Client" asp-controller="CardData" asp-action="Show">Cards</a></li>
+    @* <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li> *@
+    @if (!User.IsInRole("Admin"))
+    {
+        <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="cards-data" asp-area="Client" asp-controller="CardData" asp-action="Show">Cards</a></li>
+    }
 </ul>

@@ -1,4 +1,4 @@
-﻿namespace EnergyProject.Common.Models
+namespace EnergyProject.Common.Models
 {
     public class CardData
     {
@@ -8,6 +8,7 @@
         public int ExpYear { get; set; }
         public string CardName { get; set; }
         public bool IsDefault { get; set; }
+        public bool IsActive { get; set; } = true;
         public string? AddressId { get; set; }
         public Address Address { get; set; }
         public string UserId { get; set; }

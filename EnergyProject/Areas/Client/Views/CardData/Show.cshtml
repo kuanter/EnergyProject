@@ -1,4 +1,4 @@
-﻿@using System.Linq
+@using System.Linq
 @using EnergyProject.Common.Models
 @model IEnumerable<CardData>
 
@@ -21,39 +21,38 @@
 
     <div class="card mt-24">
         <div class="table-wrapper">
-            <table class="user-table">
-                    @if (Model == null)
-                    {
-                        <div class="alert alert-info text-center" role="alert">
-                            <h4>No CardData available</h4>
-                        </div>
-                    }
-                    else
-                    {
-                        <tbody>
-                            <thead>
-                                <tr>
-                                    <th>Card Number</th>
-                                    <th>Card Name</th>
-                                    <th>Default</th>
-                                    <th>Set as Default</th>
-                                    <th>Delete</th>
-                                </tr>
-                            </thead>
-                            @foreach (var c in Model)
-                            {
-                                <tr>
-                                    <td data-label="Address Id">@c.CardNumber</td>
-                                    <td data-label="Meter Id">@c.CardName</td>
-                                    <td data-label="Meter Id">@c.IsDefault</td>
-                                    <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="SetAsDefault" asp-route-Id="@c.Id">Set As Default</a></td>
-                                    <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="Delete" asp-route-Id="@c.Id">Delete</a></td>
-                                </tr>
-                            }
-                        </tbody>
-                    }
-               
-            </table>
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info text-center" role="alert">
+                    <h4>No CardData available</h4>
+                </div>
+            }
+            else
+            {
+                <table class="user-table">
+                    <thead>
+                        <tr>
+                            <th>Card Number</th>
+                            <th>Card Name</th>
+                            <th>Default</th>
+                            <th>Set as Default</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model)
+                        {
+                            <tr>
+                                <td data-label="Card Number">@c.CardNumber</td>
+                                <td data-label="Card Name">@c.CardName</td>
+                                <td data-label="Default">@c.IsDefault</td>
+                                <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="SetAsDefault" asp-route-Id="@c.Id">Set As Default</a></td>
+                                <td><a class="user-btn user-btn-primary" asp-area="Client" asp-controller="CardData" asp-action="Delete" asp-route-Id="@c.Id">Delete</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
     </div>
 </section>

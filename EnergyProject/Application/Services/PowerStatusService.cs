@@ -1,4 +1,4 @@
-﻿using EnergyProject.Application.Interfaces;
+using EnergyProject.Application.Interfaces;
 using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
 using EnergyProject.Infrastructure.Repositories;
@@ -22,6 +22,11 @@ namespace EnergyProject.Application.Services
         }
         public async Task Create(PowerStatus ps) 
         {
+            if (string.IsNullOrEmpty(ps.Id))
+            {
+                ps.Id = Guid.NewGuid().ToString();
+            }
+            ps.UpdatedAt = DateTime.Now;
             await _powerStatusRepository.Create(ps);
         }
         public async Task Update(PowerStatus ps) 
@@ -31,7 +36,11 @@ namespace EnergyProject.Application.Services
         }
         public async Task Delete(string id) 
         { 
-            await _powerStatusRepository.Delete(await _powerStatusRepository.GetById(id));
+            var ps = await _powerStatusRepository.GetById(id);
+            if (ps != null)
+            {
+                await _powerStatusRepository.Delete(ps);
+            }
         }
     }
 }

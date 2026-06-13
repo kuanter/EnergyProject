@@ -22,7 +22,7 @@ namespace EnergyProject.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("EnergyProject.Models.Address", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Address", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -52,20 +52,20 @@ namespace EnergyProject.Migrations
                         .IsUnique()
                         .HasFilter("[PaymentAccountId] IS NOT NULL");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Admin", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Admin", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Bill", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Bill", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -96,10 +96,10 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("PaymentAccountId");
 
-                    b.ToTable("Bills", (string)null);
+                    b.ToTable("Bills");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.CardData", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.CardData", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -120,6 +120,9 @@ namespace EnergyProject.Migrations
                     b.Property<int>("ExpYear")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDefault")
                         .HasColumnType("bit");
 
@@ -133,20 +136,20 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CardDatas", (string)null);
+                    b.ToTable("CardDatas");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Client", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Client", b =>
                 {
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Meter", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Meter", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -170,10 +173,10 @@ namespace EnergyProject.Migrations
                     b.HasIndex("PaymentAccountId")
                         .IsUnique();
 
-                    b.ToTable("Meters", (string)null);
+                    b.ToTable("Meters");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.MeterReading", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.MeterReading", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -192,10 +195,10 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("MeterId");
 
-                    b.ToTable("MeterReadings", (string)null);
+                    b.ToTable("MeterReadings");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.PaymentAccount", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.PaymentAccount", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -227,10 +230,10 @@ namespace EnergyProject.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PaymentAccounts", (string)null);
+                    b.ToTable("PaymentAccounts");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.PowerStatus", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.PowerStatus", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -248,10 +251,10 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PowerStatuses", (string)null);
+                    b.ToTable("PowerStatuses");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Tariff", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Tariff", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -265,10 +268,10 @@ namespace EnergyProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tariffs", (string)null);
+                    b.ToTable("Tariffs");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.User", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -470,35 +473,35 @@ namespace EnergyProject.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Address", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Address", b =>
                 {
-                    b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
+                    b.HasOne("EnergyProject.Common.Models.PaymentAccount", "PaymentAccount")
                         .WithOne("Address")
-                        .HasForeignKey("EnergyProject.Models.Address", "PaymentAccountId")
+                        .HasForeignKey("EnergyProject.Common.Models.Address", "PaymentAccountId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("PaymentAccount");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Admin", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Admin", b =>
                 {
-                    b.HasOne("EnergyProject.Models.User", "User")
+                    b.HasOne("EnergyProject.Common.Models.User", "User")
                         .WithOne()
-                        .HasForeignKey("EnergyProject.Models.Admin", "UserId")
+                        .HasForeignKey("EnergyProject.Common.Models.Admin", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Bill", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Bill", b =>
                 {
-                    b.HasOne("EnergyProject.Models.CardData", "CardData")
+                    b.HasOne("EnergyProject.Common.Models.CardData", "CardData")
                         .WithMany("Bills")
                         .HasForeignKey("CardDataId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
+                    b.HasOne("EnergyProject.Common.Models.PaymentAccount", "PaymentAccount")
                         .WithMany("Bills")
                         .HasForeignKey("PaymentAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -509,14 +512,14 @@ namespace EnergyProject.Migrations
                     b.Navigation("PaymentAccount");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.CardData", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.CardData", b =>
                 {
-                    b.HasOne("EnergyProject.Models.Address", "Address")
+                    b.HasOne("EnergyProject.Common.Models.Address", "Address")
                         .WithMany("CardDatas")
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.NoAction);
 
-                    b.HasOne("EnergyProject.Models.User", "User")
+                    b.HasOne("EnergyProject.Common.Models.User", "User")
                         .WithMany("Cards")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -527,31 +530,31 @@ namespace EnergyProject.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Client", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Client", b =>
                 {
-                    b.HasOne("EnergyProject.Models.User", "User")
+                    b.HasOne("EnergyProject.Common.Models.User", "User")
                         .WithOne()
-                        .HasForeignKey("EnergyProject.Models.Client", "UserId")
+                        .HasForeignKey("EnergyProject.Common.Models.Client", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Meter", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Meter", b =>
                 {
-                    b.HasOne("EnergyProject.Models.PaymentAccount", "PaymentAccount")
+                    b.HasOne("EnergyProject.Common.Models.PaymentAccount", "PaymentAccount")
                         .WithOne("Meter")
-                        .HasForeignKey("EnergyProject.Models.Meter", "PaymentAccountId")
+                        .HasForeignKey("EnergyProject.Common.Models.Meter", "PaymentAccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PaymentAccount");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.MeterReading", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.MeterReading", b =>
                 {
-                    b.HasOne("EnergyProject.Models.Meter", "Meter")
+                    b.HasOne("EnergyProject.Common.Models.Meter", "Meter")
                         .WithMany("MeterReadings")
                         .HasForeignKey("MeterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -560,21 +563,21 @@ namespace EnergyProject.Migrations
                     b.Navigation("Meter");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.PaymentAccount", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.PaymentAccount", b =>
                 {
-                    b.HasOne("EnergyProject.Models.PowerStatus", "PowerStatus")
+                    b.HasOne("EnergyProject.Common.Models.PowerStatus", "PowerStatus")
                         .WithMany("PaymentAccounts")
                         .HasForeignKey("PowerStatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EnergyProject.Models.Tariff", "Tariff")
+                    b.HasOne("EnergyProject.Common.Models.Tariff", "Tariff")
                         .WithMany("PaymentAccounts")
                         .HasForeignKey("TariffId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EnergyProject.Models.User", "User")
+                    b.HasOne("EnergyProject.Common.Models.User", "User")
                         .WithMany("PaymentAccounts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -598,7 +601,7 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("EnergyProject.Models.User", null)
+                    b.HasOne("EnergyProject.Common.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -607,7 +610,7 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("EnergyProject.Models.User", null)
+                    b.HasOne("EnergyProject.Common.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -622,7 +625,7 @@ namespace EnergyProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EnergyProject.Models.User", null)
+                    b.HasOne("EnergyProject.Common.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -631,29 +634,29 @@ namespace EnergyProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("EnergyProject.Models.User", null)
+                    b.HasOne("EnergyProject.Common.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Address", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Address", b =>
                 {
                     b.Navigation("CardDatas");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.CardData", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.CardData", b =>
                 {
                     b.Navigation("Bills");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Meter", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Meter", b =>
                 {
                     b.Navigation("MeterReadings");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.PaymentAccount", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.PaymentAccount", b =>
                 {
                     b.Navigation("Address")
                         .IsRequired();
@@ -663,17 +666,17 @@ namespace EnergyProject.Migrations
                     b.Navigation("Meter");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.PowerStatus", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.PowerStatus", b =>
                 {
                     b.Navigation("PaymentAccounts");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.Tariff", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.Tariff", b =>
                 {
                     b.Navigation("PaymentAccounts");
                 });
 
-            modelBuilder.Entity("EnergyProject.Models.User", b =>
+            modelBuilder.Entity("EnergyProject.Common.Models.User", b =>
                 {
                     b.Navigation("Cards");
 

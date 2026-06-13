@@ -1,4 +1,4 @@
-﻿@using System.Linq
+@using System.Linq
 @using EnergyProject.Common.Models
 @model IEnumerable<Bill>
 
@@ -55,10 +55,9 @@
     </div>
     <div class="card mt-24">
         <div class="table-wrapper">
-            <table class="user-table">
-                @if (Model != null && Model.Any())
-                {
-                    <table class="table">
+            @if (Model != null && Model.Any())
+            {
+                <table class="user-table">
                         <thead>
                             <tr>
                                 <th>ConsumptionKWh</th>
@@ -87,15 +86,14 @@
                                 </tr>
                             }
                         </tbody>
-                    </table>
-                }
-                else
-                {
-                    <div class="alert alert-info text-center" role="alert">
-                        <h4>No Bills available</h4>
-                    </div>
-                }
-            </table>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info text-center" role="alert">
+                    <h4>No Bills available</h4>
+                </div>
+            }
         </div>
     </div>
 </section>
