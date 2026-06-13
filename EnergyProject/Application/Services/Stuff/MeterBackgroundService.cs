@@ -7,40 +7,44 @@ namespace EnergyProject.Application.Services.Stuff
 {
     public class MeterBackgroundService : BackgroundService
     {
-        private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IHubContext<MeterHub> _hubContext;
+        private static readonly TimeSpan Interval = TimeSpan.FromSeconds(10);
 
-        public MeterBackgroundService(IServiceScopeFactory scopeFactory, IHubContext<MeterHub> hubContext)
+        private readonly IServiceScopeFactory _scopeFactory;
+        private readonly IHubContext<MeterHub> _hub;
+
+        public MeterBackgroundService(IServiceScopeFactory scopeFactory, IHubContext<MeterHub> hub)
         {
             _scopeFactory = scopeFactory;
-            _hubContext = hubContext;
+            _hub          = hub;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                using var scope = _scopeFactory.CreateScope();
+                await ProcessMetersAsync();
+                await Task.Delay(Interval, stoppingToken);
+            }
+        }
 
-                var meterReadingService = scope.ServiceProvider.GetRequiredService<IMeterReadingService>();
-                var meterService = scope.ServiceProvider.GetRequiredService<IMeterService>();
+        private async Task ProcessMetersAsync()
+        {
+            using var scope         = _scopeFactory.CreateScope();
+            var meterReadingSvc     = scope.ServiceProvider.GetRequiredService<IMeterReadingService>();
+            var meterSvc            = scope.ServiceProvider.GetRequiredService<IMeterService>();
 
-                foreach (Meter meter in await meterService.GetActiveMeters())
-                {
-                    meterReadingService.GenerateReading(meter.Id);
+            foreach (Meter meter in await meterSvc.GetActiveMeters())
+            {
+                meterReadingSvc.GenerateReading(meter.Id);
+                var last = meterReadingSvc.GetLastMeterReading(meter.Id);
 
-                    var lastMeterReading = meterReadingService.GetLastMeterReading(meter.Id);
-
-                    await _hubContext.Clients.Group(meter.Id.ToString())
-                        .SendAsync("ReceiveReading", new
-                        {
-                            id = lastMeterReading.Id,
-                            valueKWh = lastMeterReading.ValueKWh,
-                            createdAt = lastMeterReading.CreatedAt
-                        });
-                }
-
-                await Task.Delay(10000, stoppingToken);
+                await _hub.Clients.Group(meter.Id.ToString())
+                    .SendAsync("ReceiveReading", new
+                    {
+                        id         = last.Id,
+                        valueKWh   = last.ValueKWh,
+                        createdAt  = last.CreatedAt
+                    });
             }
         }
     }
