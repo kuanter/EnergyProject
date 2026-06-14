@@ -8,7 +8,6 @@ namespace EnergyProject.Common.Models
         public string House { get; set; }
         public string Apartment { get; set; }
         public ICollection<CardData> CardDatas { get; set; }
-        //todo
         public string? PaymentAccountId { get; set; }
         public PaymentAccount? PaymentAccount { get; set; }
 

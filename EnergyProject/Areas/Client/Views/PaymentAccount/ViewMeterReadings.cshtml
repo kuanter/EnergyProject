@@ -148,34 +148,29 @@
     }
 
     @* ── Readings table ── *@
-    @if (readings.Count > 0)
-    {
-        <table class="table table-striped table-hover">
-            <thead>
+    <div id="no-readings-alert" class="alert alert-info text-center" role="alert" style="display: @(readings.Count > 0 ? "none" : "block")">
+        <h4>No readings in this period</h4>
+    </div>
+
+    <table id="readings-table" class="table table-striped table-hover" style="display: @(readings.Count > 0 ? "table" : "none")">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Value (kWh)</th>
+            </tr>
+        </thead>
+        <tbody id="readings">
+            @foreach (var item in readings.OrderByDescending(r => r.CreatedAt))
+            {
                 <tr>
-                    <th>Id</th>
-                    <th>Date</th>
-                    <th>Value (kWh)</th>
+                    <td>@item.Id</td>
+                    <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)</td>
+                    <td><span class="chip chip-dark">@item.ValueKWh kWh</span></td>
                 </tr>
-            </thead>
-            <tbody id="readings">
-                @foreach (var item in readings.OrderByDescending(r => r.CreatedAt))
-                {
-                    <tr>
-                        <td>@item.Id</td>
-                        <td>@item.CreatedAt.ToString("dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)</td>
-                        <td><span class="chip chip-dark">@item.ValueKWh kWh</span></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-info text-center" role="alert">
-            <h4>No readings in this period</h4>
-        </div>
-    }
+            }
+        </tbody>
+    </table>
 
 </section>
 

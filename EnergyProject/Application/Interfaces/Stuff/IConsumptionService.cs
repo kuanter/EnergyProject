@@ -1,8 +1,10 @@
-﻿using EnergyProject.Common.Models;
+using EnergyProject.Common.Models;
 using EnergyProject.ViewModels;
 
-public interface IConsumptionService
+namespace EnergyProject.Application.Interfaces.Stuff
 {
-    public Task<ConsumptionViewModel> GetConsumptionViewModel(string paymentAccountId, List<Bill> bills);
+    public interface IConsumptionService
+    {
+        public Task<ConsumptionViewModel> GetConsumptionViewModel(string paymentAccountId, List<Bill> bills);
+    }
 }
-

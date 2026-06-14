@@ -49,7 +49,7 @@ namespace EnergyProject.Application.Services
         public async Task<(bool Succeeded, string ErrorMessage)> CreateAsync(PaymentAccountCreateViewModel model)
         {
             string userId = _currentUserService.GetRequiredUserId();
-            var activeStatus = await _powerStatusRepository.GetByStatus("Active");
+            var inactiveStatus = await _powerStatusRepository.GetByStatus("Inactive");
             var address = await _addressRepository.GetByDetails(model.City, model.Street, model.House, model.Apartment);
 
             if (address != null)
@@ -66,7 +66,7 @@ namespace EnergyProject.Application.Services
 
             }
 
-            var paymentAccount = new PaymentAccount(userId,address.Id,model.TariffId,activeStatus.Id);
+            var paymentAccount = new PaymentAccount(userId,address.Id,model.TariffId,inactiveStatus.Id);
 
             await _paymentAccountRepository.Create(paymentAccount);
 

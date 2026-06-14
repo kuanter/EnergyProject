@@ -23,7 +23,7 @@ namespace EnergyProject.Areas.Admin.Controllers
             MeterReadingFilterViewModel meterReadingFilterViewModel = new MeterReadingFilterViewModel();
             meterReadingFilterViewModel.meterReadings = _meterReadingService.GetMeterReadings(Id, dateTimeFilter);
             meterReadingFilterViewModel.meterId = Id;
-            meterReadingFilterViewModel.dateTimeFilter = dateTimeFilter;  // propagate selected filter to the view
+            meterReadingFilterViewModel.dateTimeFilter = dateTimeFilter;
             return View(meterReadingFilterViewModel);
         }
     }

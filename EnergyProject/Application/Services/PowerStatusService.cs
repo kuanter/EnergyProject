@@ -1,7 +1,6 @@
 using EnergyProject.Application.Interfaces;
 using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Interfaces;
-using EnergyProject.Infrastructure.Repositories;
 
 namespace EnergyProject.Application.Services
 {

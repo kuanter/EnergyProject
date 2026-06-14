@@ -2,7 +2,6 @@ using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace EnergyProject.Infrastructure.Repositories
 {

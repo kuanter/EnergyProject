@@ -70,7 +70,7 @@ namespace EnergyProject.Areas.Client.Controllers
 
         public async Task<IActionResult> ViewMeterReadings(string Id, DateTimeFilter dateTimeFilter)
         {
-            Meter meter = await _meterService.GetMeterWithMeterReadings(Id); // optimize
+            Meter meter = await _meterService.GetMeterWithMeterReadings(Id);
 
             if (meter == null)
             {

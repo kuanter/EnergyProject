@@ -1,7 +1,6 @@
 using EnergyProject.Common.Models;
 using EnergyProject.Infrastructure.Data;
 using EnergyProject.Infrastructure.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EnergyProject.Infrastructure.Repositories

@@ -1,4 +1,4 @@
-﻿@model EnergyProject.ViewModels.PaymentAccountCreateViewModel
+@model EnergyProject.ViewModels.PaymentAccountCreateViewModel
 
 
 @{
@@ -35,7 +35,7 @@
                 <div class="form-row">
                     <p>
                         <label asp-for="TariffId" class="form-label">Tariff</label><br />
-                        <select asp-for="TariffId" asp-items="Model.TariffOptions" class="form-control" )">
+                        <select asp-for="TariffId" asp-items="Model.TariffOptions" class="form-control">
                             <option value="">-- Choose Tariff --</option>
                         </select>
                         <span asp-validation-for="TariffId" class="text-danger"></span>

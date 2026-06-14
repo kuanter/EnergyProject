@@ -20,8 +20,6 @@ namespace EnergyProject.Infrastructure.Data
             {
                 await SeedMandatoryAsync(db, userManager, roleManager);
                 
-                // NOTE: The following test data is optional and used only for testing/development purposes.
-                // It can be removed or disabled in production environments.
                 await SeedTestDataAsync(db, userManager);
             }
             catch (Exception ex)
@@ -40,7 +38,6 @@ namespace EnergyProject.Infrastructure.Data
             await db.SaveChangesAsync();
         }
 
-        // NOTE: This method generates mock data strictly for testing and development.
         private static async Task SeedTestDataAsync(ApplicationDbContext db, UserManager<User> userManager)
         {
             await SeedClientAsync(userManager, db);
@@ -230,6 +227,16 @@ namespace EnergyProject.Infrastructure.Data
                     new PowerStatus(
                         "Maintenance",
                         "Temporarily unavailable due to technical works"
+                    )
+                );
+            }
+
+            if (!await db.PowerStatuses.AnyAsync(p => p.Status == "Inactive"))
+            {
+                db.PowerStatuses.Add(
+                    new PowerStatus(
+                        "Inactive",
+                        "No meter assigned yet"
                     )
                 );
             }
